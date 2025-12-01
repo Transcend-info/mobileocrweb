@@ -449,10 +449,9 @@
     let currentImageFile = null;
     let currentLanguage = 'en';
     
-    // Azure AI Vision Configuration - Obfuscated (Base64 encoded)
-    // To update: btoa('your-actual-endpoint') and btoa('your-actual-api-key')
-    const AZURE_ENDPOINT_ENCODED = 'aHR0cHM6Ly95b3VyLXJlc291cmNlLmNvZ25pdGl2ZXNlcnZpY2VzLmF6dXJlLmNvbS8=';
-    const AZURE_API_KEY_ENCODED = 'eW91ci1hcGkta2V5LWhlcmU=';
+    // Azure AI Vision Configuration 
+    const AZURE_ENDPOINT_ENCODED = 'aHR0cHM6Ly9taXNidXNpbmVzc2NhcmQuY29nbml0aXZlc2VydmljZXMuYXp1cmUuY29tLw==';
+    const AZURE_API_KEY_ENCODED = 'NHR1VTZBSVJBa1JyNkV1NWJDSGMxM0V6N01MMFJkMDdWeFdHOUtQMVVEc2xab3RDT0xlbEpRUUo5OUJMQUNpMDg4MVhKM3czQUFBRkFDT0czTFNi';
     
     // Decode credentials
     const AZURE_ENDPOINT = atob(AZURE_ENDPOINT_ENCODED);
