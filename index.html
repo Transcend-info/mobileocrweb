@@ -327,8 +327,8 @@
           <option value="tc">TC</option>
         </select>
       </div>
-      <img src="https://tw.transcend-info.com/images/ts_logo.png" alt="創見資訊 Transcend">
-      <h1 id="headerTitle">Transcend Business Name Card Scanner</h1>
+      <img src="https://www.transcend-info.com/images/ts_logo.png" alt="TranscendLogo">
+      <h1 id="headerTitle">Business Name Card Scanner</h1>
     </div>
     
     <!-- Content -->
@@ -337,7 +337,7 @@
       <div id="alertSuccess" class="alert alert-success"></div>
       <div id="alertError" class="alert alert-error"></div>
       <div id="loadingDiv" class="loading">
-        <p id="loadingText">🔍 Scanning business card, please wait...</p>
+        <p id="loadingText"> Scanning business card, please wait...</p>
         <p id="progressText" style="margin-top: 5px; font-size: 12px;">Loading...</p>
       </div>
       
@@ -358,7 +358,7 @@
           <span id="btnCamera">📷 Camera</span>
         </button>
         <button class="btn btn-primary" onclick="document.getElementById('fileInput').click()">
-          <span id="btnUpload">📁 Upload</span>
+          <span id="btnUpload">📁 Upload Image </span>
         </button>
       </div>
       
@@ -379,8 +379,23 @@
         </div>
         
         <div class="form-group">
+          <label class="form-label" id="labelJobTitle">💼 Job Title</label>
+          <input type="text" class="form-input" id="jobTitleInput">
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label" id="labelDepartment">🏛️ Department</label>
+          <input type="text" class="form-input" id="departmentInput">
+        </div>
+        
+        <div class="form-group">
           <label class="form-label" id="labelPhone">📞 Phone</label>
           <input type="text" class="form-input" id="phoneInput">
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label" id="labelFax">📠 Fax</label>
+          <input type="text" class="form-input" id="faxInput">
         </div>
         
         <div class="form-group">
@@ -389,8 +404,23 @@
         </div>
         
         <div class="form-group">
-          <label class="form-label" id="labelCompany">🏢 Company</label>
+          <label class="form-label" id="labelCompany">🏢 Company Name</label>
           <input type="text" class="form-input" id="companyInput">
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label" id="labelAddress">📍 Company Address</label>
+          <input type="text" class="form-input" id="addressInput">
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label" id="labelWebsite">🌐 Company Website</label>
+          <input type="url" class="form-input" id="websiteInput">
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label" id="labelTaxId">🔢 Tax ID</label>
+          <input type="text" class="form-input" id="taxIdInput">
         </div>
         
         <!-- Action Buttons -->
@@ -419,9 +449,10 @@
     let currentImageFile = null;
     let currentLanguage = 'en';
     
-    // Azure AI Vision Configuration 
-    const AZURE_ENDPOINT_ENCODED = 'aHR0cHM6Ly9taXNidXNpbmVzc2NhcmQuY29nbml0aXZlc2VydmljZXMuYXp1cmUuY29tLw==';
-    const AZURE_API_KEY_ENCODED = 'NHR1VTZBSVJBa1JyNkV1NWJDSGMxM0V6N01MMFJkMDdWeFdHOUtQMVVEc2xab3RDT0xlbEpRUUo5OUJMQUNpMDg4MVhKM3czQUFBRkFDT0czTFNi';
+    // Azure AI Vision Configuration - Obfuscated (Base64 encoded)
+    // To update: btoa('your-actual-endpoint') and btoa('your-actual-api-key')
+    const AZURE_ENDPOINT_ENCODED = 'aHR0cHM6Ly95b3VyLXJlc291cmNlLmNvZ25pdGl2ZXNlcnZpY2VzLmF6dXJlLmNvbS8=';
+    const AZURE_API_KEY_ENCODED = 'eW91ci1hcGkta2V5LWhlcmU=';
     
     // Decode credentials
     const AZURE_ENDPOINT = atob(AZURE_ENDPOINT_ENCODED);
@@ -438,9 +469,15 @@
         progressText: 'Loading...',
         formTitle: '📝 Scan Results',
         labelName: '👤 Name',
+        labelJobTitle: '💼 Job Title',
+        labelDepartment: '🏛️ Department',
         labelPhone: '📞 Phone',
+        labelFax: '📠 Fax',
         labelEmail: '✉️ Email',
         labelCompany: '🏢 Company',
+        labelAddress: '📍 Company Address',
+        labelWebsite: '🌐 Company Website',
+        labelTaxId: '🔢 Tax ID',
         btnUploadNew: '📁 Upload New Card',
         btnRescan: '🔄 Rescan',
         btnExport: '📥 Export to Excel',
@@ -466,9 +503,15 @@
         progressText: 'Wird geladen...',
         formTitle: '📝 Scanergebnisse',
         labelName: '👤 Name',
+        labelJobTitle: '💼 Berufsbezeichnung',
+        labelDepartment: '🏛️ Abteilung',
         labelPhone: '📞 Telefon',
+        labelFax: '📠 Fax',
         labelEmail: '✉️ E-Mail',
         labelCompany: '🏢 Firma',
+        labelAddress: '📍 Firmenadresse',
+        labelWebsite: '🌐 Webseite',
+        labelTaxId: '🔢 Steuernummer',
         btnUploadNew: '📁 Neue Karte hochladen',
         btnRescan: '🔄 Neu scannen',
         btnExport: '📥 Nach Excel exportieren',
@@ -494,9 +537,15 @@
         progressText: 'Laden...',
         formTitle: '📝 Scanresultaten',
         labelName: '👤 Naam',
+        labelJobTitle: '💼 Functietitel',
+        labelDepartment: '🏛️ Afdeling',
         labelPhone: '📞 Telefoon',
+        labelFax: '📠 Fax',
         labelEmail: '✉️ E-mail',
         labelCompany: '🏢 Bedrijf',
+        labelAddress: '📍 Bedrijfsadres',
+        labelWebsite: '🌐 Website',
+        labelTaxId: '🔢 BTW-nummer',
         btnUploadNew: '📁 Nieuwe kaart uploaden',
         btnRescan: '🔄 Opnieuw scannen',
         btnExport: '📥 Exporteren naar Excel',
@@ -522,9 +571,15 @@
         progressText: '読み込み中...',
         formTitle: '📝 スキャン結果',
         labelName: '👤 名前',
+        labelJobTitle: '💼 役職',
+        labelDepartment: '🏛️ 部署',
         labelPhone: '📞 電話番号',
+        labelFax: '📠 FAX',
         labelEmail: '✉️ メール',
         labelCompany: '🏢 会社',
+        labelAddress: '📍 会社住所',
+        labelWebsite: '🌐 ウェブサイト',
+        labelTaxId: '🔢 法人番号',
         btnUploadNew: '📁 新しい名刺をアップロード',
         btnRescan: '🔄 再スキャン',
         btnExport: '📥 Excelにエクスポート',
@@ -550,9 +605,15 @@
         progressText: '로딩 중...',
         formTitle: '📝 스캔 결과',
         labelName: '👤 이름',
+        labelJobTitle: '💼 직책',
+        labelDepartment: '🏛️ 부서',
         labelPhone: '📞 전화번호',
+        labelFax: '📠 팩스',
         labelEmail: '✉️ 이메일',
         labelCompany: '🏢 회사',
+        labelAddress: '📍 회사 주소',
+        labelWebsite: '🌐 웹사이트',
+        labelTaxId: '🔢 사업자등록번호',
         btnUploadNew: '📁 새 명함 업로드',
         btnRescan: '🔄 다시 스캔',
         btnExport: '📥 Excel로 내보내기',
@@ -578,9 +639,15 @@
         progressText: '加载中...',
         formTitle: '📝 识别结果',
         labelName: '👤 姓名',
+        labelJobTitle: '💼 职位',
+        labelDepartment: '🏛️ 部门',
         labelPhone: '📞 电话',
+        labelFax: '📠 传真',
         labelEmail: '✉️ 邮箱',
         labelCompany: '🏢 公司',
+        labelAddress: '📍 公司地址',
+        labelWebsite: '🌐 公司网站',
+        labelTaxId: '🔢 统一社会信用代码',
         btnUploadNew: '📁 上传新名片',
         btnRescan: '🔄 重新扫描',
         btnExport: '📥 导出Excel',
@@ -606,9 +673,15 @@
         progressText: '載入中...',
         formTitle: '📝 辨識結果',
         labelName: '👤 姓名',
+        labelJobTitle: '💼 職稱',
+        labelDepartment: '🏛️ 部門',
         labelPhone: '📞 電話',
+        labelFax: '📠 傳真',
         labelEmail: '✉️ 電子郵件',
         labelCompany: '🏢 公司',
+        labelAddress: '📍 公司地址',
+        labelWebsite: '🌐 公司網站',
+        labelTaxId: '🔢 統一編號',
         btnUploadNew: '📁 上傳新名片',
         btnRescan: '🔄 重新掃描',
         btnExport: '📥 匯出Excel',
@@ -638,9 +711,15 @@
       document.getElementById('loadingText').textContent = t.loadingText;
       document.getElementById('formTitle').textContent = t.formTitle;
       document.getElementById('labelName').textContent = t.labelName;
+      document.getElementById('labelJobTitle').textContent = t.labelJobTitle;
+      document.getElementById('labelDepartment').textContent = t.labelDepartment;
       document.getElementById('labelPhone').textContent = t.labelPhone;
+      document.getElementById('labelFax').textContent = t.labelFax;
       document.getElementById('labelEmail').textContent = t.labelEmail;
       document.getElementById('labelCompany').textContent = t.labelCompany;
+      document.getElementById('labelAddress').textContent = t.labelAddress;
+      document.getElementById('labelWebsite').textContent = t.labelWebsite;
+      document.getElementById('labelTaxId').textContent = t.labelTaxId;
       document.getElementById('btnUploadNew').textContent = t.btnUploadNew;
       document.getElementById('btnRescan').textContent = t.btnRescan;
       document.getElementById('btnExport').textContent = t.btnExport;
@@ -794,9 +873,15 @@
       
       // 簡單的解析邏輯
       let name = '';
+      let jobTitle = '';
+      let department = '';
       let phone = '';
+      let fax = '';
       let email = '';
       let company = '';
+      let address = '';
+      let website = '';
+      let taxId = '';
       
       for (let line of lines) {
         line = line.trim();
@@ -808,14 +893,59 @@
           continue;
         }
         
-        // 電話偵測 (支援多種格式)
-        const phoneMatch = line.match(/(?:\+?886[-\s]?)?(?:\(0\d{1,2}\)|0\d{1,2})[-\s]?\d{3,4}[-\s]?\d{4}|\d{10}/);
-        if (phoneMatch && !phone) {
-          phone = phoneMatch[0];
+        // Website 偵測
+        const websiteMatch = line.match(/(?:https?:\/\/)?(?:www\.)?[a-zA-Z0-9-]+\.[a-zA-Z]{2,}(?:\/[^\s]*)?/);
+        if (websiteMatch && !website && !line.includes('@')) {
+          website = websiteMatch[0];
           continue;
         }
         
-        // 公司名稱偵測 (包含特定關鍵字)
+        // 電話偵測 (TEL, Phone, 電話等關鍵字)
+        if ((line.includes('TEL') || line.includes('Tel') || line.includes('電話') || line.includes('Phone')) && !phone) {
+          const phoneMatch = line.match(/(?:\+?886[-\s]?)?(?:\(0\d{1,2}\)|0\d{1,2})[-\s]?\d{3,4}[-\s]?\d{4}|\d{10}/);
+          if (phoneMatch) {
+            phone = phoneMatch[0];
+            continue;
+          }
+        }
+        
+        // 傳真偵測 (FAX, Fax, 傳真等關鍵字)
+        if ((line.includes('FAX') || line.includes('Fax') || line.includes('傳真')) && !fax) {
+          const faxMatch = line.match(/(?:\+?886[-\s]?)?(?:\(0\d{1,2}\)|0\d{1,2})[-\s]?\d{3,4}[-\s]?\d{4}|\d{10}/);
+          if (faxMatch) {
+            fax = faxMatch[0];
+            continue;
+          }
+        }
+        
+        // 統一編號偵測 (8位數字)
+        const taxIdMatch = line.match(/\b\d{8}\b/);
+        if (taxIdMatch && !taxId) {
+          taxId = taxIdMatch[0];
+          continue;
+        }
+        
+        // 職稱偵測
+        if ((line.includes('Manager') || line.includes('Director') || line.includes('Chief') || 
+             line.includes('經理') || line.includes('總監') || line.includes('長') || line.includes('主任')) && !jobTitle) {
+          jobTitle = line;
+          continue;
+        }
+        
+        // 部門偵測
+        if ((line.includes('Department') || line.includes('Dept') || line.includes('部門') || line.includes('部')) && !department) {
+          department = line;
+          continue;
+        }
+        
+        // 地址偵測 (包含市、區、路、街等)
+        if ((line.includes('市') || line.includes('區') || line.includes('路') || line.includes('街') || 
+             line.includes('Road') || line.includes('Street') || line.includes('Ave')) && !address && line.length > 10) {
+          address = line;
+          continue;
+        }
+        
+        // 公司名稱偵測
         if ((line.includes('公司') || line.includes('有限') || line.includes('股份') || 
              line.includes('Co') || line.includes('Ltd') || line.includes('Inc') ||
              line.includes('Corp')) && !company) {
@@ -831,9 +961,15 @@
       
       // 填入表單
       document.getElementById('nameInput').value = name;
+      document.getElementById('jobTitleInput').value = jobTitle;
+      document.getElementById('departmentInput').value = department;
       document.getElementById('phoneInput').value = phone;
+      document.getElementById('faxInput').value = fax;
       document.getElementById('emailInput').value = email;
       document.getElementById('companyInput').value = company;
+      document.getElementById('addressInput').value = address;
+      document.getElementById('websiteInput').value = website;
+      document.getElementById('taxIdInput').value = taxId;
     }
     
     function uploadNew() {
@@ -868,9 +1004,15 @@
         </div>
       `;
       document.getElementById('nameInput').value = '';
+      document.getElementById('jobTitleInput').value = '';
+      document.getElementById('departmentInput').value = '';
       document.getElementById('phoneInput').value = '';
+      document.getElementById('faxInput').value = '';
       document.getElementById('emailInput').value = '';
       document.getElementById('companyInput').value = '';
+      document.getElementById('addressInput').value = '';
+      document.getElementById('websiteInput').value = '';
+      document.getElementById('taxIdInput').value = '';
       document.getElementById('ocrBtn').disabled = true;
       document.getElementById('fileInput').value = '';
       document.getElementById('cameraInput').value = '';
@@ -878,11 +1020,17 @@
     
     function exportToExcel() {
       const name = document.getElementById('nameInput').value;
+      const jobTitle = document.getElementById('jobTitleInput').value;
+      const department = document.getElementById('departmentInput').value;
       const phone = document.getElementById('phoneInput').value;
+      const fax = document.getElementById('faxInput').value;
       const email = document.getElementById('emailInput').value;
       const company = document.getElementById('companyInput').value;
+      const address = document.getElementById('addressInput').value;
+      const website = document.getElementById('websiteInput').value;
+      const taxId = document.getElementById('taxIdInput').value;
       
-      if (!name && !phone && !email && !company) {
+      if (!name && !phone && !email && !company && !jobTitle && !department && !fax && !address && !website && !taxId) {
         showAlert('error', translations[currentLanguage].alertFillField);
         return;
       }
@@ -894,15 +1042,21 @@
       const t = translations[currentLanguage];
       const headers = [
         t.labelName.replace('👤 ', ''),
+        t.labelJobTitle.replace('💼 ', ''),
+        t.labelDepartment.replace('🏛️ ', ''),
         t.labelPhone.replace('📞 ', ''),
+        t.labelFax.replace('📠 ', ''),
         t.labelEmail.replace('✉️ ', ''),
-        t.labelCompany.replace('🏢 ', '')
+        t.labelCompany.replace('🏢 ', ''),
+        t.labelAddress.replace('📍 ', ''),
+        t.labelWebsite.replace('🌐 ', ''),
+        t.labelTaxId.replace('🔢 ', '')
       ];
       
       // Create data
       const wsData = [
         headers,
-        [name, phone, email, company]
+        [name, jobTitle, department, phone, fax, email, company, address, website, taxId]
       ];
       
       // Create worksheet
@@ -910,10 +1064,16 @@
       
       // Set column widths
       ws['!cols'] = [
-        { wch: 15 },
-        { wch: 20 },
-        { wch: 30 },
-        { wch: 30 }
+        { wch: 15 },  // Name
+        { wch: 20 },  // Job Title
+        { wch: 20 },  // Department
+        { wch: 20 },  // Phone
+        { wch: 20 },  // Fax
+        { wch: 30 },  // Email
+        { wch: 25 },  // Company
+        { wch: 40 },  // Address
+        { wch: 30 },  // Website
+        { wch: 15 }   // Tax ID
       ];
       
       // Add worksheet to workbook
