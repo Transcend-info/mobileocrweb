@@ -866,6 +866,61 @@
         document.getElementById('ocrBtn').disabled = false;
       }
     }
+
+    function guessName(lines) {
+    // 定義要排除的關鍵字 (公司後綴、地址關鍵字、網站前綴)
+    const excludeKeywords = [
+        '公司', '有限公司', 'Inc', 'Ltd', 'Corp', 
+        '路', '號', '樓', '室', '區', 'City', 'Street', 'Road', 
+        'Tel', 'Fax', 'Mobile', 'www', 'http', '.com', '.tw'
+    ];
+
+    // 定義常見職稱 (用來從同一行中移除，或排除該行)
+    const jobTitles = [
+        '經理', '副理', '總監', '主任', '專員', '工程師', '執行長', 'CEO', 'CTO', 'Manager', 'Director', 'Engineer', 'President'
+    ];
+
+    // 遍歷每一行文字
+    for (let i = 0; i < lines.length; i++) {
+        let line = lines[i].trim();
+
+        // 1. 基本過濾：太短、包含 @、包含數字 (名字通常沒數字)
+        if (line.length < 2 || line.includes('@') || /\d/.test(line)) {
+            continue;
+        }
+
+        // 2. 排除關鍵字過濾 (如果有公司或地址關鍵字，就跳過)
+        if (excludeKeywords.some(keyword => line.toLowerCase().includes(keyword.toLowerCase()))) {
+            continue;
+        }
+
+        // 3. 職稱處理 (重頭戲)
+        // 檢查這一行是否包含職稱
+        const matchedTitle = jobTitles.find(title => line.toLowerCase().includes(title.toLowerCase()));
+        
+        if (matchedTitle) {
+            // 如果這行包含職稱，嘗試把職稱移除，剩下的可能是名字
+            // 例如："王小明 經理" -> 移除 "經理" -> 留下 "王小明"
+            let possibleName = line.replace(matchedTitle, '').trim();
+            // 移除可能殘留的標點符號或空格
+            possibleName = possibleName.replace(/[\|\-,\.]/g, '').trim();
+            
+            if (possibleName.length > 1 && possibleName.length < 10) {
+                return possibleName; // 找到名字，直接回傳
+            }
+        } else {
+            // 4. 如果沒有職稱，但通過了上述所有過濾，且長度適中 (2~4字中文 或 2~3單字英文)
+            // 這很有可能是名字 (通常名字會出現在前 5 行內)
+            if (i < 5) {
+                 // 簡單判斷：中文名字通常 2-4 字，英文名字通常有空格
+                 if (line.length >= 2 && line.length <= 15) {
+                     return line;
+                 }
+            }
+        }
+    }
+    return ""; // 真的找不到
+}
     
     function parseOCRResult(text) {
       const lines = text.split('\n').filter(line => line.trim());
@@ -954,7 +1009,7 @@
         
         // 姓名偵測 (假設第一行或較短的行可能是姓名)
         if (!name && line.length >= 2 && line.length <= 10 && !/\d/.test(line)) {
-          name = line;
+          name = guessName(lines);
         }
       }
       
