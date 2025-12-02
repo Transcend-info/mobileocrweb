@@ -364,10 +364,6 @@
         </button>
       </div>
       
-      <button class="btn btn-success btn-large" id="ocrBtn" onclick="performOCR()" disabled>
-        <span id="btnScan">🔍 Start Scanning</span>
-      </button>
-      
       <input type="file" id="fileInput" accept="image/*" onchange="handleFileSelect(event)">
       <input type="file" id="cameraInput" accept="image/*" capture="environment" onchange="handleFileSelect(event)">
       
@@ -464,7 +460,6 @@
         title: 'Transcend Business Name Card Scanner',
         previewText: 'Click to upload a business card',
         btnCamera: '📷 Camera',
-        btnScan: '🔍 Start Scanning',
         loadingText: '🔍 Scanning business card, please wait...',
         progressText: 'Loading...',
         formTitle: '📝 Scan Results',
@@ -497,7 +492,6 @@
         title: 'Transcend Visitenkarten-Scanner',
         previewText: 'Klicken Sie hier, um eine Visitenkarte hochzuladen',
         btnCamera: '📷 Kamera',
-        btnScan: '🔍 Scannen starten',
         loadingText: '🔍 Visitenkarte wird gescannt, bitte warten...',
         progressText: 'Wird geladen...',
         formTitle: '📝 Scanergebnisse',
@@ -530,7 +524,6 @@
         title: 'Transcend Visitekaartje Scanner',
         previewText: 'Klik om een visitekaartje te uploaden',
         btnCamera: '📷 Camera',
-        btnScan: '🔍 Start scannen',
         loadingText: '🔍 Visitekaartje wordt gescand, even geduld...',
         progressText: 'Laden...',
         formTitle: '📝 Scanresultaten',
@@ -563,7 +556,6 @@
         title: 'Transcend 名刺スキャナー',
         previewText: 'クリックして名刺をアップロード',
         btnCamera: '📷 カメラ',
-        btnScan: '🔍 スキャン開始',
         loadingText: '🔍 名刺をスキャン中です。お待ちください...',
         progressText: '読み込み中...',
         formTitle: '📝 スキャン結果',
@@ -596,7 +588,6 @@
         title: 'Transcend 명함 스캐너',
         previewText: '클릭하여 명함 업로드',
         btnCamera: '📷 카메라',
-        btnScan: '🔍 스캔 시작',
         loadingText: '🔍 명함을 스캔하고 있습니다. 잠시만 기다려주세요...',
         progressText: '로딩 중...',
         formTitle: '📝 스캔 결과',
@@ -629,7 +620,6 @@
         title: 'Transcend 名片扫描工具',
         previewText: '点击上传名片',
         btnCamera: '📷 拍照',
-        btnScan: '🔍 开始识别',
         loadingText: '🔍 正在识别名片，请稍候...',
         progressText: '加载中...',
         formTitle: '📝 识别结果',
@@ -662,7 +652,6 @@
         title: 'Transcend 名片掃描工具',
         previewText: '點擊上傳名片',
         btnCamera: '📷 拍照',
-        btnScan: '🔍 開始辨識',
         loadingText: '🔍 正在辨識名片，請稍候...',
         progressText: '載入中...',
         formTitle: '📝 辨識結果',
@@ -700,7 +689,6 @@
       
       document.getElementById('headerTitle').textContent = t.title;
       document.getElementById('btnCamera').textContent = t.btnCamera;
-      document.getElementById('btnScan').textContent = t.btnScan;
       document.getElementById('loadingText').textContent = t.loadingText;
       document.getElementById('formTitle').textContent = t.formTitle;
       document.getElementById('labelName').textContent = t.labelName;
@@ -748,8 +736,12 @@
       reader.onload = function(e) {
         currentImage = e.target.result;
         displayImage(currentImage);
-        document.getElementById('ocrBtn').disabled = false;
         showAlert('success', translations[currentLanguage].alertImageLoaded);
+
+        // Automatically start OCR after image is loaded
+        setTimeout(() => {
+          performOCR();
+        }, 500);
       };
       reader.readAsDataURL(file);
     }
@@ -775,7 +767,6 @@
       const loadingDiv = document.getElementById('loadingDiv');
       const progressText = document.getElementById('progressText');
       loadingDiv.classList.add('show');
-      document.getElementById('ocrBtn').disabled = true;
       progressText.textContent = translations[currentLanguage].progressText;
       
       try {
@@ -861,11 +852,9 @@
         
         loadingDiv.classList.remove('show');
         showAlert('success', translations[currentLanguage].alertScanComplete);
-        document.getElementById('ocrBtn').disabled = false;
       } catch (error) {
         loadingDiv.classList.remove('show');
         showAlert('error', translations[currentLanguage].alertScanFailed + error.message);
-        document.getElementById('ocrBtn').disabled = false;
       }
     }
 
@@ -1069,7 +1058,6 @@
       document.getElementById('addressInput').value = '';
       document.getElementById('websiteInput').value = '';
       document.getElementById('taxIdInput').value = '';
-      document.getElementById('ocrBtn').disabled = true;
       document.getElementById('fileInput').value = '';
       document.getElementById('cameraInput').value = '';
     }
