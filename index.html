@@ -784,7 +784,7 @@
         // const apiUrl = `${AZURE_ENDPOINT.replace(/\/$/, '')}/vision/v3.2/read/analyze`;
         // Azure Document Intelligence (prebuilt-read) endpoint
         // Use newer endpoint structure: /documentintelligence/documentModels/prebuilt-read:analyze
-        const apiUrl = `${AZURE_ENDPOINT.replace(/\/$/, '')}/documentintelligence/documentModels/prebuilt-read:analyze?api-version=2023-10-31-preview`;
+        const apiUrl = `${AZURE_ENDPOINT.replace(/\/$/, '')}/documentintelligence/documentModels/prebuilt-read:analyze?api-version=2024-11-30`;
         
         // Submit image for analysis
         const submitResponse = await fetch(apiUrl, {
