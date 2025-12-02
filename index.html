@@ -318,13 +318,13 @@
     <div class="header">
       <div class="language-selector">
         <select id="languageSelect" onchange="changeLanguage()">
-          <option value="en">EN</option>
-          <option value="de">DE</option>
-          <option value="nl">NL</option>
-          <option value="jp">JP</option>
-          <option value="kr">KR</option>
-          <option value="sc">SC</option>
-          <option value="tc">TC</option>
+          <option value="en">English</option>
+          <option value="de">Deutsch</option>
+          <option value="nl">Nederlands</option>
+          <option value="jp">日本語</option>
+          <option value="kr">한국어</option>
+          <option value="sc">简体中文</option>
+          <option value="tc">繁體中文</option>
         </select>
       </div>
       <img src="https://www.transcend-info.com/images/ts_logo.png" alt="TranscendLogo">
@@ -418,8 +418,8 @@
           <input type="url" class="form-input" id="websiteInput">
         </div>
         
-        <div class="form-group">
-          <label class="form-label" id="labelTaxId">🔢 Tax ID</label>
+        <div class="form-group" id="taxIdField" style="display: none;">
+          <label class="form-label" id="labelTaxId"> 統一編號 </label>
           <input type="text" class="form-input" id="taxIdInput">
         </div>
         
@@ -722,6 +722,14 @@
       document.getElementById('btnUploadNew').textContent = t.btnUploadNew;
       document.getElementById('btnRescan').textContent = t.btnRescan;
       document.getElementById('btnExport').textContent = t.btnExport;
+
+      // Show/hide Tax ID field based on language
+      const taxIdField = document.getElementById('taxIdField');
+      if (lang === 'tc') {
+        taxIdField.style.display = 'block';
+      } else {
+        taxIdField.style.display = 'none';
+      }
       
       // Update preview text if no image loaded
       if (!currentImage) {
