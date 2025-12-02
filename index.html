@@ -98,6 +98,11 @@
       overflow: hidden;
       position: relative;
     }
+
+    preview-box:hover {
+      border-color: #0066cc;
+      background-color: #f0f7ff;
+    }
     
     .preview-box img {
       max-width: 100%;
@@ -342,13 +347,13 @@
       </div>
       
       <!-- Preview Box -->
-      <div class="preview-box" id="previewBox">
+      <div class="preview-box" id="previewBox" onclick="document.getElementById('fileInput').click()">
         <div class="preview-placeholder">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
           </svg>
-          <p id="previewText">Click the button below to upload a business card</p>
+          <p id="previewText">Click to upload a business card</p>
         </div>
       </div>
       
@@ -356,9 +361,6 @@
       <div class="button-group">
         <button class="btn btn-primary" onclick="openCamera()">
           <span id="btnCamera">📷 Camera</span>
-        </button>
-        <button class="btn btn-primary" onclick="document.getElementById('fileInput').click()">
-          <span id="btnUpload">📁 Upload Image </span>
         </button>
       </div>
       
@@ -460,7 +462,7 @@
     const translations = {
       en: {
         title: 'Transcend Business Name Card Scanner',
-        previewText: 'Click the button below to upload a business card',
+        previewText: 'Click to upload a business card',
         btnCamera: '📷 Camera',
         btnUpload: '📁 Upload',
         btnScan: '🔍 Start Scanning',
@@ -494,7 +496,7 @@
       },
       de: {
         title: 'Transcend Visitenkarten-Scanner',
-        previewText: 'Klicken Sie auf die Schaltfläche unten, um eine Visitenkarte hochzuladen',
+        previewText: 'Klicken Sie hier, um eine Visitenkarte hochzuladen',
         btnCamera: '📷 Kamera',
         btnUpload: '📁 Hochladen',
         btnScan: '🔍 Scannen starten',
@@ -528,7 +530,7 @@
       },
       nl: {
         title: 'Transcend Visitekaartje Scanner',
-        previewText: 'Klik op de knop hieronder om een visitekaartje te uploaden',
+        previewText: 'Klik om een visitekaartje te uploaden',
         btnCamera: '📷 Camera',
         btnUpload: '📁 Uploaden',
         btnScan: '🔍 Start scannen',
@@ -562,7 +564,7 @@
       },
       jp: {
         title: 'Transcend 名刺スキャナー',
-        previewText: '下のボタンをクリックして名刺をアップロードしてください',
+        previewText: 'クリックして名刺をアップロード',
         btnCamera: '📷 カメラ',
         btnUpload: '📁 アップロード',
         btnScan: '🔍 スキャン開始',
@@ -596,7 +598,7 @@
       },
       kr: {
         title: 'Transcend 명함 스캐너',
-        previewText: '아래 버튼을 클릭하여 명함을 업로드하세요',
+        previewText: '클릭하여 명함 업로드',
         btnCamera: '📷 카메라',
         btnUpload: '📁 업로드',
         btnScan: '🔍 스캔 시작',
@@ -630,7 +632,7 @@
       },
       sc: {
         title: 'Transcend 名片扫描工具',
-        previewText: '点击下方按钮上传名片',
+        previewText: '点击上传名片',
         btnCamera: '📷 拍照',
         btnUpload: '📁 上传',
         btnScan: '🔍 开始识别',
@@ -664,7 +666,7 @@
       },
       tc: {
         title: 'Transcend 名片掃描工具',
-        previewText: '點擊下方按鈕上傳名片',
+        previewText: '點擊上傳名片',
         btnCamera: '📷 拍照',
         btnUpload: '📁 上傳',
         btnScan: '🔍 開始辨識',
