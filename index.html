@@ -448,8 +448,8 @@
     let currentLanguage = 'en';
     
     // Azure AI Vision Configuration 
-    const AZURE_ENDPOINT_ENCODED = 'aHR0cHM6Ly9qYXBhbmVhc3QuYXBpLmNvZ25pdGl2ZS5taWNyb3NvZnQuY29tLw==';
-    const AZURE_API_KEY_ENCODED = 'Y2JiNTYxYjhiMTRiNDZhMDljYjQ4MjNjNDFkNGIzY2Y=';
+    const AZURE_ENDPOINT_ENCODED = 'aHR0cHM6Ly9taXNidXNpbmVzc2NhcmRvY3IuY29nbml0aXZlc2VydmljZXMuYXp1cmUuY29tLw==';
+    const AZURE_API_KEY_ENCODED = 'RUdBTGljR0NiWldwdGoxRjNTRG9idjJQMVZ4QThxejFMdXJVcUdSQjNnY0E3eENxTWZPeEpRUUo5OUJMQUN4Q0NzeVhKM3czQUFBTEFDT0c0cmgz';
     
     // Decode credentials
     const AZURE_ENDPOINT = atob(AZURE_ENDPOINT_ENCODED);
@@ -781,7 +781,10 @@
         const blob = new Blob([byteArray], { type: 'image/jpeg' });
         
         // Azure AI Vision API endpoint
-        const apiUrl = `${AZURE_ENDPOINT.replace(/\/$/, '')}/vision/v3.2/read/analyze`;
+        // const apiUrl = `${AZURE_ENDPOINT.replace(/\/$/, '')}/vision/v3.2/read/analyze`;
+        // Azure Document Intelligence (prebuilt-read) endpoint
+        // Use newer endpoint structure: /documentintelligence/documentModels/prebuilt-read:analyze
+        const apiUrl = `${AZURE_ENDPOINT.replace(/\/$/, '')}/documentintelligence/documentModels/prebuilt-read:analyze?api-version=2023-10-31-preview`;
         
         // Submit image for analysis
         const submitResponse = await fetch(apiUrl, {
@@ -794,7 +797,9 @@
         });
         
         if (!submitResponse.ok) {
-          throw new Error(`Azure API error: ${submitResponse.status} ${submitResponse.statusText}`);
+          //throw new Error(`Azure API error: ${submitResponse.status} ${submitResponse.statusText}`);
+          const errText = await submitResponse.text();
+          throw new Error(`Azure API error: ${submitResponse.status} ${submitResponse.statusText} - ${errText}`);
         }
         
         // Get operation location from response headers
@@ -840,12 +845,21 @@
         
         // Extract text from results
         let extractedText = '';
-        if (result.analyzeResult && result.analyzeResult.readResults) {
+        /*if (result.analyzeResult && result.analyzeResult.readResults) {
           for (const page of result.analyzeResult.readResults) {
             for (const line of page.lines) {
-              extractedText += line.text + '\n';
+              extractedText += line.text + '\n';*/
+        if (result.analyzeResult && result.analyzeResult.pages) {
+          for (const page of result.analyzeResult.pages) {
+            if (page.lines) {
+              for (const line of page.lines) {
+                // Note: Document Intelligence uses 'content' for text
+                extractedText += line.content + '\n';
+              }
             }
           }
+          } else if (result.analyzeResult && result.analyzeResult.content) {
+             extractedText = result.analyzeResult.content;
         }
         
         parseOCRResult(extractedText);
