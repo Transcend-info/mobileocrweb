@@ -476,7 +476,7 @@
         btnUploadNew: '📁 Upload New Card',
         btnRescan: '🔄 Rescan',
         btnExport: '📥 Export to Excel',
-        alertImageLoaded: '✅ Image loaded, please click "Start Scanning" button',
+        alertImageLoaded: '✅ Image loaded',
         alertUploadFirst: '❌ Please upload an image first',
         alertNoAzureConfig: '❌ Please configure Azure AI Vision credentials first',
         alertScanComplete: '✅ Scan completed! Please check and correct the data',
@@ -508,7 +508,7 @@
         btnUploadNew: '📁 Neue Karte hochladen',
         btnRescan: '🔄 Neu scannen',
         btnExport: '📥 Nach Excel exportieren',
-        alertImageLoaded: '✅ Bild geladen, bitte klicken Sie auf "Scannen starten"',
+        alertImageLoaded: '✅ Bild geladen."',
         alertUploadFirst: '❌ Bitte laden Sie zuerst ein Bild hoch',
         alertNoAzureConfig: '❌ Bitte konfigurieren Sie zuerst die Azure AI Vision-Anmeldeinformationen',
         alertScanComplete: '✅ Scan abgeschlossen! Bitte überprüfen und korrigieren Sie die Daten',
@@ -540,7 +540,7 @@
         btnUploadNew: '📁 Nieuwe kaart uploaden',
         btnRescan: '🔄 Opnieuw scannen',
         btnExport: '📥 Exporteren naar Excel',
-        alertImageLoaded: '✅ Afbeelding geladen, klik op "Start scannen"',
+        alertImageLoaded: '✅ Afbeelding geladen."',
         alertUploadFirst: '❌ Upload eerst een afbeelding',
         alertNoAzureConfig: '❌ Configureer eerst de Azure AI Vision-referenties',
         alertScanComplete: '✅ Scan voltooid! Controleer en corrigeer de gegevens',
@@ -572,7 +572,7 @@
         btnUploadNew: '📁 新しい名刺をアップロード',
         btnRescan: '🔄 再スキャン',
         btnExport: '📥 Excelにエクスポート',
-        alertImageLoaded: '✅ 画像が読み込まれました。「スキャン開始」をクリックしてください',
+        alertImageLoaded: '✅ 画像が読み込まれました。',
         alertUploadFirst: '❌ 最初に画像をアップロードしてください',
         alertNoAzureConfig: '❌ まずAzure AI Visionの認証情報を設定してください',
         alertScanComplete: '✅ スキャン完了！データを確認して修正してください',
@@ -604,7 +604,7 @@
         btnUploadNew: '📁 새 명함 업로드',
         btnRescan: '🔄 다시 스캔',
         btnExport: '📥 Excel로 내보내기',
-        alertImageLoaded: '✅ 이미지가 로드되었습니다. "스캔 시작" 버튼을 클릭하세요',
+        alertImageLoaded: '✅ 이미지가 로드되었습니다.',
         alertUploadFirst: '❌ 먼저 이미지를 업로드하세요',
         alertNoAzureConfig: '❌ 먼저 Azure AI Vision 자격 증명을 구성하세요',
         alertScanComplete: '✅ 스캔 완료! 데이터를 확인하고 수정하세요',
@@ -636,7 +636,7 @@
         btnUploadNew: '📁 上传新名片',
         btnRescan: '🔄 重新扫描',
         btnExport: '📥 导出Excel',
-        alertImageLoaded: '✅ 图片已加载，请点击"开始识别"按钮',
+        alertImageLoaded: '✅ 图片已加载,
         alertUploadFirst: '❌ 请先上传图片',
         alertNoAzureConfig: '❌ 请先配置Azure AI Vision凭据',
         alertScanComplete: '✅ 识别完成！请检查并修正数据',
@@ -668,7 +668,7 @@
         btnUploadNew: '📁 上傳新名片',
         btnRescan: '🔄 重新掃描',
         btnExport: '📥 匯出Excel',
-        alertImageLoaded: '✅ 圖片已載入，請點擊「開始辨識」按鈕',
+        alertImageLoaded: '✅ 圖片已載入',
         alertUploadFirst: '❌ 請先上傳圖片',
         alertNoAzureConfig: '❌ 請先設定Azure AI Vision憑證',
         alertScanComplete: '✅ 辨識完成！請檢查並修正資料',
@@ -930,7 +930,11 @@
       
       for (let line of lines) {
         line = line.trim();
-        
+
+        // 姓名偵測 (假設第一行或較短的行可能是姓名)
+        if (!name && line.length >= 2 && line.length <= 10 && !/\d/.test(line)) {
+          name = guessName(lines);
+        }
         // Email 偵測
         const emailMatch = line.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/);
         if (emailMatch && !email) {
@@ -961,14 +965,7 @@
             fax = faxMatch[0];
             continue;
           }
-        }
-        
-        // 統一編號偵測 (8位數字)
-        const taxIdMatch = line.match(/\b\d{8}\b/);
-        if (taxIdMatch && !taxId) {
-          taxId = taxIdMatch[0];
-          continue;
-        }
+        }            
         
         // 職稱偵測
         if ((line.includes('Manager') || line.includes('Director') || line.includes('Chief') || 
@@ -998,9 +995,11 @@
           continue;
         }
         
-        // 姓名偵測 (假設第一行或較短的行可能是姓名)
-        if (!name && line.length >= 2 && line.length <= 10 && !/\d/.test(line)) {
-          name = guessName(lines);
+        // 統一編號偵測 (8位數字)
+        const taxIdMatch = line.match(/\b\d{8}\b/);
+        if (taxIdMatch && !taxId) {
+          taxId = taxIdMatch[0];
+          continue;
         }
       }
       
