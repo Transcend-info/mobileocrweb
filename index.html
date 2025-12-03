@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="zh-TW" xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -73,11 +74,12 @@
       color: #363636;
     }
     
+    /* Language Selector Styles - Moved to bottom */
     .language-selector {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      z-index: 100;
+      margin-top: 30px;
+      padding-top: 15px;
+      border-top: 1px solid #f0f0f0;
+      text-align: center;
     }
     
     .language-selector select {
@@ -90,6 +92,7 @@
       color: #0066cc;
       cursor: pointer;
       font-family: "Microsoft JhengHei", Arial, sans-serif;
+      min-width: 150px;
     }
     
     .language-selector select:hover {
@@ -208,10 +211,9 @@
       font-size: 18px;
     }
 
-    /* New class for the Save button (Height increased) */
     .btn-xl {
       width: 100%;
-      padding: 32px 20px; /* Double padding */
+      padding: 32px 20px;
       font-size: 22px;
       min-height: 80px;
     }
@@ -341,7 +343,8 @@
 <body>
   <div class="container">
     <!-- Header -->
-    <div class="header">     
+    <div class="header">
+      <!-- Language Selector removed from here -->
       <img src="https://www.transcend-info.com/images/ts_logo.png" alt="TranscendLogo">
       <h1 id="headerTitle">Business Name Card Scanner</h1>
     </div>
@@ -429,7 +432,6 @@
         </div>
         
         <!-- Action Buttons -->
-        <!-- Changed: Class to btn-xl, ID to btnSave, Function to saveCard -->
         <button class="btn btn-primary btn-xl" onclick="saveCard()" style="margin-bottom: 10px;">
           <span id="btnSave"><i class="material-icons">save</i> Save</span>
         </button>
@@ -439,10 +441,11 @@
         </button>
         
         <button class="btn btn-success btn-large" onclick="exportHistoryToExcel()">
-          <span id="btnExport"><i class="material-icons">file_download</i> Export All (History)</span>
+          <span id="btnExport"><i class="material-icons">file_download</i> Export All</span>
         </button>
-
-        <div class="language-selector">
+      </div>
+      
+      <div class="language-selector">
         <select id="languageSelect" onchange="changeLanguage()">
           <option value="en">English</option>
           <option value="de">Deutsch</option>
@@ -452,9 +455,9 @@
           <option value="sc">简体中文</option>
           <option value="tc">繁體中文</option>
         </select>
-       </div>
       </div>
-    </div>     
+
+    </div>
     
     <!-- Footer -->
     <div class="footer">
@@ -495,7 +498,7 @@
         labelTaxId: '<i class="material-icons">confirmation_number</i> Tax ID',
         btnSave: '<i class="material-icons">save</i> Save',
         btnRescan: '<i class="material-icons">refresh</i> Rescan',
-        btnExport: '<i class="material-icons">file_download</i> Export All (History)',
+        btnExport: '<i class="material-icons">file_download</i> Export All',
         alertImageLoaded: '<i class="material-icons">check_circle</i> Image loaded',
         alertUploadFirst: '<i class="material-icons">error</i> Please upload an image first',
         alertNoAzureConfig: '<i class="material-icons">error</i> Please configure Azure AI Vision credentials first',
@@ -529,7 +532,7 @@
         labelTaxId: '<i class="material-icons">confirmation_number</i> Steuernummer',
         btnSave: '<i class="material-icons">save</i> Speichern',
         btnRescan: '<i class="material-icons">refresh</i> Neu scannen',
-        btnExport: '<i class="material-icons">file_download</i> Alle exportieren (Verlauf)',
+        btnExport: '<i class="material-icons">file_download</i> Alle exportieren',
         alertImageLoaded: '<i class="material-icons">check_circle</i> Bild geladen.',
         alertUploadFirst: '<i class="material-icons">error</i> Bitte laden Sie zuerst ein Bild hoch',
         alertNoAzureConfig: '<i class="material-icons">error</i> Bitte konfigurieren Sie zuerst die Azure AI Vision-Anmeldeinformationen',
@@ -563,7 +566,7 @@
         labelTaxId: '<i class="material-icons">confirmation_number</i> BTW-nummer',
         btnSave: '<i class="material-icons">save</i> Opslaan',
         btnRescan: '<i class="material-icons">refresh</i> Opnieuw scannen',
-        btnExport: '<i class="material-icons">file_download</i> Alles exporteren (Geschiedenis)',
+        btnExport: '<i class="material-icons">file_download</i> Alles exporteren',
         alertImageLoaded: '<i class="material-icons">check_circle</i> Afbeelding geladen.',
         alertUploadFirst: '<i class="material-icons">error</i> Upload eerst een afbeelding',
         alertNoAzureConfig: '<i class="material-icons">error</i> Configureer eerst de Azure AI Vision-referenties',
@@ -597,7 +600,7 @@
         labelTaxId: '<i class="material-icons">confirmation_number</i> 法人番号',
         btnSave: '<i class="material-icons">save</i> 保存',
         btnRescan: '<i class="material-icons">refresh</i> 再スキャン',
-        btnExport: '<i class="material-icons">file_download</i> 全てエクスポート (履歴)',
+        btnExport: '<i class="material-icons">file_download</i> 全てエクスポート',
         alertImageLoaded: '<i class="material-icons">check_circle</i> 画像が読み込まれました。',
         alertUploadFirst: '<i class="material-icons">error</i> 最初に画像をアップロードしてください',
         alertNoAzureConfig: '<i class="material-icons">error</i> まずAzure AI Visionの認証情報を設定してください',
@@ -631,7 +634,7 @@
         labelTaxId: '<i class="material-icons">confirmation_number</i> 사업자등록번호',
         btnSave: '<i class="material-icons">save</i> 저장',
         btnRescan: '<i class="material-icons">refresh</i> 다시 스캔',
-        btnExport: '<i class="material-icons">file_download</i> 전체 내보내기 (기록)',
+        btnExport: '<i class="material-icons">file_download</i> 전체 내보내기',
         alertImageLoaded: '<i class="material-icons">check_circle</i> 이미지가 로드되었습니다.',
         alertUploadFirst: '<i class="material-icons">error</i> 먼저 이미지를 업로드하세요',
         alertNoAzureConfig: '<i class="material-icons">error</i> 먼저 Azure AI Vision 자격 증명을 구성하세요',
@@ -665,7 +668,7 @@
         labelTaxId: '<i class="material-icons">confirmation_number</i> 统一社会信用代码',
         btnSave: '<i class="material-icons">save</i> 保存',
         btnRescan: '<i class="material-icons">refresh</i> 重新扫描',
-        btnExport: '<i class="material-icons">file_download</i> 导出所有历史记录',
+        btnExport: '<i class="material-icons">file_download</i> 导出所有',
         alertImageLoaded: '<i class="material-icons">check_circle</i> 图片已加载',
         alertUploadFirst: '<i class="material-icons">error</i> 请先上传图片',
         alertNoAzureConfig: '<i class="material-icons">error</i> 请先配置Azure AI Vision凭据',
@@ -699,7 +702,7 @@
         labelTaxId: '<i class="material-icons">confirmation_number</i> 統一編號',
         btnSave: '<i class="material-icons">save</i> 儲存',
         btnRescan: '<i class="material-icons">refresh</i> 重新掃描',
-        btnExport: '<i class="material-icons">file_download</i> 匯出所有歷史紀錄',
+        btnExport: '<i class="material-icons">file_download</i> 匯出所有',
         alertImageLoaded: '<i class="material-icons">check_circle</i> 圖片已載入',
         alertUploadFirst: '<i class="material-icons">error</i> 請先上傳圖片',
         alertNoAzureConfig: '<i class="material-icons">error</i> 請先設定Azure AI Vision憑證',
@@ -738,7 +741,9 @@
       document.getElementById('labelTaxId').innerHTML = t.labelTaxId;
       document.getElementById('btnSave').innerHTML = t.btnSave;
       document.getElementById('btnRescan').innerHTML = t.btnRescan;
-      document.getElementById('btnExport').innerHTML = t.btnExport;
+      
+      // Update Export Button with Count
+      updateExportButton();
 
       // Show/hide Tax ID field based on language
       const taxIdField = document.getElementById('taxIdField');
@@ -755,6 +760,14 @@
           previewBox.querySelector('p').textContent = t.previewText;
         }
       }
+    }
+
+    // Helper function to update the Export Button with the count
+    function updateExportButton() {
+      const history = JSON.parse(localStorage.getItem('businessCardHistory') || '[]');
+      const count = history.length;
+      const t = translations[currentLanguage];
+      document.getElementById('btnExport').innerHTML = `${t.btnExport} (${count})`;
     }
     
     function openCamera() {
@@ -1099,6 +1112,8 @@
         saveToLocalStorage();
         showAlert('success', translations[currentLanguage].alertSaved);
         clearAll();
+        // Update the export button count
+        updateExportButton();
       } else {
         showAlert('error', translations[currentLanguage].alertFillField);
       }
@@ -1239,6 +1254,11 @@
         setTimeout(() => alertError.classList.remove('show'), 5000);
       }
     }
+
+    // Initialize button count on load
+    window.onload = function() {
+      updateExportButton();
+    };
   </script>
 </body>
 </html>
