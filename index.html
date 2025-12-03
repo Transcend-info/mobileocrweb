@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="zh-TW" xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -8,6 +7,8 @@
   
   <!-- SheetJS CDN -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <!-- Material Design Icons -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   
   <style>
     * {
@@ -22,6 +23,25 @@
       margin: 0;
       padding: 0;
       background-color: #e3e3e3;
+    }
+    
+    /* Material Icons Helper */
+    .material-icons {
+      font-size: 20px;
+      vertical-align: sub;
+      margin-right: 4px;
+    }
+
+    .btn .material-icons {
+      font-size: 24px;
+      vertical-align: middle;
+      margin-right: 0;
+    }
+
+    .form-title .material-icons {
+      font-size: 24px;
+      vertical-align: middle;
+      color: #0066cc;
     }
     
     .container {
@@ -97,6 +117,7 @@
       margin-bottom: 15px;
       overflow: hidden;
       position: relative;
+      cursor: pointer;
     }
 
     .preview-box:hover {
@@ -115,11 +136,13 @@
       color: #999999;
     }
     
-    .preview-placeholder svg {
-      width: 60px;
-      height: 60px;
+    .preview-placeholder .material-icons {
+      font-size: 64px;
+      width: 64px;
+      height: 64px;
       margin-bottom: 10px;
       opacity: 0.5;
+      color: #0066cc;
     }
     
     .button-group {
@@ -184,6 +207,14 @@
       padding: 16px;
       font-size: 18px;
     }
+
+    /* New class for the Save button (Height increased) */
+    .btn-xl {
+      width: 100%;
+      padding: 32px 20px; /* Double padding */
+      font-size: 22px;
+      min-height: 80px;
+    }
     
     .form-section {
       margin-top: 20px;
@@ -231,8 +262,6 @@
       box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
     }
     
-
-    
     .footer {
       padding: 20px;
       text-align: center;
@@ -268,6 +297,13 @@
       border-radius: 6px;
       margin-bottom: 15px;
       font-size: 14px;
+      align-items: center;
+    }
+
+    .alert .material-icons {
+      margin-right: 8px;
+      font-size: 20px;
+      vertical-align: text-bottom;
     }
     
     .alert.show {
@@ -295,24 +331,9 @@
         font-size: 18px;
       }
       
-      .language-selector {
-        position: static;
-        margin-bottom: 10px;
-      }
-      
-      .language-selector select {
-        font-size: 12px;
-        padding: 6px 10px;
-      }
-      
-      .btn {
-        font-size: 14px;
-        padding: 12px 16px;
-      }
-      
-      .btn-large {
-        font-size: 16px;
-        padding: 14px;
+      .btn-xl {
+        font-size: 20px;
+        padding: 24px 16px;
       }
     }
   </style>
@@ -342,17 +363,14 @@
       <div id="alertSuccess" class="alert alert-success"></div>
       <div id="alertError" class="alert alert-error"></div>
       <div id="loadingDiv" class="loading">
-        <p id="loadingText"> Scanning business card, please wait...</p>
+        <p id="loadingText"><i class="material-icons">document_scanner</i> Scanning business card, please wait...</p>
         <p id="progressText" style="margin-top: 5px; font-size: 12px;">Loading...</p>
       </div>
       
       <!-- Preview Box -->
       <div class="preview-box" id="previewBox" onclick="document.getElementById('fileInput').click()">
         <div class="preview-placeholder">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
-          </svg>
+          <i class="material-icons">add_a_photo</i>
           <p id="previewText">Click to upload a business card</p>
         </div>
       </div>
@@ -360,7 +378,7 @@
       <!-- Action Buttons -->
       <div class="button-group">
         <button class="btn btn-primary" onclick="openCamera()">
-          <span id="btnCamera">📷 Camera</span>
+          <span id="btnCamera"><i class="material-icons">photo_camera</i> Camera</span>
         </button>
       </div>
       
@@ -369,69 +387,70 @@
       
       <!-- Form Section -->
       <div class="form-section">
-        <div class="form-title" id="formTitle">📝 Scan Results</div>
+        <div class="form-title" id="formTitle"><i class="material-icons">assignment</i> Scan Results</div>
         
         <div class="form-group">
-          <label class="form-label" id="labelName">👤 Name</label>
+          <label class="form-label" id="labelName"><i class="material-icons">person</i> Name</label>
           <input type="text" class="form-input" id="nameInput">
         </div>
         
         <div class="form-group">
-          <label class="form-label" id="labelJobTitle">💼 Job Title</label>
+          <label class="form-label" id="labelJobTitle"><i class="material-icons">work</i> Job Title</label>
           <input type="text" class="form-input" id="jobTitleInput">
         </div>
         
         <div class="form-group">
-          <label class="form-label" id="labelDepartment">🏛️ Department</label>
+          <label class="form-label" id="labelDepartment"><i class="material-icons">domain</i> Department</label>
           <input type="text" class="form-input" id="departmentInput">
         </div>
         
         <div class="form-group">
-          <label class="form-label" id="labelPhone">📞 Phone</label>
+          <label class="form-label" id="labelPhone"><i class="material-icons">phone</i> Phone</label>
           <input type="text" class="form-input" id="phoneInput">
         </div>
         
         <div class="form-group">
-          <label class="form-label" id="labelFax">📠 Fax</label>
+          <label class="form-label" id="labelFax"><i class="material-icons">print</i> Fax</label>
           <input type="text" class="form-input" id="faxInput">
         </div>
         
         <div class="form-group">
-          <label class="form-label" id="labelEmail">✉️ Email</label>
+          <label class="form-label" id="labelEmail"><i class="material-icons">email</i> Email</label>
           <input type="email" class="form-input" id="emailInput">
         </div>
         
         <div class="form-group">
-          <label class="form-label" id="labelCompany">🏢 Company Name</label>
+          <label class="form-label" id="labelCompany"><i class="material-icons">apartment</i> Company Name</label>
           <input type="text" class="form-input" id="companyInput">
         </div>
         
         <div class="form-group">
-          <label class="form-label" id="labelAddress">📍 Company Address</label>
+          <label class="form-label" id="labelAddress"><i class="material-icons">place</i> Company Address</label>
           <input type="text" class="form-input" id="addressInput">
         </div>
         
         <div class="form-group">
-          <label class="form-label" id="labelWebsite">🌐 Company Website</label>
+          <label class="form-label" id="labelWebsite"><i class="material-icons">language</i> Company Website</label>
           <input type="url" class="form-input" id="websiteInput">
         </div>
         
         <div class="form-group" id="taxIdField" style="display: none;">
-          <label class="form-label" id="labelTaxId"> 統一編號 </label>
+          <label class="form-label" id="labelTaxId"><i class="material-icons">confirmation_number</i> 統一編號 </label>
           <input type="text" class="form-input" id="taxIdInput">
         </div>
         
         <!-- Action Buttons -->
-        <button class="btn btn-primary btn-large" onclick="uploadNew()" style="margin-bottom: 10px;">
-          <span id="btnUploadNew">📁 Upload New Card</span>
+        <!-- Changed: Class to btn-xl, ID to btnSave, Function to saveCard -->
+        <button class="btn btn-primary btn-xl" onclick="saveCard()" style="margin-bottom: 10px;">
+          <span id="btnSave"><i class="material-icons">save</i> Save</span>
         </button>
         
         <button class="btn btn-secondary btn-large" onclick="rescan()" style="margin-bottom: 10px;">
-          <span id="btnRescan">🔄 Rescan</span>
+          <span id="btnRescan"><i class="material-icons">refresh</i> Rescan</span>
         </button>
         
-        <button class="btn btn-success btn-large" onclick="exportToExcel()">
-          <span id="btnExport">📥 Export to Excel</span>
+        <button class="btn btn-success btn-large" onclick="exportHistoryToExcel()">
+          <span id="btnExport"><i class="material-icons">file_download</i> Export All (History)</span>
         </button>
       </div>
     </div>
@@ -459,224 +478,238 @@
       en: {
         title: 'Transcend Business Name Card Scanner',
         previewText: 'Click to upload a business card',
-        btnCamera: '📷 Camera',
-        loadingText: '🔍 Scanning business card, please wait...',
+        btnCamera: '<i class="material-icons">photo_camera</i> Camera',
+        loadingText: '<i class="material-icons">document_scanner</i> Scanning business card, please wait...',
         progressText: 'Loading...',
-        formTitle: '📝 Scan Results',
-        labelName: '👤 Name',
-        labelJobTitle: '💼 Job Title',
-        labelDepartment: '🏛️ Department',
-        labelPhone: '📞 Phone',
-        labelFax: '📠 Fax',
-        labelEmail: '✉️ Email',
-        labelCompany: '🏢 Company',
-        labelAddress: '📍 Company Address',
-        labelWebsite: '🌐 Company Website',
-        labelTaxId: '🔢 Tax ID',
-        btnUploadNew: '📁 Upload New Card',
-        btnRescan: '🔄 Rescan',
-        btnExport: '📥 Export to Excel',
-        alertImageLoaded: '✅ Image loaded',
-        alertUploadFirst: '❌ Please upload an image first',
-        alertNoAzureConfig: '❌ Please configure Azure AI Vision credentials first',
-        alertScanComplete: '✅ Scan completed! Please check and correct the data',
-        alertScanFailed: '❌ Scan failed: ',
-        alertNoImage: '❌ No image to rescan',
-        alertFillField: '❌ Please fill in at least one field',
-        alertExcelDownloaded: '✅ Excel file downloaded: ',
-        confirmUploadNew: 'Are you sure you want to upload a new card? Current data will be cleared.',
+        formTitle: '<i class="material-icons">assignment</i> Scan Results',
+        labelName: '<i class="material-icons">person</i> Name',
+        labelJobTitle: '<i class="material-icons">work</i> Job Title',
+        labelDepartment: '<i class="material-icons">domain</i> Department',
+        labelPhone: '<i class="material-icons">phone</i> Phone',
+        labelFax: '<i class="material-icons">print</i> Fax',
+        labelEmail: '<i class="material-icons">email</i> Email',
+        labelCompany: '<i class="material-icons">apartment</i> Company',
+        labelAddress: '<i class="material-icons">place</i> Company Address',
+        labelWebsite: '<i class="material-icons">language</i> Company Website',
+        labelTaxId: '<i class="material-icons">confirmation_number</i> Tax ID',
+        btnSave: '<i class="material-icons">save</i> Save',
+        btnRescan: '<i class="material-icons">refresh</i> Rescan',
+        btnExport: '<i class="material-icons">file_download</i> Export All (History)',
+        alertImageLoaded: '<i class="material-icons">check_circle</i> Image loaded',
+        alertUploadFirst: '<i class="material-icons">error</i> Please upload an image first',
+        alertNoAzureConfig: '<i class="material-icons">error</i> Please configure Azure AI Vision credentials first',
+        alertScanComplete: '<i class="material-icons">check_circle</i> Scan completed! Please check and correct the data',
+        alertScanFailed: '<i class="material-icons">error</i> Scan failed: ',
+        alertNoImage: '<i class="material-icons">error</i> No image to rescan',
+        alertFillField: '<i class="material-icons">error</i> Please fill in at least one field',
+        alertExcelDownloaded: '<i class="material-icons">check_circle</i> Excel file downloaded: ',
+        alertSaved: '<i class="material-icons">save</i> Data saved to local storage',
+        alertNoHistory: '<i class="material-icons">error</i> No history data found in storage',
+        confirmSave: 'Save current data and clear for next card?',
         confirmRescan: 'Are you sure you want to rescan? Recognition results will be overwritten.',
         scanProgress: 'Scanning progress: '
       },
       de: {
         title: 'Transcend Visitenkarten-Scanner',
         previewText: 'Klicken Sie hier, um eine Visitenkarte hochzuladen',
-        btnCamera: '📷 Kamera',
-        loadingText: '🔍 Visitenkarte wird gescannt, bitte warten...',
+        btnCamera: '<i class="material-icons">photo_camera</i> Kamera',
+        loadingText: '<i class="material-icons">document_scanner</i> Visitenkarte wird gescannt, bitte warten...',
         progressText: 'Wird geladen...',
-        formTitle: '📝 Scanergebnisse',
-        labelName: '👤 Name',
-        labelJobTitle: '💼 Berufsbezeichnung',
-        labelDepartment: '🏛️ Abteilung',
-        labelPhone: '📞 Telefon',
-        labelFax: '📠 Fax',
-        labelEmail: '✉️ E-Mail',
-        labelCompany: '🏢 Firma',
-        labelAddress: '📍 Firmenadresse',
-        labelWebsite: '🌐 Webseite',
-        labelTaxId: '🔢 Steuernummer',
-        btnUploadNew: '📁 Neue Karte hochladen',
-        btnRescan: '🔄 Neu scannen',
-        btnExport: '📥 Nach Excel exportieren',
-        alertImageLoaded: '✅ Bild geladen."',
-        alertUploadFirst: '❌ Bitte laden Sie zuerst ein Bild hoch',
-        alertNoAzureConfig: '❌ Bitte konfigurieren Sie zuerst die Azure AI Vision-Anmeldeinformationen',
-        alertScanComplete: '✅ Scan abgeschlossen! Bitte überprüfen und korrigieren Sie die Daten',
-        alertScanFailed: '❌ Scan fehlgeschlagen: ',
-        alertNoImage: '❌ Kein Bild zum erneuten Scannen',
-        alertFillField: '❌ Bitte füllen Sie mindestens ein Feld aus',
-        alertExcelDownloaded: '✅ Excel-Datei heruntergeladen: ',
-        confirmUploadNew: 'Möchten Sie wirklich eine neue Karte hochladen? Aktuelle Daten werden gelöscht.',
+        formTitle: '<i class="material-icons">assignment</i> Scanergebnisse',
+        labelName: '<i class="material-icons">person</i> Name',
+        labelJobTitle: '<i class="material-icons">work</i> Berufsbezeichnung',
+        labelDepartment: '<i class="material-icons">domain</i> Abteilung',
+        labelPhone: '<i class="material-icons">phone</i> Telefon',
+        labelFax: '<i class="material-icons">print</i> Fax',
+        labelEmail: '<i class="material-icons">email</i> E-Mail',
+        labelCompany: '<i class="material-icons">apartment</i> Firma',
+        labelAddress: '<i class="material-icons">place</i> Firmenadresse',
+        labelWebsite: '<i class="material-icons">language</i> Webseite',
+        labelTaxId: '<i class="material-icons">confirmation_number</i> Steuernummer',
+        btnSave: '<i class="material-icons">save</i> Speichern',
+        btnRescan: '<i class="material-icons">refresh</i> Neu scannen',
+        btnExport: '<i class="material-icons">file_download</i> Alle exportieren (Verlauf)',
+        alertImageLoaded: '<i class="material-icons">check_circle</i> Bild geladen.',
+        alertUploadFirst: '<i class="material-icons">error</i> Bitte laden Sie zuerst ein Bild hoch',
+        alertNoAzureConfig: '<i class="material-icons">error</i> Bitte konfigurieren Sie zuerst die Azure AI Vision-Anmeldeinformationen',
+        alertScanComplete: '<i class="material-icons">check_circle</i> Scan abgeschlossen! Bitte überprüfen und korrigieren Sie die Daten',
+        alertScanFailed: '<i class="material-icons">error</i> Scan fehlgeschlagen: ',
+        alertNoImage: '<i class="material-icons">error</i> Kein Bild zum erneuten Scannen',
+        alertFillField: '<i class="material-icons">error</i> Bitte füllen Sie mindestens ein Feld aus',
+        alertExcelDownloaded: '<i class="material-icons">check_circle</i> Excel-Datei heruntergeladen: ',
+        alertSaved: '<i class="material-icons">save</i> Daten im lokalen Speicher gespeichert',
+        alertNoHistory: '<i class="material-icons">error</i> Keine Verlaufsdaten im Speicher gefunden',
+        confirmSave: 'Aktuelle Daten speichern und für nächste Karte löschen?',
         confirmRescan: 'Möchten Sie wirklich neu scannen? Erkennungsergebnisse werden überschrieben.',
         scanProgress: 'Scan-Fortschritt: '
       },
       nl: {
         title: 'Transcend Visitekaartje Scanner',
         previewText: 'Klik om een visitekaartje te uploaden',
-        btnCamera: '📷 Camera',
-        loadingText: '🔍 Visitekaartje wordt gescand, even geduld...',
+        btnCamera: '<i class="material-icons">photo_camera</i> Camera',
+        loadingText: '<i class="material-icons">document_scanner</i> Visitekaartje wordt gescand, even geduld...',
         progressText: 'Laden...',
-        formTitle: '📝 Scanresultaten',
-        labelName: '👤 Naam',
-        labelJobTitle: '💼 Functietitel',
-        labelDepartment: '🏛️ Afdeling',
-        labelPhone: '📞 Telefoon',
-        labelFax: '📠 Fax',
-        labelEmail: '✉️ E-mail',
-        labelCompany: '🏢 Bedrijf',
-        labelAddress: '📍 Bedrijfsadres',
-        labelWebsite: '🌐 Website',
-        labelTaxId: '🔢 BTW-nummer',
-        btnUploadNew: '📁 Nieuwe kaart uploaden',
-        btnRescan: '🔄 Opnieuw scannen',
-        btnExport: '📥 Exporteren naar Excel',
-        alertImageLoaded: '✅ Afbeelding geladen."',
-        alertUploadFirst: '❌ Upload eerst een afbeelding',
-        alertNoAzureConfig: '❌ Configureer eerst de Azure AI Vision-referenties',
-        alertScanComplete: '✅ Scan voltooid! Controleer en corrigeer de gegevens',
-        alertScanFailed: '❌ Scan mislukt: ',
-        alertNoImage: '❌ Geen afbeelding om opnieuw te scannen',
-        alertFillField: '❌ Vul minimaal één veld in',
-        alertExcelDownloaded: '✅ Excel-bestand gedownload: ',
-        confirmUploadNew: 'Weet u zeker dat u een nieuwe kaart wilt uploaden? Huidige gegevens worden gewist.',
+        formTitle: '<i class="material-icons">assignment</i> Scanresultaten',
+        labelName: '<i class="material-icons">person</i> Naam',
+        labelJobTitle: '<i class="material-icons">work</i> Functietitel',
+        labelDepartment: '<i class="material-icons">domain</i> Afdeling',
+        labelPhone: '<i class="material-icons">phone</i> Telefoon',
+        labelFax: '<i class="material-icons">print</i> Fax',
+        labelEmail: '<i class="material-icons">email</i> E-mail',
+        labelCompany: '<i class="material-icons">apartment</i> Bedrijf',
+        labelAddress: '<i class="material-icons">place</i> Bedrijfsadres',
+        labelWebsite: '<i class="material-icons">language</i> Website',
+        labelTaxId: '<i class="material-icons">confirmation_number</i> BTW-nummer',
+        btnSave: '<i class="material-icons">save</i> Opslaan',
+        btnRescan: '<i class="material-icons">refresh</i> Opnieuw scannen',
+        btnExport: '<i class="material-icons">file_download</i> Alles exporteren (Geschiedenis)',
+        alertImageLoaded: '<i class="material-icons">check_circle</i> Afbeelding geladen.',
+        alertUploadFirst: '<i class="material-icons">error</i> Upload eerst een afbeelding',
+        alertNoAzureConfig: '<i class="material-icons">error</i> Configureer eerst de Azure AI Vision-referenties',
+        alertScanComplete: '<i class="material-icons">check_circle</i> Scan voltooid! Controleer en corrigeer de gegevens',
+        alertScanFailed: '<i class="material-icons">error</i> Scan mislukt: ',
+        alertNoImage: '<i class="material-icons">error</i> Geen afbeelding om opnieuw te scannen',
+        alertFillField: '<i class="material-icons">error</i> Vul minimaal één veld in',
+        alertExcelDownloaded: '<i class="material-icons">check_circle</i> Excel-bestand gedownload: ',
+        alertSaved: '<i class="material-icons">save</i> Gegevens opgeslagen in lokale opslag',
+        alertNoHistory: '<i class="material-icons">error</i> Geen geschiedenisgegevens gevonden',
+        confirmSave: 'Huidige gegevens opslaan en wissen voor volgende kaart?',
         confirmRescan: 'Weet u zeker dat u opnieuw wilt scannen? Herkenningsresultaten worden overschreven.',
         scanProgress: 'Scanvoortgang: '
       },
       jp: {
         title: 'Transcend 名刺スキャナー',
         previewText: 'クリックして名刺をアップロード',
-        btnCamera: '📷 カメラ',
-        loadingText: '🔍 名刺をスキャン中です。お待ちください...',
+        btnCamera: '<i class="material-icons">photo_camera</i> カメラ',
+        loadingText: '<i class="material-icons">document_scanner</i> 名刺をスキャン中です。お待ちください...',
         progressText: '読み込み中...',
-        formTitle: '📝 スキャン結果',
-        labelName: '👤 名前',
-        labelJobTitle: '💼 役職',
-        labelDepartment: '🏛️ 部署',
-        labelPhone: '📞 電話番号',
-        labelFax: '📠 FAX',
-        labelEmail: '✉️ メール',
-        labelCompany: '🏢 会社',
-        labelAddress: '📍 会社住所',
-        labelWebsite: '🌐 ウェブサイト',
-        labelTaxId: '🔢 法人番号',
-        btnUploadNew: '📁 新しい名刺をアップロード',
-        btnRescan: '🔄 再スキャン',
-        btnExport: '📥 Excelにエクスポート',
-        alertImageLoaded: '✅ 画像が読み込まれました。',
-        alertUploadFirst: '❌ 最初に画像をアップロードしてください',
-        alertNoAzureConfig: '❌ まずAzure AI Visionの認証情報を設定してください',
-        alertScanComplete: '✅ スキャン完了！データを確認して修正してください',
-        alertScanFailed: '❌ スキャン失敗: ',
-        alertNoImage: '❌ 再スキャンする画像がありません',
-        alertFillField: '❌ 少なくとも1つのフィールドを入力してください',
-        alertExcelDownloaded: '✅ Excelファイルをダウンロードしました: ',
-        confirmUploadNew: '新しい名刺をアップロードしてもよろしいですか？現在のデータはクリアされます。',
+        formTitle: '<i class="material-icons">assignment</i> スキャン結果',
+        labelName: '<i class="material-icons">person</i> 名前',
+        labelJobTitle: '<i class="material-icons">work</i> 役職',
+        labelDepartment: '<i class="material-icons">domain</i> 部署',
+        labelPhone: '<i class="material-icons">phone</i> 電話番号',
+        labelFax: '<i class="material-icons">print</i> FAX',
+        labelEmail: '<i class="material-icons">email</i> メール',
+        labelCompany: '<i class="material-icons">apartment</i> 会社',
+        labelAddress: '<i class="material-icons">place</i> 会社住所',
+        labelWebsite: '<i class="material-icons">language</i> ウェブサイト',
+        labelTaxId: '<i class="material-icons">confirmation_number</i> 法人番号',
+        btnSave: '<i class="material-icons">save</i> 保存',
+        btnRescan: '<i class="material-icons">refresh</i> 再スキャン',
+        btnExport: '<i class="material-icons">file_download</i> 全てエクスポート (履歴)',
+        alertImageLoaded: '<i class="material-icons">check_circle</i> 画像が読み込まれました。',
+        alertUploadFirst: '<i class="material-icons">error</i> 最初に画像をアップロードしてください',
+        alertNoAzureConfig: '<i class="material-icons">error</i> まずAzure AI Visionの認証情報を設定してください',
+        alertScanComplete: '<i class="material-icons">check_circle</i> スキャン完了！データを確認して修正してください',
+        alertScanFailed: '<i class="material-icons">error</i> スキャン失敗: ',
+        alertNoImage: '<i class="material-icons">error</i> 再スキャンする画像がありません',
+        alertFillField: '<i class="material-icons">error</i> 少なくとも1つのフィールドを入力してください',
+        alertExcelDownloaded: '<i class="material-icons">check_circle</i> Excelファイルをダウンロードしました: ',
+        alertSaved: '<i class="material-icons">save</i> データはローカルストレージに保存されました',
+        alertNoHistory: '<i class="material-icons">error</i> 履歴データが見つかりません',
+        confirmSave: '現在のデータを保存して、次のカードのためにクリアしますか？',
         confirmRescan: '再スキャンしてもよろしいですか？認識結果は上書きされます。',
         scanProgress: 'スキャン進行状況: '
       },
       kr: {
         title: 'Transcend 명함 스캐너',
         previewText: '클릭하여 명함 업로드',
-        btnCamera: '📷 카메라',
-        loadingText: '🔍 명함을 스캔하고 있습니다. 잠시만 기다려주세요...',
+        btnCamera: '<i class="material-icons">photo_camera</i> 카메라',
+        loadingText: '<i class="material-icons">document_scanner</i> 명함을 스캔하고 있습니다. 잠시만 기다려주세요...',
         progressText: '로딩 중...',
-        formTitle: '📝 스캔 결과',
-        labelName: '👤 이름',
-        labelJobTitle: '💼 직책',
-        labelDepartment: '🏛️ 부서',
-        labelPhone: '📞 전화번호',
-        labelFax: '📠 팩스',
-        labelEmail: '✉️ 이메일',
-        labelCompany: '🏢 회사',
-        labelAddress: '📍 회사 주소',
-        labelWebsite: '🌐 웹사이트',
-        labelTaxId: '🔢 사업자등록번호',
-        btnUploadNew: '📁 새 명함 업로드',
-        btnRescan: '🔄 다시 스캔',
-        btnExport: '📥 Excel로 내보내기',
-        alertImageLoaded: '✅ 이미지가 로드되었습니다.',
-        alertUploadFirst: '❌ 먼저 이미지를 업로드하세요',
-        alertNoAzureConfig: '❌ 먼저 Azure AI Vision 자격 증명을 구성하세요',
-        alertScanComplete: '✅ 스캔 완료! 데이터를 확인하고 수정하세요',
-        alertScanFailed: '❌ 스캔 실패: ',
-        alertNoImage: '❌ 다시 스캔할 이미지가 없습니다',
-        alertFillField: '❌ 최소한 하나의 필드를 입력하세요',
-        alertExcelDownloaded: '✅ Excel 파일 다운로드됨: ',
-        confirmUploadNew: '새 명함을 업로드하시겠습니까? 현재 데이터가 지워집니다.',
+        formTitle: '<i class="material-icons">assignment</i> 스캔 결과',
+        labelName: '<i class="material-icons">person</i> 이름',
+        labelJobTitle: '<i class="material-icons">work</i> 직책',
+        labelDepartment: '<i class="material-icons">domain</i> 부서',
+        labelPhone: '<i class="material-icons">phone</i> 전화번호',
+        labelFax: '<i class="material-icons">print</i> 팩스',
+        labelEmail: '<i class="material-icons">email</i> 이메일',
+        labelCompany: '<i class="material-icons">apartment</i> 회사',
+        labelAddress: '<i class="material-icons">place</i> 회사 주소',
+        labelWebsite: '<i class="material-icons">language</i> 웹사이트',
+        labelTaxId: '<i class="material-icons">confirmation_number</i> 사업자등록번호',
+        btnSave: '<i class="material-icons">save</i> 저장',
+        btnRescan: '<i class="material-icons">refresh</i> 다시 스캔',
+        btnExport: '<i class="material-icons">file_download</i> 전체 내보내기 (기록)',
+        alertImageLoaded: '<i class="material-icons">check_circle</i> 이미지가 로드되었습니다.',
+        alertUploadFirst: '<i class="material-icons">error</i> 먼저 이미지를 업로드하세요',
+        alertNoAzureConfig: '<i class="material-icons">error</i> 먼저 Azure AI Vision 자격 증명을 구성하세요',
+        alertScanComplete: '<i class="material-icons">check_circle</i> 스캔 완료! 데이터를 확인하고 수정하세요',
+        alertScanFailed: '<i class="material-icons">error</i> 스캔 실패: ',
+        alertNoImage: '<i class="material-icons">error</i> 다시 스캔할 이미지가 없습니다',
+        alertFillField: '<i class="material-icons">error</i> 최소한 하나의 필드를 입력하세요',
+        alertExcelDownloaded: '<i class="material-icons">check_circle</i> Excel 파일 다운로드됨: ',
+        alertSaved: '<i class="material-icons">save</i> 데이터가 로컬 저장소에 저장되었습니다',
+        alertNoHistory: '<i class="material-icons">error</i> 저장소에서 기록 데이터를 찾을 수 없습니다',
+        confirmSave: '현재 데이터를 저장하고 다음 카드를 위해 지우시겠습니까?',
         confirmRescan: '다시 스캔하시겠습니까? 인식 결과가 덮어쓰기됩니다.',
         scanProgress: '스캔 진행률: '
       },
       sc: {
         title: 'Transcend 名片扫描工具',
         previewText: '点击上传名片',
-        btnCamera: '📷 拍照',
-        loadingText: '🔍 正在识别名片，请稍候...',
+        btnCamera: '<i class="material-icons">photo_camera</i> 拍照',
+        loadingText: '<i class="material-icons">document_scanner</i> 正在识别名片，请稍候...',
         progressText: '加载中...',
-        formTitle: '📝 识别结果',
-        labelName: '👤 姓名',
-        labelJobTitle: '💼 职位',
-        labelDepartment: '🏛️ 部门',
-        labelPhone: '📞 电话',
-        labelFax: '📠 传真',
-        labelEmail: '✉️ 邮箱',
-        labelCompany: '🏢 公司',
-        labelAddress: '📍 公司地址',
-        labelWebsite: '🌐 公司网站',
-        labelTaxId: '🔢 统一社会信用代码',
-        btnUploadNew: '📁 上传新名片',
-        btnRescan: '🔄 重新扫描',
-        btnExport: '📥 导出Excel',
-        alertImageLoaded: '✅ 图片已加载',
-        alertUploadFirst: '❌ 请先上传图片',
-        alertNoAzureConfig: '❌ 请先配置Azure AI Vision凭据',
-        alertScanComplete: '✅ 识别完成！请检查并修正数据',
-        alertScanFailed: '❌ 识别失败：',
-        alertNoImage: '❌ 没有可重新扫描的图片',
-        alertFillField: '❌ 请至少填写一个字段',
-        alertExcelDownloaded: '✅ Excel文件已下载：',
-        confirmUploadNew: '确定要上传新名片吗？当前数据将被清空。',
+        formTitle: '<i class="material-icons">assignment</i> 识别结果',
+        labelName: '<i class="material-icons">person</i> 姓名',
+        labelJobTitle: '<i class="material-icons">work</i> 职位',
+        labelDepartment: '<i class="material-icons">domain</i> 部门',
+        labelPhone: '<i class="material-icons">phone</i> 电话',
+        labelFax: '<i class="material-icons">print</i> 传真',
+        labelEmail: '<i class="material-icons">email</i> 邮箱',
+        labelCompany: '<i class="material-icons">apartment</i> 公司',
+        labelAddress: '<i class="material-icons">place</i> 公司地址',
+        labelWebsite: '<i class="material-icons">language</i> 公司网站',
+        labelTaxId: '<i class="material-icons">confirmation_number</i> 统一社会信用代码',
+        btnSave: '<i class="material-icons">save</i> 保存',
+        btnRescan: '<i class="material-icons">refresh</i> 重新扫描',
+        btnExport: '<i class="material-icons">file_download</i> 导出所有历史记录',
+        alertImageLoaded: '<i class="material-icons">check_circle</i> 图片已加载',
+        alertUploadFirst: '<i class="material-icons">error</i> 请先上传图片',
+        alertNoAzureConfig: '<i class="material-icons">error</i> 请先配置Azure AI Vision凭据',
+        alertScanComplete: '<i class="material-icons">check_circle</i> 识别完成！请检查并修正数据',
+        alertScanFailed: '<i class="material-icons">error</i> 识别失败：',
+        alertNoImage: '<i class="material-icons">error</i> 没有可重新扫描的图片',
+        alertFillField: '<i class="material-icons">error</i> 请至少填写一个字段',
+        alertExcelDownloaded: '<i class="material-icons">check_circle</i> Excel文件已下载：',
+        alertSaved: '<i class="material-icons">save</i> 数据已保存到本地存储',
+        alertNoHistory: '<i class="material-icons">error</i> 未找到历史记录',
+        confirmSave: '保存当前数据并清空以进行下一次扫描？',
         confirmRescan: '确定要重新扫描吗？识别结果将被覆盖。',
         scanProgress: '识别进度：'
       },
       tc: {
         title: 'Transcend 名片掃描工具',
         previewText: '點擊上傳名片',
-        btnCamera: '📷 拍照',
-        loadingText: '🔍 正在辨識名片，請稍候...',
+        btnCamera: '<i class="material-icons">photo_camera</i> 拍照',
+        loadingText: '<i class="material-icons">document_scanner</i> 正在辨識名片，請稍候...',
         progressText: '載入中...',
-        formTitle: '📝 辨識結果',
-        labelName: '👤 姓名',
-        labelJobTitle: '💼 職稱',
-        labelDepartment: '🏛️ 部門',
-        labelPhone: '📞 電話',
-        labelFax: '📠 傳真',
-        labelEmail: '✉️ 電子郵件',
-        labelCompany: '🏢 公司',
-        labelAddress: '📍 公司地址',
-        labelWebsite: '🌐 公司網站',
-        labelTaxId: '🔢 統一編號',
-        btnUploadNew: '📁 上傳新名片',
-        btnRescan: '🔄 重新掃描',
-        btnExport: '📥 匯出Excel',
-        alertImageLoaded: '✅ 圖片已載入',
-        alertUploadFirst: '❌ 請先上傳圖片',
-        alertNoAzureConfig: '❌ 請先設定Azure AI Vision憑證',
-        alertScanComplete: '✅ 辨識完成！請檢查並修正資料',
-        alertScanFailed: '❌ 辨識失敗：',
-        alertNoImage: '❌ 沒有可重新掃描的圖片',
-        alertFillField: '❌ 請至少填寫一個欄位',
-        alertExcelDownloaded: '✅ Excel檔案已下載：',
-        confirmUploadNew: '確定要上傳新名片嗎？目前的資料將被清空。',
+        formTitle: '<i class="material-icons">assignment</i> 辨識結果',
+        labelName: '<i class="material-icons">person</i> 姓名',
+        labelJobTitle: '<i class="material-icons">work</i> 職稱',
+        labelDepartment: '<i class="material-icons">domain</i> 部門',
+        labelPhone: '<i class="material-icons">phone</i> 電話',
+        labelFax: '<i class="material-icons">print</i> 傳真',
+        labelEmail: '<i class="material-icons">email</i> 電子郵件',
+        labelCompany: '<i class="material-icons">apartment</i> 公司',
+        labelAddress: '<i class="material-icons">place</i> 公司地址',
+        labelWebsite: '<i class="material-icons">language</i> 公司網站',
+        labelTaxId: '<i class="material-icons">confirmation_number</i> 統一編號',
+        btnSave: '<i class="material-icons">save</i> 儲存',
+        btnRescan: '<i class="material-icons">refresh</i> 重新掃描',
+        btnExport: '<i class="material-icons">file_download</i> 匯出所有歷史紀錄',
+        alertImageLoaded: '<i class="material-icons">check_circle</i> 圖片已載入',
+        alertUploadFirst: '<i class="material-icons">error</i> 請先上傳圖片',
+        alertNoAzureConfig: '<i class="material-icons">error</i> 請先設定Azure AI Vision憑證',
+        alertScanComplete: '<i class="material-icons">check_circle</i> 辨識完成！請檢查並修正資料',
+        alertScanFailed: '<i class="material-icons">error</i> 辨識失敗：',
+        alertNoImage: '<i class="material-icons">error</i> 沒有可重新掃描的圖片',
+        alertFillField: '<i class="material-icons">error</i> 請至少填寫一個欄位',
+        alertExcelDownloaded: '<i class="material-icons">check_circle</i> Excel檔案已下載：',
+        alertSaved: '<i class="material-icons">save</i> 資料已儲存至 Local Storage',
+        alertNoHistory: '<i class="material-icons">error</i> 查無歷史紀錄',
+        confirmSave: '儲存目前資料並清空以進行下一次掃描？',
         confirmRescan: '確定要重新掃描嗎？辨識結果將被覆蓋。',
         scanProgress: '辨識進度：'
       }
@@ -687,23 +720,24 @@
       currentLanguage = lang;
       const t = translations[lang];
       
+      // Use innerHTML instead of textContent to render icons
       document.getElementById('headerTitle').textContent = t.title;
-      document.getElementById('btnCamera').textContent = t.btnCamera;
-      document.getElementById('loadingText').textContent = t.loadingText;
-      document.getElementById('formTitle').textContent = t.formTitle;
-      document.getElementById('labelName').textContent = t.labelName;
-      document.getElementById('labelJobTitle').textContent = t.labelJobTitle;
-      document.getElementById('labelDepartment').textContent = t.labelDepartment;
-      document.getElementById('labelPhone').textContent = t.labelPhone;
-      document.getElementById('labelFax').textContent = t.labelFax;
-      document.getElementById('labelEmail').textContent = t.labelEmail;
-      document.getElementById('labelCompany').textContent = t.labelCompany;
-      document.getElementById('labelAddress').textContent = t.labelAddress;
-      document.getElementById('labelWebsite').textContent = t.labelWebsite;
-      document.getElementById('labelTaxId').textContent = t.labelTaxId;
-      document.getElementById('btnUploadNew').textContent = t.btnUploadNew;
-      document.getElementById('btnRescan').textContent = t.btnRescan;
-      document.getElementById('btnExport').textContent = t.btnExport;
+      document.getElementById('btnCamera').innerHTML = t.btnCamera;
+      document.getElementById('loadingText').innerHTML = t.loadingText;
+      document.getElementById('formTitle').innerHTML = t.formTitle;
+      document.getElementById('labelName').innerHTML = t.labelName;
+      document.getElementById('labelJobTitle').innerHTML = t.labelJobTitle;
+      document.getElementById('labelDepartment').innerHTML = t.labelDepartment;
+      document.getElementById('labelPhone').innerHTML = t.labelPhone;
+      document.getElementById('labelFax').innerHTML = t.labelFax;
+      document.getElementById('labelEmail').innerHTML = t.labelEmail;
+      document.getElementById('labelCompany').innerHTML = t.labelCompany;
+      document.getElementById('labelAddress').innerHTML = t.labelAddress;
+      document.getElementById('labelWebsite').innerHTML = t.labelWebsite;
+      document.getElementById('labelTaxId').innerHTML = t.labelTaxId;
+      document.getElementById('btnSave').innerHTML = t.btnSave;
+      document.getElementById('btnRescan').innerHTML = t.btnRescan;
+      document.getElementById('btnExport').innerHTML = t.btnExport;
 
       // Show/hide Tax ID field based on language
       const taxIdField = document.getElementById('taxIdField');
@@ -780,10 +814,7 @@
         const byteArray = new Uint8Array(byteNumbers);
         const blob = new Blob([byteArray], { type: 'image/jpeg' });
         
-        // Azure AI Vision API endpoint
-        // const apiUrl = `${AZURE_ENDPOINT.replace(/\/$/, '')}/vision/v3.2/read/analyze`;
         // Azure Document Intelligence (prebuilt-read) endpoint
-        // Use newer endpoint structure: /documentintelligence/documentModels/prebuilt-read:analyze
         const apiUrl = `${AZURE_ENDPOINT.replace(/\/$/, '')}/documentintelligence/documentModels/prebuilt-read:analyze?api-version=2024-11-30`;
         
         // Submit image for analysis
@@ -797,7 +828,6 @@
         });
         
         if (!submitResponse.ok) {
-          //throw new Error(`Azure API error: ${submitResponse.status} ${submitResponse.statusText}`);
           const errText = await submitResponse.text();
           throw new Error(`Azure API error: ${submitResponse.status} ${submitResponse.statusText} - ${errText}`);
         }
@@ -845,10 +875,6 @@
         
         // Extract text from results
         let extractedText = '';
-        /*if (result.analyzeResult && result.analyzeResult.readResults) {
-          for (const page of result.analyzeResult.readResults) {
-            for (const line of page.lines) {
-              extractedText += line.text + '\n';*/
         if (result.analyzeResult && result.analyzeResult.pages) {
           for (const page of result.analyzeResult.pages) {
             if (page.lines) {
@@ -1030,10 +1056,50 @@
       document.getElementById('taxIdInput').value = taxId;
     }
     
-    function uploadNew() {
-      if (confirm(translations[currentLanguage].confirmUploadNew)) {
+    // Save current form data to localStorage
+    function saveToLocalStorage() {
+      const cardData = {
+        id: Date.now(),
+        timestamp: new Date().toISOString(),
+        name: document.getElementById('nameInput').value,
+        jobTitle: document.getElementById('jobTitleInput').value,
+        department: document.getElementById('departmentInput').value,
+        phone: document.getElementById('phoneInput').value,
+        fax: document.getElementById('faxInput').value,
+        email: document.getElementById('emailInput').value,
+        company: document.getElementById('companyInput').value,
+        address: document.getElementById('addressInput').value,
+        website: document.getElementById('websiteInput').value,
+        taxId: document.getElementById('taxIdInput').value
+      };
+      
+      // Get existing history or initialize empty array
+      let history = JSON.parse(localStorage.getItem('businessCardHistory') || '[]');
+      
+      // Add new card to history
+      history.push(cardData);
+      
+      // Save back to localStorage
+      localStorage.setItem('businessCardHistory', JSON.stringify(history));
+      
+      console.log('Saved to localStorage:', cardData);
+    }
+
+    // Renamed from uploadNew to saveCard
+    function saveCard() {
+      // Check if there is any data in the form to save
+      const hasData = [
+        'nameInput', 'jobTitleInput', 'departmentInput', 'phoneInput', 
+        'faxInput', 'emailInput', 'companyInput', 'addressInput', 
+        'websiteInput', 'taxIdInput'
+      ].some(id => document.getElementById(id).value.trim() !== '');
+
+      if (hasData) {
+        saveToLocalStorage();
+        showAlert('success', translations[currentLanguage].alertSaved);
         clearAll();
-        document.getElementById('fileInput').click();
+      } else {
+        showAlert('error', translations[currentLanguage].alertFillField);
       }
     }
     
@@ -1054,10 +1120,7 @@
       const t = translations[currentLanguage];
       document.getElementById('previewBox').innerHTML = `
         <div class="preview-placeholder">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
-          </svg>
+          <i class="material-icons">add_a_photo</i>
           <p>${t.previewText}</p>
         </div>
       `;
@@ -1075,46 +1138,57 @@
       document.getElementById('cameraInput').value = '';
     }
     
-    function exportToExcel() {
-      const name = document.getElementById('nameInput').value;
-      const jobTitle = document.getElementById('jobTitleInput').value;
-      const department = document.getElementById('departmentInput').value;
-      const phone = document.getElementById('phoneInput').value;
-      const fax = document.getElementById('faxInput').value;
-      const email = document.getElementById('emailInput').value;
-      const company = document.getElementById('companyInput').value;
-      const address = document.getElementById('addressInput').value;
-      const website = document.getElementById('websiteInput').value;
-      const taxId = document.getElementById('taxIdInput').value;
+    // Updated function to export history from LocalStorage
+    function exportHistoryToExcel() {
+      // Retrieve history from local storage
+      const historyJSON = localStorage.getItem('businessCardHistory');
+      const history = JSON.parse(historyJSON || '[]');
       
-      if (!name && !phone && !email && !company && !jobTitle && !department && !fax && !address && !website && !taxId) {
-        showAlert('error', translations[currentLanguage].alertFillField);
+      if (history.length === 0) {
+        showAlert('error', translations[currentLanguage].alertNoHistory);
         return;
       }
       
       // Create workbook
       const wb = XLSX.utils.book_new();
       
-      // Get column headers based on current language
+      // Get column headers based on current language by stripping HTML tags
       const t = translations[currentLanguage];
+      const stripHtml = (html) => {
+        const tmp = document.createElement("DIV");
+        tmp.innerHTML = html;
+        return tmp.textContent || tmp.innerText || "";
+      };
+      
       const headers = [
-        t.labelName.replace('👤 ', ''),
-        t.labelJobTitle.replace('💼 ', ''),
-        t.labelDepartment.replace('🏛️ ', ''),
-        t.labelPhone.replace('📞 ', ''),
-        t.labelFax.replace('📠 ', ''),
-        t.labelEmail.replace('✉️ ', ''),
-        t.labelCompany.replace('🏢 ', ''),
-        t.labelAddress.replace('📍 ', ''),
-        t.labelWebsite.replace('🌐 ', ''),
-        t.labelTaxId.replace('🔢 ', '')
+        stripHtml(t.labelName),
+        stripHtml(t.labelJobTitle),
+        stripHtml(t.labelDepartment),
+        stripHtml(t.labelPhone),
+        stripHtml(t.labelFax),
+        stripHtml(t.labelEmail),
+        stripHtml(t.labelCompany),
+        stripHtml(t.labelAddress),
+        stripHtml(t.labelWebsite),
+        stripHtml(t.labelTaxId)
       ];
       
-      // Create data
-      const wsData = [
-        headers,
-        [name, jobTitle, department, phone, fax, email, company, address, website, taxId]
-      ];
+      // Map history data to array of arrays
+      const dataRows = history.map(item => [
+        item.name,
+        item.jobTitle,
+        item.department,
+        item.phone,
+        item.fax,
+        item.email,
+        item.company,
+        item.address,
+        item.website,
+        item.taxId
+      ]);
+      
+      // Create data (Headers + Rows)
+      const wsData = [headers, ...dataRows];
       
       // Create worksheet
       const ws = XLSX.utils.aoa_to_sheet(wsData);
@@ -1134,11 +1208,11 @@
       ];
       
       // Add worksheet to workbook
-      XLSX.utils.book_append_sheet(wb, ws, 'Business Card');
+      XLSX.utils.book_append_sheet(wb, ws, 'Card History');
       
       // Generate filename
       const timestamp = new Date().toISOString().slice(0, 10).replace(/-/g, '');
-      const filename = `BusinessCard_${name || 'Untitled'}_${timestamp}.xlsx`;
+      const filename = `BusinessCard_History_${timestamp}.xlsx`;
       
       // Export file
       XLSX.writeFile(wb, filename);
@@ -1153,12 +1227,13 @@
       alertSuccess.classList.remove('show');
       alertError.classList.remove('show');
       
+      // Use innerHTML because message now contains HTML icons
       if (type === 'success') {
-        alertSuccess.textContent = message;
+        alertSuccess.innerHTML = message;
         alertSuccess.classList.add('show');
         setTimeout(() => alertSuccess.classList.remove('show'), 5000);
       } else {
-        alertError.textContent = message;
+        alertError.innerHTML = message;
         alertError.classList.add('show');
         setTimeout(() => alertError.classList.remove('show'), 5000);
       }
