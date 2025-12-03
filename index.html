@@ -74,7 +74,7 @@
       color: #363636;
     }
     
-    /* Language Selector Styles - Moved to bottom */
+    /* Language Selector Styles */
     .language-selector {
       margin-top: 30px;
       padding-top: 15px;
@@ -110,7 +110,8 @@
     
     .preview-box {
       width: 100%;
-      height: 250px;
+      /* Remove fixed height to allow auto-scaling with image wrapper */
+      min-height: 250px; 
       border: 2px dashed #cccccc;
       border-radius: 8px;
       display: flex;
@@ -121,6 +122,7 @@
       overflow: hidden;
       position: relative;
       cursor: pointer;
+      padding: 10px; /* Add padding */
     }
 
     .preview-box:hover {
@@ -128,15 +130,23 @@
       background-color: #f0f7ff;
     }
     
-    .preview-box img {
+    /* Wrapper to hold image and overlay relative to each other */
+    #imageWrapper {
+      position: relative;
+      display: inline-block;
       max-width: 100%;
-      max-height: 100%;
-      object-fit: contain;
+    }
+
+    #previewImage {
+      display: block;
+      max-width: 100%;
+      height: auto;
     }
     
     .preview-placeholder {
       text-align: center;
       color: #999999;
+      padding: 50px 0;
     }
     
     .preview-placeholder .material-icons {
@@ -146,6 +156,44 @@
       margin-bottom: 10px;
       opacity: 0.5;
       color: #0066cc;
+    }
+
+    /* OCR Overlay Box Styles */
+    .ocr-box {
+      position: absolute;
+      border: 2px solid rgba(0, 102, 204, 0.6);
+      background-color: rgba(0, 102, 204, 0.1);
+      cursor: help;
+      z-index: 10;
+      transition: all 0.2s;
+    }
+
+    .ocr-box:hover {
+      border-color: #ff0000;
+      background-color: rgba(255, 0, 0, 0.1);
+      z-index: 20;
+    }
+
+    /* Tooltip text on hover */
+    .ocr-box::after {
+      content: attr(data-text);
+      position: absolute;
+      bottom: 100%;
+      left: 0;
+      background: rgba(0, 0, 0, 0.8);
+      color: #fff;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      white-space: nowrap;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.2s;
+      margin-bottom: 4px;
+    }
+
+    .ocr-box:hover::after {
+      opacity: 1;
     }
     
     .button-group {
@@ -344,7 +392,6 @@
   <div class="container">
     <!-- Header -->
     <div class="header">
-      <!-- Language Selector removed from here -->
       <img src="https://www.transcend-info.com/images/ts_logo.png" alt="TranscendLogo">
       <h1 id="headerTitle">Business Name Card Scanner</h1>
     </div>
@@ -360,7 +407,7 @@
       </div>
       
       <!-- Preview Box -->
-      <div class="preview-box" id="previewBox" onclick="document.getElementById('fileInput').click()">
+      <div class="preview-box" id="previewBox" onclick="triggerFileInput(event)">
         <div class="preview-placeholder">
           <i class="material-icons">add_a_photo</i>
           <p id="previewText">Click to upload a business card</p>
@@ -444,7 +491,8 @@
           <span id="btnExport"><i class="material-icons">file_download</i> Export All</span>
         </button>
       </div>
-      
+
+      <!-- Language Selector -->
       <div class="language-selector">
         <select id="languageSelect" onchange="changeLanguage()">
           <option value="en">English</option>
@@ -774,6 +822,12 @@
       document.getElementById('cameraInput').click();
     }
     
+    // Prevent triggering file input when clicking on OCR boxes
+    function triggerFileInput(event) {
+        if(event.target.classList.contains('ocr-box')) return;
+        document.getElementById('fileInput').click();
+    }
+    
     function handleFileSelect(event) {
       const file = event.target.files[0];
       if (!file) return;
@@ -796,7 +850,13 @@
     
     function displayImage(imageSrc) {
       const previewBox = document.getElementById('previewBox');
-      previewBox.innerHTML = `<img src="${imageSrc}" alt="Business Card Preview">`;
+      // Create a relative container for image and overlays
+      previewBox.innerHTML = `
+        <div id="imageWrapper">
+            <img id="previewImage" src="${imageSrc}" alt="Business Card Preview">
+            <div id="overlayLayer"></div>
+        </div>
+      `;
     }
     
     async function performOCR() {
@@ -893,15 +953,17 @@
           for (const page of result.analyzeResult.pages) {
             if (page.lines) {
               for (const line of page.lines) {
-                // Note: Document Intelligence uses 'content' for text
                 extractedText += line.content + '\n';
               }
             }
           }
-          } else if (result.analyzeResult && result.analyzeResult.content) {
+        } else if (result.analyzeResult && result.analyzeResult.content) {
              extractedText = result.analyzeResult.content;
         }
         
+        // Draw OCR Overlay
+        drawOCROverlay(result);
+
         parseOCRResult(extractedText);
         
         loadingDiv.classList.remove('show');
@@ -910,6 +972,71 @@
         loadingDiv.classList.remove('show');
         showAlert('error', translations[currentLanguage].alertScanFailed + error.message);
       }
+    }
+
+    // Function to draw OCR bounding boxes
+    function drawOCROverlay(result) {
+        const overlayLayer = document.getElementById('overlayLayer');
+        const img = document.getElementById('previewImage');
+        
+        if(!overlayLayer || !img || !result.analyzeResult) return;
+        
+        overlayLayer.innerHTML = ''; // Clear existing
+        
+        // We need to wait for the image to load to get its display dimensions
+        // If image is already loaded:
+        if (img.complete) {
+            renderBoxes();
+        } else {
+            img.onload = renderBoxes;
+        }
+
+        function renderBoxes() {
+            // Azure coordinates are usually based on original image size
+            // We need to scale them to the displayed image size
+            const naturalWidth = img.naturalWidth;
+            const naturalHeight = img.naturalHeight;
+            const displayWidth = img.width;
+            const displayHeight = img.height;
+            
+            const scaleX = displayWidth / naturalWidth;
+            const scaleY = displayHeight / naturalHeight;
+
+            const pages = result.analyzeResult.pages;
+            if(!pages) return;
+
+            pages.forEach(page => {
+               if(page.lines) {
+                   page.lines.forEach(line => {
+                       // polygon: [x1, y1, x2, y2, x3, y3, x4, y4]
+                       // Simple bounding box logic (min x, min y, width, height)
+                       const p = line.polygon;
+                       if (!p) return;
+
+                       // Calculate bounding box from polygon
+                       const xs = [p[0], p[2], p[4], p[6]];
+                       const ys = [p[1], p[3], p[5], p[7]];
+                       
+                       const minX = Math.min(...xs);
+                       const minY = Math.min(...ys);
+                       const maxX = Math.max(...xs);
+                       const maxY = Math.max(...ys);
+                       
+                       const box = document.createElement('div');
+                       box.className = 'ocr-box';
+                       box.style.left = (minX * scaleX) + 'px';
+                       box.style.top = (minY * scaleY) + 'px';
+                       box.style.width = ((maxX - minX) * scaleX) + 'px';
+                       box.style.height = ((maxY - minY) * scaleY) + 'px';
+                       
+                       // Set hover text
+                       box.setAttribute('data-text', line.content);
+                       
+                       overlayLayer.appendChild(box);
+                   });
+               } 
+            });
+        }
     }
 
     function guessName(lines) {
