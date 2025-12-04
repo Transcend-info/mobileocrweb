@@ -1039,163 +1039,198 @@
         }
     }
 
-    function guessName(lines) {
-    // 定義要排除的關鍵字 (公司後綴、地址關鍵字、網站前綴)
+    function guessName(lines, jobTitleIndex = -1) {
+    // 1. 擴充排除關鍵字：包含產業別、公司型態、常見標語
     const excludeKeywords = [
-        '公司', '有限公司', 'Inc', 'Ltd', 'Corp', 
-        '路', '號', '樓', '室', '區', 'City', 'Street', 'Road', 
-        'Tel', 'Fax', 'Mobile', 'www', 'http', '.com', '.tw'
+        // 公司後綴與型態
+        '公司', '有限公司', '股份', '集團', '工作室', '企業', '商行', '中心', 
+        'Inc', 'Ltd', 'Corp', 'Group', 'LLC', 'Co.', 'Company', 'Enterprise',
+        // 地址與聯絡資訊
+        '路', '號', '樓', '室', '區', '縣', '市', 'City', 'Street', 'Road', 'Ave', 'Dist',
+        'Tel', 'Fax', 'Mobile', 'Email', 'Web', 'www', 'http', '.com', '.tw', '統一編號', '統編', 'TAX',
+        // 產業常見詞 (這會大幅減少誤判)
+        '科技', '資訊', '實業', '工業', '貿易', '國際', '電子', '生技', '文化', '創意', '設計', '物流', 
+        'Technology', 'System', 'Global', 'Digital', 'Consulting', 'Solutions', 'Industry', 'International'
     ];
 
-    // 定義常見職稱 (用來從同一行中移除，或排除該行)
+    // 常見職稱 (用於從同一行移除)
     const jobTitles = [
-        '經理', '副理', '總監', '主任', '專員', '工程師', '執行長', 'CEO', 'CTO', 'Manager', 'Director', 'Engineer', 'President'
+        '經理', '副理', '總監', '主任', '專員', '工程師', '執行長', '董事', '特助', '顧問', '代表',
+        'CEO', 'CTO', 'CFO', 'COO', 'Manager', 'Director', 'Engineer', 'President', 'Founder', 'Specialist', 'Assistant'
     ];
 
-    // 遍歷每一行文字
+    // --- 策略 A: 職稱錨點 (Anchor Strategy) ---
+    // 如果已知職稱在哪一行 (jobTitleIndex)，優先檢查該行的上一行
+    if (jobTitleIndex > 0) {
+        let prevLine = lines[jobTitleIndex - 1].trim();
+        // 檢查上一行是否包含排除字，如果不包含，極大機率是名字
+        let isBlocked = excludeKeywords.some(k => prevLine.toLowerCase().includes(k.toLowerCase()));
+        let hasNumber = /\d/.test(prevLine);
+        
+        // 中文名字長度檢查 (2-4字)，英文名字長度檢查 (沒有特別限制但通常短於公司名)
+        // 簡單判斷是否為中文 (利用Unicode範圍)
+        let isChinese = /[\u4e00-\u9fa5]/.test(prevLine);
+        
+        if (!isBlocked && !hasNumber && prevLine.length >= 2) {
+             if (isChinese && prevLine.length <= 4) return prevLine; // 中文名字超過4字通常不是名字
+             if (!isChinese && prevLine.length <= 25) return prevLine; // 英文名字
+        }
+    }
+
+    // --- 策略 B: 全局掃描 (Fallback) ---
+    // 如果策略 A 失敗，才進行原本的邏輯，但加上更嚴格的過濾
     for (let i = 0; i < lines.length; i++) {
         let line = lines[i].trim();
 
-        // 1. 基本過濾：太短、包含 @、包含數字 (名字通常沒數字)
-        if (line.length < 2 || line.includes('@') || /\d/.test(line)) {
-            continue;
-        }
+        // 過濾 1: 基本雜訊
+        if (line.length < 2 || line.includes('@') || /\d/.test(line)) continue;
 
-        // 2. 排除關鍵字過濾 (如果有公司或地址關鍵字，就跳過)
-        if (excludeKeywords.some(keyword => line.toLowerCase().includes(keyword.toLowerCase()))) {
-            continue;
-        }
+        // 過濾 2: 關鍵字排除
+        if (excludeKeywords.some(keyword => line.toLowerCase().includes(keyword.toLowerCase()))) continue;
 
-        // 3. 職稱處理 (重頭戲)
-        // 檢查這一行是否包含職稱
+        // 過濾 3: 職稱處理 (同一行)
         const matchedTitle = jobTitles.find(title => line.toLowerCase().includes(title.toLowerCase()));
-        
         if (matchedTitle) {
-            // 如果這行包含職稱，嘗試把職稱移除，剩下的可能是名字
-            // 例如："王小明 經理" -> 移除 "經理" -> 留下 "王小明"
             let possibleName = line.replace(matchedTitle, '').trim();
-            // 移除可能殘留的標點符號或空格
-            possibleName = possibleName.replace(/[\|\-,\.]/g, '').trim();
+            possibleName = possibleName.replace(/[\|\-,\.]/g, '').trim(); // 移除標點
             
-            if (possibleName.length > 1 && possibleName.length < 10) {
-                return possibleName; // 找到名字，直接回傳
+            // 嚴格檢查剩餘文字
+            if (possibleName.length >= 2 && possibleName.length <= 15) {
+                 // 如果是中文，長度大於4通常是"XX科技股份有限公司"移除職稱後的殘留
+                 if (/[\u4e00-\u9fa5]/.test(possibleName) && possibleName.length > 4) continue;
+                 return possibleName;
             }
-        } else {
-            // 4. 如果沒有職稱，但通過了上述所有過濾，且長度適中 (2~4字中文 或 2~3單字英文)
-            // 這很有可能是名字 (通常名字會出現在前 5 行內)
-            if (i < 5) {
-                 // 簡單判斷：中文名字通常 2-4 字，英文名字通常有空格
-                 if (line.length >= 2 && line.length <= 15) {
+        } 
+        
+        // 過濾 4: 純名字猜測 (通常在前 5 行)
+        if (i < 5) {
+             // 中文名字嚴格限制 2-4 字
+             if (/[\u4e00-\u9fa5]/.test(line)) {
+                 if (line.length >= 2 && line.length <= 4) return line;
+             } 
+             // 英文名字 (通常首字大寫，且不包含全大寫的公司縮寫如 TSMC)
+             else {
+                 // 排除全是小寫或全是連結符號的
+                 if (line.length >= 3 && line.length <= 20 && !/^[a-z]+$/.test(line)) {
                      return line;
                  }
-            }
+             }
         }
     }
-    return ""; // 真的找不到
+    return "";
 }
     
     function parseOCRResult(text) {
-      const lines = text.split('\n').filter(line => line.trim());
-      
-      // 簡單的解析邏輯
-      let name = '';
-      let jobTitle = '';
-      let department = '';
-      let phone = '';
-      let fax = '';
-      let email = '';
-      let company = '';
-      let address = '';
-      let website = '';
-      let taxId = '';
-      
-      for (let line of lines) {
-        line = line.trim();
+    const lines = text.split('\n').filter(line => line.trim());
+    
+    let name = '';
+    let jobTitle = '';
+    let department = '';
+    let phone = '';
+    let fax = '';
+    let email = '';
+    let company = '';
+    let address = '';
+    let website = '';
+    let taxId = '';
+    
+    // 暫存職稱所在的行數索引
+    let jobTitleIndex = -1;
 
-        // 姓名偵測 (假設第一行或較短的行可能是姓名)
-        if (!name && line.length >= 2 && line.length <= 10 && !/\d/.test(line)) {
-          name = guessName(lines);
-        }
-        // Email 偵測
+    // 第一輪掃描：先找明確的欄位 (職稱、電話、Email、公司名)
+    for (let i = 0; i < lines.length; i++) {
+        let line = lines[i].trim();
+
+        // Email
         const emailMatch = line.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/);
         if (emailMatch && !email) {
-          email = emailMatch[0];
-          continue;
+            email = emailMatch[0];
+            continue;
         }
-        
-        // Website 偵測
+
+        // Website
         const websiteMatch = line.match(/(?:https?:\/\/)?(?:www\.)?[a-zA-Z0-9-]+\.[a-zA-Z]{2,}(?:\/[^\s]*)?/);
         if (websiteMatch && !website && !line.includes('@')) {
-          website = websiteMatch[0];
-          continue;
+            website = websiteMatch[0];
+            continue;
         }
-        
-        // 電話偵測 (TEL, Phone, 電話等關鍵字)
+
+        // Phone
         if ((line.includes('TEL') || line.includes('Tel') || line.includes('電話') || line.includes('Phone')) && !phone) {
-          const phoneMatch = line.match(/(?:\+?886[-\s]?)?(?:\(0\d{1,2}\)|0\d{1,2})[-\s]?\d{3,4}[-\s]?\d{4}|\d{10}/);
-          if (phoneMatch) {
-            phone = phoneMatch[0];
-            continue;
-          }
+            const phoneMatch = line.match(/(?:\+?886[-\s]?)?(?:\(0\d{1,2}\)|0\d{1,2})[-\s]?\d{3,4}[-\s]?\d{4}|\d{10}/);
+            if (phoneMatch) {
+                phone = phoneMatch[0];
+                continue;
+            }
         }
-        
-        // 傳真偵測 (FAX, Fax, 傳真等關鍵字)
+
+        // Fax
         if ((line.includes('FAX') || line.includes('Fax') || line.includes('傳真')) && !fax) {
-          const faxMatch = line.match(/(?:\+?886[-\s]?)?(?:\(0\d{1,2}\)|0\d{1,2})[-\s]?\d{3,4}[-\s]?\d{4}|\d{10}/);
-          if (faxMatch) {
-            fax = faxMatch[0];
-            continue;
-          }
-        }            
-        
-        // 職稱偵測
-        if ((line.includes('Manager') || line.includes('Director') || line.includes('Chief') || 
-             line.includes('經理') || line.includes('總監') || line.includes('長') || line.includes('主任')) && !jobTitle) {
-          jobTitle = line;
-          continue;
+            const faxMatch = line.match(/(?:\+?886[-\s]?)?(?:\(0\d{1,2}\)|0\d{1,2})[-\s]?\d{3,4}[-\s]?\d{4}|\d{10}/);
+            if (faxMatch) {
+                fax = faxMatch[0];
+                continue;
+            }
         }
-        
-        // 部門偵測
-        if ((line.includes('Department') || line.includes('Dept') || line.includes('部門') || line.includes('部')) && !department) {
-          department = line;
-          continue;
-        }
-        
-        // 地址偵測 (包含市、區、路、街等)
-        if ((line.includes('市') || line.includes('區') || line.includes('路') || line.includes('街') || 
-             line.includes('Road') || line.includes('Street') || line.includes('Ave')) && !address && line.length > 10) {
-          address = line;
-          continue;
-        }
-        
-        // 公司名稱偵測
-        if ((line.includes('公司') || line.includes('有限') || line.includes('股份') || 
-             line.includes('Co') || line.includes('Ltd') || line.includes('Inc') ||
-             line.includes('Corp')) && !company) {
-          company = line;
-          continue;
-        }
-        
-        // 統一編號偵測 (8位數字)
+
+        // Tax ID
         const taxIdMatch = line.match(/\b\d{8}\b/);
         if (taxIdMatch && !taxId) {
-          taxId = taxIdMatch[0];
-          continue;
+            taxId = taxIdMatch[0];
+            continue;
         }
-      }
-      
-      // 填入表單
-      document.getElementById('nameInput').value = name;
-      document.getElementById('jobTitleInput').value = jobTitle;
-      document.getElementById('departmentInput').value = department;
-      document.getElementById('phoneInput').value = phone;
-      document.getElementById('faxInput').value = fax;
-      document.getElementById('emailInput').value = email;
-      document.getElementById('companyInput').value = company;
-      document.getElementById('addressInput').value = address;
-      document.getElementById('websiteInput').value = website;
-      document.getElementById('taxIdInput').value = taxId;
+
+        // 職稱偵測 (紀錄 Index)
+        if (!jobTitle && (
+            line.includes('Manager') || line.includes('Director') || line.includes('Chief') || 
+            line.includes('Engineer') || line.includes('Specialist') ||
+            line.includes('經理') || line.includes('總監') || line.includes('長') || 
+            line.includes('主任') || line.includes('專員') || line.includes('工程師'))) {
+            jobTitle = line;
+            jobTitleIndex = i; // 重要：記住這一行
+            continue;
+        }
+
+        // 部門偵測
+        if ((line.includes('Department') || line.includes('Dept') || line.includes('部門') || line.includes('部')) && !department) {
+            department = line;
+            continue;
+        }
+        
+        // 公司名稱偵測 (增加關鍵字)
+        if (!company && (
+            line.includes('公司') || line.includes('有限') || line.includes('股份') || 
+            line.includes('Co.') || line.includes('Ltd') || line.includes('Inc') ||
+            line.includes('Corp') || line.includes('Group') || line.includes('Technology'))) {
+            company = line;
+            continue;
+        }
+
+        // 地址偵測
+        if ((line.includes('市') || line.includes('區') || line.includes('路') || line.includes('街') || 
+             line.includes('Road') || line.includes('Street') || line.includes('Ave')) && !address && line.length > 10) {
+            address = line;
+            continue;
+        }
     }
+
+    // 第二輪：如果還沒找到名字，利用職稱位置來猜
+    if (!name) {
+        name = guessName(lines, jobTitleIndex);
+    }
+
+    // 填入表單
+    document.getElementById('nameInput').value = name;
+    document.getElementById('jobTitleInput').value = jobTitle;
+    document.getElementById('departmentInput').value = department;
+    document.getElementById('phoneInput').value = phone;
+    document.getElementById('faxInput').value = fax;
+    document.getElementById('emailInput').value = email;
+    document.getElementById('companyInput').value = company;
+    document.getElementById('addressInput').value = address;
+    document.getElementById('websiteInput').value = website;
+    document.getElementById('taxIdInput').value = taxId;
+}
     
     // Save current form data to localStorage
     function saveToLocalStorage() {
