@@ -34,13 +34,13 @@
     }
 
     .btn .material-icons {
-      font-size: 24px;
+      font-size: 28px;
       vertical-align: middle;
       margin-right: 0;
     }
 
     .form-title .material-icons {
-      font-size: 24px;
+      font-size: 28px;
       vertical-align: middle;
       color: #0066cc;
     }
@@ -262,7 +262,7 @@
     .btn-xl {
       width: 100%;
       padding: 32px 20px;
-      font-size: 22px;
+      font-size: 24px;
       min-height: 80px;
     }
     
@@ -310,6 +310,12 @@
       outline: none;
       border-color: #0066cc;
       box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
+    }
+
+    /* Style for the textarea to match inputs but allow resizing */
+    textarea.form-input {
+      resize: vertical;
+      min-height: 80px;
     }
     
     .footer {
@@ -472,6 +478,12 @@
           <label class="form-label" id="labelWebsite"><i class="material-icons">language</i> Company Website</label>
           <input type="url" class="form-input" id="websiteInput">
         </div>
+
+        <!-- ADDED NOTE FIELD HERE -->
+        <div class="form-group">
+          <label class="form-label" id="labelNote"><i class="material-icons">note</i> Note</label>
+          <textarea class="form-input" id="noteInput" rows="2"></textarea>
+        </div>
         
         <div class="form-group" id="taxIdField" style="display: none;">
           <label class="form-label" id="labelTaxId"><i class="material-icons">confirmation_number</i> 統一編號 </label>
@@ -543,6 +555,7 @@
         labelCompany: '<i class="material-icons">apartment</i> Company',
         labelAddress: '<i class="material-icons">place</i> Company Address',
         labelWebsite: '<i class="material-icons">language</i> Company Website',
+        labelNote: '<i class="material-icons">note</i> Note',
         labelTaxId: '<i class="material-icons">confirmation_number</i> Tax ID',
         btnSave: '<i class="material-icons">save</i> Save',
         btnRescan: '<i class="material-icons">refresh</i> Rescan',
@@ -577,6 +590,7 @@
         labelCompany: '<i class="material-icons">apartment</i> Firma',
         labelAddress: '<i class="material-icons">place</i> Firmenadresse',
         labelWebsite: '<i class="material-icons">language</i> Webseite',
+        labelNote: '<i class="material-icons">note</i> Notiz',
         labelTaxId: '<i class="material-icons">confirmation_number</i> Steuernummer',
         btnSave: '<i class="material-icons">save</i> Speichern',
         btnRescan: '<i class="material-icons">refresh</i> Neu scannen',
@@ -611,6 +625,7 @@
         labelCompany: '<i class="material-icons">apartment</i> Bedrijf',
         labelAddress: '<i class="material-icons">place</i> Bedrijfsadres',
         labelWebsite: '<i class="material-icons">language</i> Website',
+        labelNote: '<i class="material-icons">note</i> Notitie',
         labelTaxId: '<i class="material-icons">confirmation_number</i> BTW-nummer',
         btnSave: '<i class="material-icons">save</i> Opslaan',
         btnRescan: '<i class="material-icons">refresh</i> Opnieuw scannen',
@@ -645,6 +660,7 @@
         labelCompany: '<i class="material-icons">apartment</i> 会社',
         labelAddress: '<i class="material-icons">place</i> 会社住所',
         labelWebsite: '<i class="material-icons">language</i> ウェブサイト',
+        labelNote: '<i class="material-icons">note</i> メモ',
         labelTaxId: '<i class="material-icons">confirmation_number</i> 法人番号',
         btnSave: '<i class="material-icons">save</i> 保存',
         btnRescan: '<i class="material-icons">refresh</i> 再スキャン',
@@ -679,6 +695,7 @@
         labelCompany: '<i class="material-icons">apartment</i> 회사',
         labelAddress: '<i class="material-icons">place</i> 회사 주소',
         labelWebsite: '<i class="material-icons">language</i> 웹사이트',
+        labelNote: '<i class="material-icons">note</i> 메모',
         labelTaxId: '<i class="material-icons">confirmation_number</i> 사업자등록번호',
         btnSave: '<i class="material-icons">save</i> 저장',
         btnRescan: '<i class="material-icons">refresh</i> 다시 스캔',
@@ -713,6 +730,7 @@
         labelCompany: '<i class="material-icons">apartment</i> 公司',
         labelAddress: '<i class="material-icons">place</i> 公司地址',
         labelWebsite: '<i class="material-icons">language</i> 公司网站',
+        labelNote: '<i class="material-icons">note</i> 备注',
         labelTaxId: '<i class="material-icons">confirmation_number</i> 统一社会信用代码',
         btnSave: '<i class="material-icons">save</i> 保存',
         btnRescan: '<i class="material-icons">refresh</i> 重新扫描',
@@ -747,6 +765,7 @@
         labelCompany: '<i class="material-icons">apartment</i> 公司',
         labelAddress: '<i class="material-icons">place</i> 公司地址',
         labelWebsite: '<i class="material-icons">language</i> 公司網站',
+        labelNote: '<i class="material-icons">note</i> 備註',
         labelTaxId: '<i class="material-icons">confirmation_number</i> 統一編號',
         btnSave: '<i class="material-icons">save</i> 儲存',
         btnRescan: '<i class="material-icons">refresh</i> 重新掃描',
@@ -786,6 +805,7 @@
       document.getElementById('labelCompany').innerHTML = t.labelCompany;
       document.getElementById('labelAddress').innerHTML = t.labelAddress;
       document.getElementById('labelWebsite').innerHTML = t.labelWebsite;
+      document.getElementById('labelNote').innerHTML = t.labelNote; 
       document.getElementById('labelTaxId').innerHTML = t.labelTaxId;
       document.getElementById('btnSave').innerHTML = t.btnSave;
       document.getElementById('btnRescan').innerHTML = t.btnRescan;
@@ -1246,6 +1266,7 @@
         company: document.getElementById('companyInput').value,
         address: document.getElementById('addressInput').value,
         website: document.getElementById('websiteInput').value,
+        note: document.getElementById('noteInput').value, 
         taxId: document.getElementById('taxIdInput').value
       };
       
@@ -1267,7 +1288,7 @@
       const hasData = [
         'nameInput', 'jobTitleInput', 'departmentInput', 'phoneInput', 
         'faxInput', 'emailInput', 'companyInput', 'addressInput', 
-        'websiteInput', 'taxIdInput'
+        'websiteInput', 'noteInput', 'taxIdInput' 
       ].some(id => document.getElementById(id).value.trim() !== '');
 
       if (hasData) {
@@ -1311,6 +1332,7 @@
       document.getElementById('companyInput').value = '';
       document.getElementById('addressInput').value = '';
       document.getElementById('websiteInput').value = '';
+      document.getElementById('noteInput').value = ''; 
       document.getElementById('taxIdInput').value = '';
       document.getElementById('fileInput').value = '';
       document.getElementById('cameraInput').value = '';
@@ -1348,6 +1370,7 @@
         stripHtml(t.labelCompany),
         stripHtml(t.labelAddress),
         stripHtml(t.labelWebsite),
+        stripHtml(t.labelNote), 
         stripHtml(t.labelTaxId)
       ];
       
@@ -1362,6 +1385,7 @@
         item.company,
         item.address,
         item.website,
+        item.note, 
         item.taxId
       ]);
       
@@ -1382,6 +1406,7 @@
         { wch: 25 },  // Company
         { wch: 40 },  // Address
         { wch: 30 },  // Website
+        { wch: 30 },  // Note 
         { wch: 15 }   // Tax ID
       ];
       
