@@ -874,6 +874,7 @@
         showAlert('success', translations[currentLanguage].alertImageLoaded);
 
         // Automatically start OCR after image is loaded
+        preprocessImage(currentImage);
         setTimeout(() => {
           performOCR();
         }, 500);
@@ -891,25 +892,44 @@
         </div>
       `;
     }
+
+    function preprocessImage(imageElement) {
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    
+    // 1. Scale up image 提升清晰度
+    const scaleFactor = 2; 
+    canvas.width = imageElement.width * scaleFactor;
+    canvas.height = imageElement.height * scaleFactor;
+    
+    ctx.drawImage(imageElement, 0, 0, canvas.width, canvas.height);
+    
+    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    const data = imageData.data;
+
+    // 2. 簡單二值化 (Thresholding)
+    // 將顏色轉為純黑或純白，去除雜訊
+    const threshold = 128; 
+    for (let i = 0; i < data.length; i += 4) {
+        const avg = (data[i] + data[i + 1] + data[i + 2]) / 3;
+        const color = avg > threshold ? 255 : 0; // 大於閾值設為白，否則黑
+        data[i] = data[i + 1] = data[i + 2] = color;
+    }
+    
+    ctx.putImageData(imageData, 0, 0);
+    return canvas.toDataURL('image/jpeg'); // 回傳處理後的圖片給 OCR
+}
     
     async function performOCR() {
       if (!currentImage) {
         showAlert('error', translations[currentLanguage].alertUploadFirst);
         return;
-      }
-      
-      // Check if Azure credentials are configured
-      if (!AZURE_ENDPOINT || AZURE_ENDPOINT === 'https://your-resource.cognitiveservices.azure.com/' || 
-          !AZURE_API_KEY || AZURE_API_KEY === 'your-api-key-here') {
-        showAlert('error', translations[currentLanguage].alertNoAzureConfig);
-        return;
-      }
-      
+      }      
       const loadingDiv = document.getElementById('loadingDiv');
       const progressText = document.getElementById('progressText');
       loadingDiv.classList.add('show');
       progressText.textContent = translations[currentLanguage].progressText;
-      
+            
       try {
         // Convert base64 to blob
         const base64Data = currentImage.split(',')[1];
