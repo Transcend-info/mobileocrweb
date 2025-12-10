@@ -450,8 +450,13 @@
         </div>
         
         <div class="form-group">
-          <label class="form-label" id="labelPhone"><i class="material-icons">phone</i> Phone</label>
+          <label class="form-label" id="labelPhone"><i class="material-icons">phone</i> Tel</label>
           <input type="text" class="form-input" id="phoneInput">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" id="labelMobile"><i class="material-icons">smartphone</i> Mobile</label>
+          <input type="text" class="form-input" id="mobileInput">
         </div>
         
         <div class="form-group">
@@ -549,7 +554,8 @@
         labelName: '<i class="material-icons">person</i> Name',
         labelJobTitle: '<i class="material-icons">work</i> Job Title',
         labelDepartment: '<i class="material-icons">domain</i> Department',
-        labelPhone: '<i class="material-icons">phone</i> Phone',
+        labelPhone: '<i class="material-icons">phone</i> Tel',
+        labelMobile: '<i class="material-icons">smartphone</i> Mobile',
         labelFax: '<i class="material-icons">print</i> Fax',
         labelEmail: '<i class="material-icons">email</i> Email',
         labelCompany: '<i class="material-icons">apartment</i> Company',
@@ -584,7 +590,8 @@
         labelName: '<i class="material-icons">person</i> Name',
         labelJobTitle: '<i class="material-icons">work</i> Berufsbezeichnung',
         labelDepartment: '<i class="material-icons">domain</i> Abteilung',
-        labelPhone: '<i class="material-icons">phone</i> Telefon',
+        labelPhone: '<i class="material-icons">phone</i> Tel',
+        labelMobile: '<i class="material-icons">smartphone</i> Handy',
         labelFax: '<i class="material-icons">print</i> Fax',
         labelEmail: '<i class="material-icons">email</i> E-Mail',
         labelCompany: '<i class="material-icons">apartment</i> Firma',
@@ -619,7 +626,8 @@
         labelName: '<i class="material-icons">person</i> Naam',
         labelJobTitle: '<i class="material-icons">work</i> Functietitel',
         labelDepartment: '<i class="material-icons">domain</i> Afdeling',
-        labelPhone: '<i class="material-icons">phone</i> Telefoon',
+        labelPhone: '<i class="material-icons">phone</i> Tel',
+        labelMobile: '<i class="material-icons">smartphone</i> Mobiel',
         labelFax: '<i class="material-icons">print</i> Fax',
         labelEmail: '<i class="material-icons">email</i> E-mail',
         labelCompany: '<i class="material-icons">apartment</i> Bedrijf',
@@ -654,7 +662,8 @@
         labelName: '<i class="material-icons">person</i> 名前',
         labelJobTitle: '<i class="material-icons">work</i> 役職',
         labelDepartment: '<i class="material-icons">domain</i> 部署',
-        labelPhone: '<i class="material-icons">phone</i> 電話番号',
+        labelPhone: '<i class="material-icons">phone</i> 電話 (Tel)',
+        labelMobile: '<i class="material-icons">smartphone</i> 携帯電話',
         labelFax: '<i class="material-icons">print</i> FAX',
         labelEmail: '<i class="material-icons">email</i> メール',
         labelCompany: '<i class="material-icons">apartment</i> 会社',
@@ -689,7 +698,8 @@
         labelName: '<i class="material-icons">person</i> 이름',
         labelJobTitle: '<i class="material-icons">work</i> 직책',
         labelDepartment: '<i class="material-icons">domain</i> 부서',
-        labelPhone: '<i class="material-icons">phone</i> 전화번호',
+        labelPhone: '<i class="material-icons">phone</i> 전화 (Tel)',
+        labelMobile: '<i class="material-icons">smartphone</i> 휴대전화',
         labelFax: '<i class="material-icons">print</i> 팩스',
         labelEmail: '<i class="material-icons">email</i> 이메일',
         labelCompany: '<i class="material-icons">apartment</i> 회사',
@@ -724,7 +734,8 @@
         labelName: '<i class="material-icons">person</i> 姓名',
         labelJobTitle: '<i class="material-icons">work</i> 职位',
         labelDepartment: '<i class="material-icons">domain</i> 部门',
-        labelPhone: '<i class="material-icons">phone</i> 电话',
+        labelPhone: '<i class="material-icons">phone</i> 电话 (Tel)',
+        labelMobile: '<i class="material-icons">smartphone</i> 手机',
         labelFax: '<i class="material-icons">print</i> 传真',
         labelEmail: '<i class="material-icons">email</i> 邮箱',
         labelCompany: '<i class="material-icons">apartment</i> 公司',
@@ -759,7 +770,8 @@
         labelName: '<i class="material-icons">person</i> 姓名',
         labelJobTitle: '<i class="material-icons">work</i> 職稱',
         labelDepartment: '<i class="material-icons">domain</i> 部門',
-        labelPhone: '<i class="material-icons">phone</i> 電話',
+        labelPhone: '<i class="material-icons">phone</i> Tel',
+        labelMobile: '<i class="material-icons">smartphone</i> Mobile',
         labelFax: '<i class="material-icons">print</i> 傳真',
         labelEmail: '<i class="material-icons">email</i> 電子郵件',
         labelCompany: '<i class="material-icons">apartment</i> 公司',
@@ -800,6 +812,7 @@
       document.getElementById('labelJobTitle').innerHTML = t.labelJobTitle;
       document.getElementById('labelDepartment').innerHTML = t.labelDepartment;
       document.getElementById('labelPhone').innerHTML = t.labelPhone;
+      document.getElementById('labelMobile').innerHTML = t.labelMobile;
       document.getElementById('labelFax').innerHTML = t.labelFax;
       document.getElementById('labelEmail').innerHTML = t.labelEmail;
       document.getElementById('labelCompany').innerHTML = t.labelCompany;
@@ -1147,6 +1160,7 @@
     let jobTitle = '';
     let department = '';
     let phone = '';
+    let mobile = '';
     let fax = '';
     let email = '';
     let company = '';
@@ -1173,6 +1187,21 @@
         if (websiteMatch && !website && !line.includes('@')) {
             website = websiteMatch[0];
             continue;
+        }
+
+        // Mobile
+        if ((line.includes('Mobile') || line.includes('Mob') || line.includes('Cell') || line.includes('行動') || line.includes('手機')) && !mobile) {
+            const mobileMatch = line.match(/(?:\+?886[-\s]?)?(?:09\d{2}|9\d{2})[-\s]?\d{3}[-\s]?\d{3}|\d{10}/);
+            if (mobileMatch) {
+                mobile = mobileMatch[0];
+                continue;
+            }
+            // Fallback to generic phone regex if specific mobile regex fails but keyword is present
+            const mMatch = line.match(/(?:\+?886[-\s]?)?(?:\(0\d{1,2}\)|0\d{1,2})[-\s]?\d{3,4}[-\s]?\d{4}|\d{10}/);
+            if (mMatch) {
+                mobile = mMatch[0];
+                continue;
+            }
         }
 
         // Phone
@@ -1244,6 +1273,7 @@
     document.getElementById('jobTitleInput').value = jobTitle;
     document.getElementById('departmentInput').value = department;
     document.getElementById('phoneInput').value = phone;
+    document.getElementById('mobileInput').value = mobile;
     document.getElementById('faxInput').value = fax;
     document.getElementById('emailInput').value = email;
     document.getElementById('companyInput').value = company;
@@ -1261,6 +1291,7 @@
         jobTitle: document.getElementById('jobTitleInput').value,
         department: document.getElementById('departmentInput').value,
         phone: document.getElementById('phoneInput').value,
+        mobile: document.getElementById('mobileInput').value,
         fax: document.getElementById('faxInput').value,
         email: document.getElementById('emailInput').value,
         company: document.getElementById('companyInput').value,
@@ -1286,7 +1317,7 @@
     function saveCard() {
       // Check if there is any data in the form to save
       const hasData = [
-        'nameInput', 'jobTitleInput', 'departmentInput', 'phoneInput', 
+        'nameInput', 'jobTitleInput', 'departmentInput', 'phoneInput', 'mobileInput',
         'faxInput', 'emailInput', 'companyInput', 'addressInput', 
         'websiteInput', 'noteInput', 'taxIdInput' 
       ].some(id => document.getElementById(id).value.trim() !== '');
@@ -1327,6 +1358,7 @@
       document.getElementById('jobTitleInput').value = '';
       document.getElementById('departmentInput').value = '';
       document.getElementById('phoneInput').value = '';
+      document.getElementById('mobileInput').value = '';
       document.getElementById('faxInput').value = '';
       document.getElementById('emailInput').value = '';
       document.getElementById('companyInput').value = '';
@@ -1365,6 +1397,7 @@
         stripHtml(t.labelJobTitle),
         stripHtml(t.labelDepartment),
         stripHtml(t.labelPhone),
+        stripHtml(t.labelMobile),
         stripHtml(t.labelFax),
         stripHtml(t.labelEmail),
         stripHtml(t.labelCompany),
@@ -1380,6 +1413,7 @@
         item.jobTitle,
         item.department,
         item.phone,
+        item.mobile,
         item.fax,
         item.email,
         item.company,
@@ -1401,6 +1435,7 @@
         { wch: 20 },  // Job Title
         { wch: 20 },  // Department
         { wch: 20 },  // Phone
+        { wch: 20 },  // Mobile
         { wch: 20 },  // Fax
         { wch: 30 },  // Email
         { wch: 25 },  // Company
