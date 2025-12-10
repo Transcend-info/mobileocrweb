@@ -897,27 +897,17 @@
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
     
-    // 1. Scale up image 提升清晰度
+    // 1. 放大圖片 (Scale up) 2 倍以提升清晰度，特別是對於小字體的電話號碼
     const scaleFactor = 2; 
     canvas.width = imageElement.width * scaleFactor;
     canvas.height = imageElement.height * scaleFactor;
     
+    // 使用高品質的平滑演算法
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = 'high';    
     ctx.drawImage(imageElement, 0, 0, canvas.width, canvas.height);
-    
-    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-    const data = imageData.data;
-
-    // 2. 簡單二值化 (Thresholding)
-    // 將顏色轉為純黑或純白，去除雜訊
-    const threshold = 128; 
-    for (let i = 0; i < data.length; i += 4) {
-        const avg = (data[i] + data[i + 1] + data[i + 2]) / 3;
-        const color = avg > threshold ? 255 : 0; // 大於閾值設為白，否則黑
-        data[i] = data[i + 1] = data[i + 2] = color;
-    }
-    
-    ctx.putImageData(imageData, 0, 0);
-    return canvas.toDataURL('image/jpeg'); // 回傳處理後的圖片給 OCR
+      
+    return canvas.toDataURL('image/jpeg', 0.9); // 使用高品質 JPEG
 }
     
     async function performOCR() {
@@ -1171,6 +1161,44 @@
         }
     }
     return "";
+    }
+    
+    function extractGlobalPhoneNumber(line) {
+    // 移除常見的干擾字元，但保留數字、+、-、.、()、空格
+    // 這是為了支援美國 (123.456.7890) 和 國際 (+886 2 2792 8000)
+    
+    // Regex ：
+    // ((\+|00)\d{1,4})?  -> 可選的國碼，如 +886 或 00886
+    // [\s\-\.]?          -> 分隔符
+    // \(?\d{1,5}\)?      -> 區碼或前綴，可能帶括號 (02)
+    // ... 後續的數字群組
+    
+    // 這個 Regex 可以匹配：
+    // TW: 0912-345-678, (02) 2792-8000
+    // US: 555.123.4567, +1-555-555-5555
+    // CN: +86 138 1234 5678
+    // DE: +49 30 123456
+    // JP: 03-1234-5678
+    
+    const globalPhoneRegex = /(?:(?:\+|00)\d{1,4}[\s\-\.]?)?(?:\(?\d{1,5}\)?[\s\-\.]?){1,5}\d{3,}/g;
+    
+    const matches = line.match(globalPhoneRegex);
+    if (!matches) return null;
+
+    // 從匹配結果中找出最像電話號碼的 (長度檢查)
+    // 過濾掉太短的 (可能是分機號碼或門牌) 或太長的
+    for (let match of matches) {
+        // 計算純數字長度
+        const digitCount = match.replace(/\D/g, '').length;
+        
+        // 國際電話通常至少 8 碼 (包含區碼)，最多約 15 碼 (ITU標準)
+        // 台灣手機 10 碼，市話+區碼 9-10 碼
+        // 香港 8 碼
+        if (digitCount >= 8 && digitCount <= 17) {
+            return match.trim();
+        }
+    }
+    return null;
 }
     
     function parseOCRResult(text) {
@@ -1187,6 +1215,20 @@
     let address = '';
     let website = '';
     let taxId = '';
+
+    // 定義多國語言的關鍵字
+    const keywords = {
+        mobile: ['Mobile', 'Mob', 'Cell', 'Handy', 'M:', 'M.', '行動', '手機', '手提'],
+        phone: ['Tel', 'Phone', 'Ph', 'Office', 'T:', 'T.', 'D:', '電話', '代表'], // D: Direct line
+        fax: ['Fax', 'F:', 'F.', '傳真'],
+        email: ['@'],
+        website: ['http', 'www.', '.com', '.tw', '.cn', '.jp', '.de', '.net'],
+        taxId: ['統一編號', '統編', 'Tax ID', 'VAT', 'GUI'], 
+        company: ['Co.', 'Ltd', 'Inc', 'Corp', 'GmbH', 'AG', 'Group', 'Company', 'Limited', 'Technology', '公司', '集團', '株式會社', '株式会社'],
+        dept: ['Department', 'Dept', 'Div', 'Division', 'Team', '部門', '部', '課'],
+        job: ['Manager', 'Director', 'Chief', 'Engineer', 'Specialist', 'President', 'CEO', 'Founder', 
+              '經理', '總監', '主任', '專員', '工程師', '處長', '特助', '顧問', '代表', '負責人']
+    };  
     
     // 暫存職稱所在的行數索引
     let jobTitleIndex = -1;
@@ -1209,36 +1251,36 @@
             continue;
         }
 
-        // Mobile
-        if ((line.includes('Mobile') || line.includes('Mob') || line.includes('Cell') || line.includes('行動') || line.includes('手機')) && !mobile) {
-            const mobileMatch = line.match(/(?:\+?886[-\s]?)?(?:09\d{2}|9\d{2})[-\s]?\d{3}[-\s]?\d{3}|\d{10}/);
-            if (mobileMatch) {
-                mobile = mobileMatch[0];
-                continue;
-            }
-            // Fallback to generic phone regex if specific mobile regex fails but keyword is present
-            const mMatch = line.match(/(?:\+?886[-\s]?)?(?:\(0\d{1,2}\)|0\d{1,2})[-\s]?\d{3,4}[-\s]?\d{4}|\d{10}/);
-            if (mMatch) {
-                mobile = mMatch[0];
-                continue;
+        // Mobile 
+        if (keywords.mobile.some(k => line.includes(k) || lineLower.startsWith(k.toLowerCase()))) {
+            if (!mobile) {
+                const extracted = extractGlobalPhoneNumber(line);
+                if (extracted) {
+                    mobile = extracted;
+                    continue; 
+                }
             }
         }
 
-        // Phone
-        if ((line.includes('TEL') || line.includes('Tel') || line.includes('電話') || line.includes('Phone')) && !phone) {
-            const phoneMatch = line.match(/(?:\+?886[-\s]?)?(?:\(0\d{1,2}\)|0\d{1,2})[-\s]?\d{3,4}[-\s]?\d{4}|\d{10}/);
-            if (phoneMatch) {
-                phone = phoneMatch[0];
-                continue;
+        // Fax 
+        if (keywords.fax.some(k => line.includes(k) || lineLower.startsWith(k.toLowerCase()))) {
+            if (!fax) {
+                const extracted = extractGlobalPhoneNumber(line);
+                if (extracted) {
+                    fax = extracted;
+                    continue;
+                }
             }
         }
 
-        // Fax
-        if ((line.includes('FAX') || line.includes('Fax') || line.includes('傳真')) && !fax) {
-            const faxMatch = line.match(/(?:\+?886[-\s]?)?(?:\(0\d{1,2}\)|0\d{1,2})[-\s]?\d{3,4}[-\s]?\d{4}|\d{10}/);
-            if (faxMatch) {
-                fax = faxMatch[0];
-                continue;
+        // 6. Phone
+        if (keywords.phone.some(k => line.includes(k) || lineLower.startsWith(k.toLowerCase()))) {
+            if (!phone) {
+                const extracted = extractGlobalPhoneNumber(line);
+                if (extracted) {
+                    phone = extracted;
+                    continue;
+                }
             }
         }
 
@@ -1249,28 +1291,16 @@
             continue;
         }
 
-        // 職稱偵測 (紀錄 Index)
-        if (!jobTitle && (
-            line.includes('Manager') || line.includes('Director') || line.includes('Chief') || 
-            line.includes('Engineer') || line.includes('Specialist') ||
-            line.includes('經理') || line.includes('總監') || line.includes('長') || 
-            line.includes('主任') || line.includes('專員') || line.includes('工程師'))) {
+        if (!jobTitle && keywords.job.some(k => line.includes(k))) {
             jobTitle = line;
-            jobTitleIndex = i; // 重要：記住這一行
+            jobTitleIndex = i;
             continue;
         }
-
-        // 部門偵測
-        if ((line.includes('Department') || line.includes('Dept') || line.includes('部門') || line.includes('部')) && !department) {
+        if (!department && keywords.dept.some(k => line.includes(k))) {
             department = line;
             continue;
         }
-        
-        // 公司名稱偵測 (增加關鍵字)
-        if (!company && (
-            line.includes('公司') || line.includes('有限') || line.includes('股份') || 
-            line.includes('Co.') || line.includes('Ltd') || line.includes('Inc') ||
-            line.includes('Corp') || line.includes('Group') || line.includes('Technology'))) {
+        if (!company && keywords.company.some(k => line.includes(k))) {
             company = line;
             continue;
         }
