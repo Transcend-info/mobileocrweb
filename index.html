@@ -1068,7 +1068,7 @@
     // 1. 擴充排除關鍵字：包含產業別、公司型態、常見標語
     const excludeKeywords = [
         '公司', '有限公司', '股份', '集團', '工作室', '企業', '商行', '中心', 
-        'Inc', 'Ltd', 'Corp', 'Group', 'LLC', 'Co.', 'Company', 'Enterprise', 'Department', 'Dept', 'Div', 'Division', 'Team', 'Center', '部門', '部', '課',
+        'Inc', 'Ltd', 'Corp', 'Group', 'LLC', 'Co.', 'Company', 'Enterprise', 'Department', 'Dept', 'Div', 'Division', 'Team', 'Center', '部門', '部', '課', 'BU', '處', '中心',
         '路', '號', '樓', '室', '區', '縣', '市', 'City', 'Street', 'Road', 'Ave', 'Dist',
         'Tel', 'Fax', 'Mobile', 'Email', 'Web', 'www', 'http', '.com', '.tw', '統一編號', '統編', 'TAX',
         '科技', '資訊', '實業', '工業', '貿易', '國際', '電子', '生技', '文化', '創意', '設計', '物流', 
@@ -1077,8 +1077,8 @@
 
     // 常見職稱 (用於從同一行移除)
     const jobTitles = [
-        '經理', '副理', '總監', '主任', '專員', '工程師', '執行長', '董事', '特助', '顧問', '代表',
-        'CEO', 'CTO', 'CFO', 'COO', 'Manager', 'Director', 'Engineer', 'President', 'Founder', 'Specialist', 'Assistant'
+        '經理', '副理', '總監', '主任', '專員', '工程師','處長','董事長','負責人', '執行長', '董事', '特助', '顧問', '代表',
+        'CEO', 'CTO', 'CFO', 'COO', 'Manager', 'Director', 'Engineer', 'President', 'Founder', 'Specialist', 'Assistant', 'Chief',           
     ];
 
     // --- 策略 A: 職稱錨點 (Anchor Strategy) ---
@@ -1087,8 +1087,8 @@
         let prevLine = lines[jobTitleIndex - 1].trim();        
         let isBlockedprevLine = excludeKeywords.some(k => prevLine.toLowerCase().includes(k.toLowerCase()));
         let hasNumberprevLine = /\d/.test(prevLine);
-
-        if (!isBlockedprevLine && !hasNumberprevLine && prevLine.length >= 2) {
+        
+        if (!isBlockedprevLine && !hasNumberprevLine && prevLine.length >= 2 && excludeKeywords.some(keyword => prevLine.toLowerCase().includes(keyword.toLowerCase()))) {
               return prevLine;             
         }
 
@@ -1096,7 +1096,7 @@
         let isBlockednextLine = excludeKeywords.some(k => nextLine.toLowerCase().includes(k.toLowerCase()));
         let hasNumbernextLine = /\d/.test(nextLine);
 
-        if (!isBlockednextLine && !hasNumbernextLine && nextLine.length >= 2) {
+        if (!isBlockednextLine && !hasNumbernextLine && nextLine.length >= 2 && excludeKeywords.some(keyword => nextLine.toLowerCase().includes(keyword.toLowerCase()))) {
               return nextLine;             
         }
     }
