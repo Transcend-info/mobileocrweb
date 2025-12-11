@@ -1283,7 +1283,12 @@
             department = line;
             continue;
         }
+        
+        const isAllCaps = /^[A-Z\s.,&-]+$/.test(line) && line.length > 3;             
         if (!company && keywords.company.some(k => line.includes(k))) {
+            company = line;
+            continue;
+        }else if (isAllCaps) {
             company = line;
             continue;
         }
