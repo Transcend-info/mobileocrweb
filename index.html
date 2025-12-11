@@ -1082,15 +1082,22 @@
     ];
 
     // --- 策略 A: 職稱錨點 (Anchor Strategy) ---
-    // 如果已知職稱在哪一行 (jobTitleIndex)，優先檢查該行的上一行
+    // 如果已知職稱在哪一行 (jobTitleIndex)，優先檢查該行的上下一行
     if (jobTitleIndex > 0) {
-        let prevLine = lines[jobTitleIndex - 1].trim();
-        // 檢查上一行是否包含排除字，如果不包含，極大機率是名字
-        let isBlocked = excludeKeywords.some(k => prevLine.toLowerCase().includes(k.toLowerCase()));
-        let hasNumber = /\d/.test(prevLine);
+        let prevLine = lines[jobTitleIndex - 1].trim();        
+        let isBlockedprevLine = excludeKeywords.some(k => prevLine.toLowerCase().includes(k.toLowerCase()));
+        let hasNumberprevLine = /\d/.test(prevLine);
 
-        if (!isBlocked && !hasNumber && prevLine.length >= 2) {
+        if (!isBlockedprevLine && !hasNumberprevLine && prevLine.length >= 2) {
               return prevLine;             
+        }
+
+        let nextLine = lines[jobTitleIndex + 1].trim();
+        let isBlockednextLine = excludeKeywords.some(k => nextLine.toLowerCase().includes(k.toLowerCase()));
+        let hasNumbernextLine = /\d/.test(nextLine);
+
+        if (!isBlockednextLine && !hasNumbernextLine && nextLine.length >= 2) {
+              return nextLine;             
         }
     }
 
@@ -1198,9 +1205,9 @@
         website: ['http', 'www.', '.com', '.tw', '.cn', '.jp', '.de', '.nl', '.fr', '.kr', '.net'],
         taxId: ['統一編號', '統編', 'Tax ID', 'VAT', 'GUI'], 
         company: ['Co.', 'Ltd', 'Inc', 'Corp', 'GmbH', 'AG', 'Group', 'Company', 'Limited', 'Technology', '公司', '集團', '株式會社', '株式会社'],
-        dept: ['Department', 'Dept', 'Div', 'Division', 'Team', 'Center', '中心', '部門', '部', '課'],
+        dept: ['Department', 'Dept', 'Div', 'Division', 'Team', 'Center', 'BU', '處', '中心', '部門', '部', '課'],
         job: ['Manager', 'Director', 'Chief', 'Engineer', 'Specialist', 'Assistant' , 'President', 'CEO', 'Founder', 'CEO', 'CTO', 'CFO', 'COO',
-              '經理', '副理', '總監', '主任', '專員', '工程師', '處長', '執行長', '董事', '特助', '顧問', '代表', '負責人']
+              '經理', '副理', '總監', '主任', '專員', '工程師', '處長', '執行長', '董事', '董事長','特助', '顧問', '代表', '負責人']
     };  
     
     // 暫存職稱所在的行數索引
