@@ -1088,19 +1088,13 @@
         // 檢查上一行是否包含排除字，如果不包含，極大機率是名字
         let isBlocked = excludeKeywords.some(k => prevLine.toLowerCase().includes(k.toLowerCase()));
         let hasNumber = /\d/.test(prevLine);
-        
-        // 中文名字長度檢查 (2-4字)，英文名字長度檢查 (沒有特別限制但通常短於公司名)
-        // 簡單判斷是否為中文 (利用Unicode範圍)
-        let isChinese = /[\u4e00-\u9fa5]/.test(prevLine);
-        
+
         if (!isBlocked && !hasNumber && prevLine.length >= 2) {
-             if (isChinese && prevLine.length <= 4) return prevLine; // 中文名字超過4字通常不是名字
-             if (!isChinese && prevLine.length <= 25) return prevLine; // 英文名字
+              return prevLine;             
         }
     }
 
     // --- 策略 B: 全局掃描 (Fallback) ---
-    // 如果策略 A 失敗，才進行原本的邏輯，但加上更嚴格的過濾
     for (let i = 0; i < lines.length; i++) {
         let line = lines[i].trim();
 
