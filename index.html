@@ -1088,7 +1088,7 @@
         let isBlockedprevLine = excludeKeywords.some(k => prevLine.toLowerCase().includes(k.toLowerCase()));
         let hasNumberprevLine = /\d/.test(prevLine);
         
-        if (!isBlockedprevLine && !hasNumberprevLine && prevLine.length >= 2 && excludeKeywords.some(keyword => prevLine.toLowerCase().includes(keyword.toLowerCase()))) {
+        if (!isBlockedprevLine && !hasNumberprevLine && prevLine.length >= 2 && !excludeKeywords.some(keyword => prevLine.toLowerCase().includes(keyword.toLowerCase()))) {
               return prevLine;             
         }
 
@@ -1096,7 +1096,7 @@
         let isBlockednextLine = excludeKeywords.some(k => nextLine.toLowerCase().includes(k.toLowerCase()));
         let hasNumbernextLine = /\d/.test(nextLine);
 
-        if (!isBlockednextLine && !hasNumbernextLine && nextLine.length >= 2 && excludeKeywords.some(keyword => nextLine.toLowerCase().includes(keyword.toLowerCase()))) {
+        if (!isBlockednextLine && !hasNumbernextLine && nextLine.length >= 2 && !excludeKeywords.some(keyword => nextLine.toLowerCase().includes(keyword.toLowerCase()))) {
               return nextLine;             
         }
     }
