@@ -874,7 +874,6 @@
         showAlert('success', translations[currentLanguage].alertImageLoaded);
 
         // Automatically start OCR after image is loaded
-        preprocessImage(currentImage);
         setTimeout(() => {
           performOCR();
         }, 500);
@@ -891,24 +890,7 @@
             <div id="overlayLayer"></div>
         </div>
       `;
-    }
-
-    function preprocessImage(imageElement) {
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
-    
-    // 1. 放大圖片 (Scale up) 2 倍以提升清晰度，特別是對於小字體的電話號碼
-    const scaleFactor = 2; 
-    canvas.width = imageElement.width * scaleFactor;
-    canvas.height = imageElement.height * scaleFactor;
-    
-    // 使用高品質的平滑演算法
-    ctx.imageSmoothingEnabled = true;
-    ctx.imageSmoothingQuality = 'high';    
-    ctx.drawImage(imageElement, 0, 0, canvas.width, canvas.height);
-      
-    return canvas.toDataURL('image/jpeg', 0.9); // 使用高品質 JPEG
-}
+    }   
     
     async function performOCR() {
       if (!currentImage) {
