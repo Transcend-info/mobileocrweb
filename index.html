@@ -1201,15 +1201,15 @@
     // 定義多國語言的關鍵字
     const keywords = {
         mobile: ['Mobile', 'Mob', 'Cell', 'Handy', 'M:', 'M.', '行動', '手機', '手提'],
-        phone: ['Tel', 'Phone', 'Ph', 'Office', 'T:', 'T.', 'D:', '電話', '代表'], // D: Direct line
+        phone: ['Tel', 'Phone', 'Ph', 'Office', 'T:', 'T.', 'D:', '電話', '代表'],
         fax: ['Fax', 'F:', 'F.', '傳真'],
         email: ['@'],
-        website: ['http', 'www.', '.com', '.tw', '.cn', '.jp', '.de', '.net'],
+        website: ['http', 'www.', '.com', '.tw', '.cn', '.jp', '.de', '.nl', '.fr', '.kr', '.net'],
         taxId: ['統一編號', '統編', 'Tax ID', 'VAT', 'GUI'], 
         company: ['Co.', 'Ltd', 'Inc', 'Corp', 'GmbH', 'AG', 'Group', 'Company', 'Limited', 'Technology', '公司', '集團', '株式會社', '株式会社'],
         dept: ['Department', 'Dept', 'Div', 'Division', 'Team', '部門', '部', '課'],
-        job: ['Manager', 'Director', 'Chief', 'Engineer', 'Specialist', 'President', 'CEO', 'Founder', 
-              '經理', '總監', '主任', '專員', '工程師', '處長', '特助', '顧問', '代表', '負責人']
+        job: ['Manager', 'Director', 'Chief', 'Engineer', 'Specialist', 'Assistant' , 'President', 'CEO', 'Founder', 'CEO', 'CTO', 'CFO', 'COO',
+              '經理', '副理', '總監', '主任', '專員', '工程師', '處長', '執行長', '董事', '特助', '顧問', '代表', '負責人']
     };  
     
     // 暫存職稱所在的行數索引
@@ -1218,7 +1218,7 @@
     // 第一輪掃描：先找明確的欄位 (職稱、電話、Email、公司名)
     for (let i = 0; i < lines.length; i++) {
         let line = lines[i].trim();
-
+        let lineLower = line.toLowerCase();
         // Email
         const emailMatch = line.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/);
         if (emailMatch && !email) {
