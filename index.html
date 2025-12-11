@@ -1281,7 +1281,7 @@
             continue;
         }
         
-        const isAllCaps = /^[A-Z\s.,&-]+$/.test(line) && line.length > 3;             
+        const isAllCaps = /^[A-Z.,&-]+$/.test(line) && line.length > 3;             
         if (!company && keywords.company.some(k => line.includes(k))) {
             company = line;
             continue;
