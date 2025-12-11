@@ -1067,13 +1067,10 @@
     function guessName(lines, jobTitleIndex = -1) {
     // 1. 擴充排除關鍵字：包含產業別、公司型態、常見標語
     const excludeKeywords = [
-        // 公司後綴與型態
         '公司', '有限公司', '股份', '集團', '工作室', '企業', '商行', '中心', 
-        'Inc', 'Ltd', 'Corp', 'Group', 'LLC', 'Co.', 'Company', 'Enterprise',
-        // 地址與聯絡資訊
+        'Inc', 'Ltd', 'Corp', 'Group', 'LLC', 'Co.', 'Company', 'Enterprise', 'Department', 'Dept', 'Div', 'Division', 'Team', 'Center', '部門', '部', '課',
         '路', '號', '樓', '室', '區', '縣', '市', 'City', 'Street', 'Road', 'Ave', 'Dist',
         'Tel', 'Fax', 'Mobile', 'Email', 'Web', 'www', 'http', '.com', '.tw', '統一編號', '統編', 'TAX',
-        // 產業常見詞 (這會大幅減少誤判)
         '科技', '資訊', '實業', '工業', '貿易', '國際', '電子', '生技', '文化', '創意', '設計', '物流', 
         'Technology', 'System', 'Global', 'Digital', 'Consulting', 'Solutions', 'Industry', 'International'
     ];
