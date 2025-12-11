@@ -1113,8 +1113,9 @@
 
         // 過濾 3: 職稱處理 (同一行)
         const matchedTitle = jobTitles.find(title => line.toLowerCase().includes(title.toLowerCase()));
+        let possibleName = '';
         if (matchedTitle) {
-            let possibleName = line.replace(matchedTitle, '').trim();
+            possibleName = line.replace(matchedTitle, '').trim();
             possibleName = possibleName.replace(/[\|\-,\.]/g, '').trim(); // 移除標點
             
             // 嚴格檢查剩餘文字
@@ -1123,10 +1124,11 @@
                  if (/[\u4e00-\u9fa5]/.test(possibleName) && possibleName.length > 4) continue;
                  return possibleName;
             }
-        } 
+        }
+        if(possibleName.length == 0) continue;
         
         // 過濾 4: 純名字猜測 (通常在前 5 行)
-        if (i < 5) {
+        if (i < 5 ) {
              // 中文名字嚴格限制 2-4 字
              if (/[\u4e00-\u9fa5]/.test(line)) {
                  if (line.length >= 2 && line.length <= 4) return line;
