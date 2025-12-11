@@ -1125,7 +1125,7 @@
                  return possibleName;
             }
         }
-        if(possibleName.length == 0) continue;
+        if(matchedTitle && possibleName.length == 0) continue;
         
         // 過濾 4: 純名字猜測 (通常在前 5 行)
         if (i < 5 ) {
