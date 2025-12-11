@@ -1130,10 +1130,9 @@
              if (/[\u4e00-\u9fa5]/.test(line)) {
                  if (line.length >= 2 && line.length <= 4) return line;
              } 
-             // 英文名字 (通常首字大寫，且不包含全大寫的公司縮寫如 TSMC)
+             // 英文名字 排除全大寫小寫或全是連結符號的
              else {
-                 // 排除全是小寫或全是連結符號的
-                 if (line.length >= 3 && line.length <= 20 && !/^[a-z]+$/.test(line)) {
+                 if (line.length >= 3 && line.length <= 20 && !/^[a-z]+$/.test(line) && !/^[A-Z]+$/.test(line)) {
                      return line;
                  }
              }
