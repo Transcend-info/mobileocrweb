@@ -1198,6 +1198,7 @@
     const keywords = {
         mobile: ['Mobile', 'Mob', 'Cell', 'Handy', 'M:', 'M.', '行動', '手機', '手提'],
         phone: ['Tel', 'Phone', 'Ph', 'Office', 'T:', 'T.', 'D:', '電話', '代表'],
+        address: ['路', '號', '樓', '室', '區', '縣', '市', 'City', 'Country', 'Street', 'Road', 'Rd.', 'Ave', 'Dist.', 'No.', 'Taiwan'],
         fax: ['Fax', 'F:', 'F.', '傳真'],
         email: ['@'],
         website: ['http', 'www.', '.com', '.tw', '.cn', '.jp', '.de', '.nl', '.fr', '.kr', '.net'],
@@ -1289,9 +1290,7 @@
             continue;
         }
 
-        // 地址偵測
-        if ((line.includes('市') || line.includes('區') || line.includes('路') || line.includes('街') || 
-             line.includes('Road') || line.includes('Street') || line.includes('Ave')) && !address && line.length > 10) {
+        if (!address && line.length > 10 && keywords.address.some(k => line.includes(k) || lineLower.startsWith(k.toLowerCase()))){        
             address = line;
             continue;
         }
