@@ -167,16 +167,16 @@
 
     const OCR_KEYWORDS = {
         mobile: ['Mobile', 'Mob', 'Cell', 'Handy', 'M:', 'M.', '行動', '手機', '機:', '手提', '+'],
-        phone: ['Tel', 'Phone', 'Ph', 'Office', 'T:', 'T.', 'D:', '電話', '話:', '代表', '+'],
+        phone: ['Tel', 'Phone', 'Ph', 'Office', 'T:', 'T.', 'D:', '電話', '話:', '代表', '+', '(', '0', ')' , '-'],
         address: ['路', '號', '樓', '室', '區', '縣', '市', 'City', 'Country', 'Street', 'Road', 'Rd.', 'Ave', 'Dist.', 'No.', 'Taiwan', 'Dist'],
         fax: ['Fax', 'F:', 'F.', '傳真', '真:'],
         email: ['@', 'Email'],
-        website: ['http', 'www.', '.com', '.tw', '.cn', '.jp', '.de', '.nl', '.fr', '.kr', '.net', 'Web'],
+        website: ['http', 'www.', '.com', '.tw', '.cn', '.jp', '.de', '.nl', '.fr', '.kr', '.net', 'Web','Website', '網址', '網頁' ,'.org', '.io','.biz' ,'.co' ,'.info'],
         taxId: ['統一編號', '統編', 'Tax ID', 'VAT', 'GUI', 'TAX'], 
         company: ['Co.', 'Ltd', 'Inc', 'Corp', 'GmbH', 'AG', 'Group', 'Company', 'Limited', 'Technology', '公司', '集團', '株式會社', '株式会社', '有限公司', '股份', '工作室', '企業', '商行', 'LLC', 'Enterprise'],
         dept: ['Department', 'Dept', 'Div', 'Division', 'Team', 'Center', 'BU', 'Unit', '處', '中心', '部門', '部', '課', '室', '事業'],
-        job: ['Manager', 'Director', 'Chief', 'Engineer', 'Specialist', 'Assistant' , 'President', 'Founder', 'CEO', 'CTO', 'CFO', 'COO', 'Fellow',
-              '經理', '副理', '總監', '主任', '專員', '工程師', '處長', '執行長', '營運長', '董事', '董事長','特助', '顧問', '代表', '負責人', '取締役' ,'監査役', '社長', '役員' ],
+        job: ['Manager', 'Director', 'Chief', 'Engineer', 'Specialist', 'Assistant' , 'President', 'Founder', 'CEO', 'CTO', 'CFO', 'COO', 'Fellow', 'representative', 'Head', 'VP', 'Sr.', 'Jr.', 'Lead', 'Supervisor', 'Staff', 
+              'Architect','經理', '副理', '總監', '主任', '專員', '工程師', '處長', '執行長', '營運長', '董事', '董事長','特助', '顧問', '代表', '負責人', '取締役' ,'監査役', '社長', '役員', '部長', '課長', '組長', '領班', '主管', '助理' ],
         industry: ['科技', '資訊', '實業', '工業', '貿易', '國際', '電子', '生技', '文化', '創意', '設計', '物流', 
                    'System', 'Global', 'Digital', 'Consulting', 'Solutions', 'Industry', 'International']
     };
@@ -466,7 +466,7 @@
     const jobTitles = OCR_KEYWORDS.job;
 
     // --- 策略 A: 職稱錨點 (Anchor Strategy) ---
-    // 如果已知職稱在哪一行 (jobTitleIndex)，優先檢查該行的上下一行
+    // 如果已知職稱index (jobTitleIndex)，優先檢查該行的上下一行
     if (jobTitleIndex > 0) {
         let prevLine = lines[jobTitleIndex - 1].trim();        
         let isBlockedprevLine = excludeKeywords.some(k => prevLine.toLowerCase().includes(k.toLowerCase()));
@@ -482,6 +482,14 @@
 
         if (!isBlockednextLine && !hasNumbernextLine && nextLine.length >= 2 && !excludeKeywords.some(keyword => nextLine.toLowerCase().includes(keyword.toLowerCase()))) {
               return nextLine;             
+        }
+
+        let prevLine2 = lines[jobTitleIndex - 2].trim();        
+        let isBlockedprevLine2 = excludeKeywords.some(k => prevLine2.toLowerCase().includes(k.toLowerCase()));
+        let hasNumberprevLine2 = /\d/.test(prevLine2);
+        
+        if (!isBlockedprevLine2 && !hasNumberprevLine2 && prevLine2.length >= 2 && !excludeKeywords.some(keyword => prevLine2.toLowerCase().includes(keyword.toLowerCase()))) {
+              return prevLine2;             
         }
     }
 
@@ -656,13 +664,17 @@
             continue;
         }
         
-        const isAllCaps = /^[A-Z.,&-]+$/.test(line) && line.length > 3;             
-        if (!company && keywords.company.some(k => line.includes(k))) {
+        const isAllCaps = /^[A-Z.,&-]+$/.test(line) && line.length > 3;  
+        const isAllLowerCase = /^[a-z.,&-]+$/.test(line) && line.length > 3;           
+        if (keywords.company.some(k => line.includes(k))) {
             company = line;
             continue;
-        }else if (isAllCaps) {
+        }else if (!company && isAllCaps) {
             company = line;
             continue;
+        }else if (!company && isAllLowerCase) {
+            company = line;
+            continue; 
         }
 
         if (!address && line.length > 10 && keywords.address.some(k => line.includes(k) || lineLower.startsWith(k.toLowerCase()))){        
