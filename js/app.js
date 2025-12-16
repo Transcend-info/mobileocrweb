@@ -336,7 +336,8 @@
             let hasNumberprevLine2 = /\d/.test(prevLine2);
         
             if (!isBlockedprevLine2 && !hasNumberprevLine2 && prevLine2.length >= 2 && !excludeKeywords.some(keyword => prevLine2.toLowerCase().includes(keyword.toLowerCase()))) {
-              return prevLine2;             
+              return prevLine2; 
+              }            
         }
     }
 
