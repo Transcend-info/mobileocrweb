@@ -445,21 +445,7 @@
     for (let i = 0; i < lines.length; i++) {
         let line = lines[i].trim();
         let lineLower = line.toLowerCase();
-      
-        // Email
-        const emailMatch = line.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/);
-        if (emailMatch && !email) {
-            email = emailMatch[0];
-            continue;
-        }
-
-        // Website
-        const websiteMatch = line.match(/(?:https?:\/\/)?(?:www\.)?[a-zA-Z0-9-]+\.[a-zA-Z]{2,}\.[a-zA-Z]{2,}(?:\/[^\s]*)?/);
-        if (websiteMatch && !website && !line.includes('@')) {
-            website = websiteMatch[0];
-            continue;
-        }
-
+        
         // Mobile 
         if (keywords.mobile.some(k => line.includes(k) || lineLower.startsWith(k.toLowerCase()))) {
             if (!mobile) {
@@ -482,7 +468,7 @@
             }
         }
 
-        // Phone
+        // TEL
         if (keywords.phone.some(k => line.includes(k) || lineLower.startsWith(k.toLowerCase()))) {
             if (!phone) {
                 const extracted = extractGlobalPhoneNumber(line);
@@ -493,10 +479,24 @@
             }
         }
 
-        // Tax ID
+        // Tax ID - TW only
         const taxIdMatch = line.match(/\b\d{8}\b/);
         if (taxIdMatch && !taxId) {
             taxId = taxIdMatch[0];
+            continue;
+        }
+
+        // Website
+        const websiteMatch = line.match(/(?:https?:\/\/)?(?:www\.)?[a-zA-Z0-9-]+\.[a-zA-Z]{2,}\.[a-zA-Z]{2,}(?:\/[^\s]*)?/);
+        if (websiteMatch && !website && !line.includes('@')) {
+            website = websiteMatch[0];
+            continue;
+        }
+
+        // Email
+        const emailMatch = line.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/);
+        if (emailMatch && !email) {
+            email = emailMatch[0];
             continue;
         }
 
