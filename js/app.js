@@ -330,11 +330,12 @@
               return nextLine;             
         }
 
-        let prevLine2 = lines[jobTitleIndex - 2].trim();        
-        let isBlockedprevLine2 = excludeKeywords.some(k => prevLine2.toLowerCase().includes(k.toLowerCase()));
-        let hasNumberprevLine2 = /\d/.test(prevLine2);
+        if (jobTitleIndex >= 2){ 
+            let prevLine2 = lines[jobTitleIndex - 2].trim();        
+            let isBlockedprevLine2 = excludeKeywords.some(k => prevLine2.toLowerCase().includes(k.toLowerCase()));
+            let hasNumberprevLine2 = /\d/.test(prevLine2);
         
-        if (!isBlockedprevLine2 && !hasNumberprevLine2 && prevLine2.length >= 2 && !excludeKeywords.some(keyword => prevLine2.toLowerCase().includes(keyword.toLowerCase()))) {
+            if (!isBlockedprevLine2 && !hasNumberprevLine2 && prevLine2.length >= 2 && !excludeKeywords.some(keyword => prevLine2.toLowerCase().includes(keyword.toLowerCase()))) {
               return prevLine2;             
         }
     }
