@@ -11,17 +11,17 @@
     const AZURE_API_KEY = atob(AZURE_API_KEY_ENCODED);
 
     const OCR_KEYWORDS = {
-        mobile: ['Mobile', 'Mob', 'Cell', 'Handy', 'M:', 'M.', 'M', '行動', '手機', '機:', '手提', '+'],
-        phone: ['Tel', 'Phone', 'Ph', 'Office', 'T:', 'T.', 'T', 'D:', '電話', '話:', '代表', '+', '(', '0', ')' , '-'],
-        address: ['路', '號', '樓', '室', '區', '縣', '市', 'City', 'Country', 'Street', 'Road', 'Rd.', 'Ave', 'Dist.', 'No.', 'Taiwan', 'Dist'],
+        mobile: ['Mobile', 'Mob', 'Cell', 'Handy', 'M:', 'M.', '行動', '手機', '機:', '手提', '+'],
+        phone: ['Tel', 'Phone', 'Ph', 'Office', 'T:', 'T.', 'D:', '電話', '話:', '代表', '+', '(', '0', ')' ],
+        address: ['路', '號', '樓', '室', '區', '縣', '市', 'City', 'Country', 'Street', 'Road', 'Rd.', 'St.', 'Ln', 'Aly.','RUE', 'Ave', 'Dist.', 'No.', 'Taiwan', 'Dist'],
         fax: ['Fax', 'F:', 'F.', '傳真', '真:'],
         email: ['@', 'Email', 'E-mail', 'E:', 'E.','郵箱', '信箱', '電子郵件'],
         website: ['http', 'www.', '.com', '.tw', '.cn', '.jp', '.de', '.nl', '.fr', '.kr', '.net', 'Web','Website', '網址', '網頁' ,'.org', '.io','.biz' ,'.co' ,'.info'],
-        taxId: ['統一編號', '統編', 'Tax ID', 'VAT', 'GUI', 'TAX'], 
+        taxId: ['統一編號', '統編', 'Tax ID', 'VAT', 'GUI', 'TAX', 'TAX No'], 
         company: ['Co.', 'Ltd', 'Inc', 'Corp', 'GmbH', 'AG', 'Group', 'Company', 'Limited', 'Technology', 'University', 'Universität', 'College', 'School','公司', '集團', '株式會社', '株式会社', '有限公司', '股份', '工作室', '企業', '商行', '大學', '學院', 'LLC', 'Enterprise'],
-        dept: ['Department', 'Dept', 'Div', 'Division', 'Team', 'Center', 'BU', 'Unit', '處', '中心', '部門', '部', '課', '室', '事業'],
-        job: ['Manager', 'Director', 'Chief', 'Engineer', 'Specialist', 'Assistant' , 'President', 'Founder', 'CEO', 'CTO', 'CFO', 'COO', 'Fellow', 'representative', 'Head', 'VP', 'Sr.', 'Jr.', 'Lead', 'Supervisor', 'Staff', 'PhD', 'MD', 'Dr.', 'Prof.', 'Ph.D.',
-              'Architect','經理', '副理', '總監', '主任', '專員', '工程師', '處長', '執行長', '營運長', '董事', '董事長','特助', '顧問', '代表', '負責人', '取締役' ,'監査役', '社長', '役員', '部長', '課長', '組長', '領班', '主管', '助理','博士', '教授'],
+        dept: ['Department', 'Dept', 'Div', 'Division', 'Team', 'Center', 'BU', 'Unit', '處', '中心', '部門', '部', '課', '事業'],
+        job: ['Manager', 'Director', 'Chief', 'Engineer', 'Specialist', 'Senior', 'Assistant' , 'President', 'Founder', 'CEO', 'CTO', 'CFO', 'COO', 'Fellow', 'representative', 'Head', 'VP', 'Sr.', 'Jr.', 'Lead', 'Supervisor', 'Staff', 'PhD', 'MD', 'Dr.', 'Prof.', 'Ph.D.',
+              'Architect','經理', '副理', '總監', '主任', '專員', '業務', '資深','工程師', '處長', '執行長', '營運長', '董事', '董事長','特助', '顧問', '代表', '負責人', '取締役' ,'監査役', '社長', '役員', '部長', '課長', '組長', '專家', '領班', '主管', '助理','博士', '教授'],
         industry: ['科技', '資訊', '實業', '工業', '貿易', '國際', '電子', '生技', '文化', '創意', '設計', '物流', 
                    'System', 'Global', 'Digital', 'Consulting', 'Solutions', 'Industry', 'International']
     };
@@ -318,28 +318,30 @@
         let isBlockedprevLine = excludeKeywords.some(k => prevLine.toLowerCase().includes(k.toLowerCase()));
         let hasNumberprevLine = /\d/.test(prevLine);
         
-        if (!isBlockedprevLine && !hasNumberprevLine && prevLine.length >= 2 && !excludeKeywords.some(keyword => prevLine.toLowerCase().includes(keyword.toLowerCase()))) {
+        if (!isBlockedprevLine && !hasNumberprevLine && prevLine.length >= 2 && !/^[a-z]+$/.test(prevLine) && !/^[A-Z]+$/.test(prevLine) && !excludeKeywords.some(keyword => prevLine.toLowerCase().includes(keyword.toLowerCase()))) {
               return prevLine;             
-        }
+        }              
+    }
 
-        let nextLine = lines[jobTitleIndex + 1].trim();
-        let isBlockednextLine = excludeKeywords.some(k => nextLine.toLowerCase().includes(k.toLowerCase()));
-        let hasNumbernextLine = /\d/.test(nextLine);
-
-        if (!isBlockednextLine && !hasNumbernextLine && nextLine.length >= 2 && !excludeKeywords.some(keyword => nextLine.toLowerCase().includes(keyword.toLowerCase()))) {
-              return nextLine;             
-        }
-
-        if (jobTitleIndex >= 2){ 
+    if (jobTitleIndex >= 2){ 
             let prevLine2 = lines[jobTitleIndex - 2].trim();        
             let isBlockedprevLine2 = excludeKeywords.some(k => prevLine2.toLowerCase().includes(k.toLowerCase()));
             let hasNumberprevLine2 = /\d/.test(prevLine2);
         
-            if (!isBlockedprevLine2 && !hasNumberprevLine2 && prevLine2.length >= 2 && !excludeKeywords.some(keyword => prevLine2.toLowerCase().includes(keyword.toLowerCase()))) {
+            if (!isBlockedprevLine2 && !hasNumberprevLine2 && prevLine2.length >= 2 && !/^[a-z]+$/.test(prevLine2) && !/^[A-Z]+$/.test(prevLine2)&& !excludeKeywords.some(keyword => prevLine2.toLowerCase().includes(keyword.toLowerCase()))) {
               return prevLine2; 
               }            
-        }
     }
+
+    if (jobTitleIndex >= 0 && jobTitleIndex < lines.length - 1) {
+        let nextLine = lines[jobTitleIndex + 1].trim();
+        let isBlockednextLine = excludeKeywords.some(k => nextLine.toLowerCase().includes(k.toLowerCase()));
+        let hasNumbernextLine = /\d/.test(nextLine);
+
+        if (!isBlockednextLine && !hasNumbernextLine && nextLine.length >= 2 && !/^[a-z]+$/.test(nextLine) && !/^[A-Z]+$/.test(nextLine) && !excludeKeywords.some(keyword => nextLine.toLowerCase().includes(keyword.toLowerCase()))) {
+              return nextLine;             
+        }  
+    }    
 
     // --- 策略 B: 全局掃描 (Fallback) ---
     for (let i = 0; i < lines.length; i++) {
@@ -385,16 +387,13 @@
     }
     
     function extractGlobalPhoneNumber(line) {
-    // 移除常見的干擾字元，但保留數字、+、-、.、()、空格
-    // 這是為了支援美國 (123.456.7890) 和 國際 (+886 2 2792 8000)
-    
+   
     // Regex ：
     // ((\+|00)\d{1,4})?  -> 可選的國碼，如 +886 或 00886
     // [\s\-\.]?          -> 分隔符
     // \(?\d{1,5}\)?      -> 區碼或前綴，可能帶括號 (02)
     // ... 後續的數字群組
-    
-    // 這個 Regex 可以匹配：
+
     // TW: 0912-345-678, (02) 2792-8000
     // US: 555.123.4567, +1-555-555-5555
     // CN: +86 138 1234 5678
@@ -413,8 +412,6 @@
         const digitCount = match.replace(/\D/g, '').length;
         
         // 國際電話通常至少 8 碼 (包含區碼)，最多約 15 碼 (ITU標準)
-        // 台灣手機 10 碼，市話+區碼 9-10 碼
-        // 香港 8 碼
         if (digitCount >= 8 && digitCount <= 17) {
             return match.trim();
         }
@@ -437,17 +434,21 @@
     let website = '';
     let taxId = '';
 
-    // 定義多國語言的關鍵字
     const keywords = OCR_KEYWORDS;  
-    
-    // 暫存職稱所在的行數索引
+
     let jobTitleIndex = -1;
 
     // 第一輪掃描：先找明確的欄位 (職稱、電話、Email、公司名)
     for (let i = 0; i < lines.length; i++) {
         let line = lines[i].trim();
         let lineLower = line.toLowerCase();
-        
+
+        // Tax ID - TW only
+        const taxIdMatch = line.match(/\b\d{8}\b/);
+        if (taxIdMatch && !taxId) {
+            taxId = taxIdMatch[0];
+            continue;
+        }
         // Mobile 
         if (keywords.mobile.some(k => line.includes(k) || lineLower.startsWith(k.toLowerCase()))) {
             if (!mobile) {
@@ -479,17 +480,10 @@
                     continue;
                 }
             }
-        }
-
-        // Tax ID - TW only
-        const taxIdMatch = line.match(/\b\d{8}\b/);
-        if (taxIdMatch && !taxId) {
-            taxId = taxIdMatch[0];
-            continue;
-        }
+        }        
 
         // Website
-        const websiteMatch = line.match(/(?:https?:\/\/)?(?:www\.)?[a-zA-Z0-9-]+\.[a-zA-Z]{2,}\.[a-zA-Z]{2,}(?:\/[^\s]*)?/);
+        const websiteMatch = line.match(/(?:https?:\/\/)?(?:www\.)?[a-zA-Z0-9-]+(?:\.[a-zA-Z]{2,})+(?:\/[^\s]*)?/);
         if (websiteMatch && !website && !line.includes('@')) {
             website = websiteMatch[0];
             continue;
