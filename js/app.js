@@ -11,17 +11,17 @@
     const AZURE_API_KEY = atob(AZURE_API_KEY_ENCODED);
 
     const OCR_KEYWORDS = {
-        mobile: ['Mobile', 'Mob', 'Cell', 'Handy', 'M:', 'M.', '行動', '手機', '機:', '手提', '+'],
-        phone: ['Tel', 'Phone', 'Ph', 'Office', 'T:', 'T.', 'D:', '電話', '話:', '代表', '+', '(', '0', ')' , '-'],
+        mobile: ['Mobile', 'Mob', 'Cell', 'Handy', 'M:', 'M.', 'M', '行動', '手機', '機:', '手提', '+'],
+        phone: ['Tel', 'Phone', 'Ph', 'Office', 'T:', 'T.', 'T', 'D:', '電話', '話:', '代表', '+', '(', '0', ')' , '-'],
         address: ['路', '號', '樓', '室', '區', '縣', '市', 'City', 'Country', 'Street', 'Road', 'Rd.', 'Ave', 'Dist.', 'No.', 'Taiwan', 'Dist'],
         fax: ['Fax', 'F:', 'F.', '傳真', '真:'],
-        email: ['@', 'Email'],
+        email: ['@', 'Email', 'E-mail', 'E:', 'E.','郵箱', '信箱', '電子郵件'],
         website: ['http', 'www.', '.com', '.tw', '.cn', '.jp', '.de', '.nl', '.fr', '.kr', '.net', 'Web','Website', '網址', '網頁' ,'.org', '.io','.biz' ,'.co' ,'.info'],
         taxId: ['統一編號', '統編', 'Tax ID', 'VAT', 'GUI', 'TAX'], 
-        company: ['Co.', 'Ltd', 'Inc', 'Corp', 'GmbH', 'AG', 'Group', 'Company', 'Limited', 'Technology', '公司', '集團', '株式會社', '株式会社', '有限公司', '股份', '工作室', '企業', '商行', 'LLC', 'Enterprise'],
+        company: ['Co.', 'Ltd', 'Inc', 'Corp', 'GmbH', 'AG', 'Group', 'Company', 'Limited', 'Technology', 'University', 'Universität', 'College', 'School','公司', '集團', '株式會社', '株式会社', '有限公司', '股份', '工作室', '企業', '商行', '大學', '學院', 'LLC', 'Enterprise'],
         dept: ['Department', 'Dept', 'Div', 'Division', 'Team', 'Center', 'BU', 'Unit', '處', '中心', '部門', '部', '課', '室', '事業'],
-        job: ['Manager', 'Director', 'Chief', 'Engineer', 'Specialist', 'Assistant' , 'President', 'Founder', 'CEO', 'CTO', 'CFO', 'COO', 'Fellow', 'representative', 'Head', 'VP', 'Sr.', 'Jr.', 'Lead', 'Supervisor', 'Staff', 
-              'Architect','經理', '副理', '總監', '主任', '專員', '工程師', '處長', '執行長', '營運長', '董事', '董事長','特助', '顧問', '代表', '負責人', '取締役' ,'監査役', '社長', '役員', '部長', '課長', '組長', '領班', '主管', '助理' ],
+        job: ['Manager', 'Director', 'Chief', 'Engineer', 'Specialist', 'Assistant' , 'President', 'Founder', 'CEO', 'CTO', 'CFO', 'COO', 'Fellow', 'representative', 'Head', 'VP', 'Sr.', 'Jr.', 'Lead', 'Supervisor', 'Staff', 'PhD', 'MD', 'Dr.', 'Prof.', 'Ph.D.',
+              'Architect','經理', '副理', '總監', '主任', '專員', '工程師', '處長', '執行長', '營運長', '董事', '董事長','特助', '顧問', '代表', '負責人', '取締役' ,'監査役', '社長', '役員', '部長', '課長', '組長', '領班', '主管', '助理','博士', '教授'],
         industry: ['科技', '資訊', '實業', '工業', '貿易', '國際', '電子', '生技', '文化', '創意', '設計', '物流', 
                    'System', 'Global', 'Digital', 'Consulting', 'Solutions', 'Industry', 'International']
     };
