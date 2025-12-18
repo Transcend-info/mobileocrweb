@@ -442,13 +442,7 @@
     for (let i = 0; i < lines.length; i++) {
         let line = lines[i].trim();
         let lineLower = line.toLowerCase();
-
-        // Tax ID - TW only
-        const taxIdMatch = line.match(/\b\d{8}\b/);
-        if (taxIdMatch && !taxId) {
-            taxId = taxIdMatch[0];
-            continue;
-        }
+        
         // Mobile 
         if (keywords.mobile.some(k => line.includes(k) || lineLower.startsWith(k.toLowerCase()))) {
             if (!mobile) {
@@ -521,6 +515,13 @@
 
         if (!address && line.length > 10 && keywords.address.some(k => line.includes(k) || lineLower.startsWith(k.toLowerCase()))){        
             address = line;
+            continue;
+        }
+
+        // Tax ID - TW only
+        const taxIdMatch = line.match(/\b\d{8}\b/);
+        if (taxIdMatch && !taxId) {
+            taxId = taxIdMatch[0];
             continue;
         }
     }
