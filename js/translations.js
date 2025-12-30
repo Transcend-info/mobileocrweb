@@ -33,7 +33,9 @@ const translations = {
     alertExcelDownloaded: '<i class="material-icons">check_circle</i> Excel file downloaded:  ',
     alertSaved: '<i class="material-icons">save</i> Data saved to local storage',
     alertNoHistory: '<i class="material-icons">error</i> No history data found in storage',
-    confirmRescan: 'Are you sure you want to rescan?  Recognition results will be overwritten.'
+    confirmRescan: 'Are you sure you want to rescan?  Recognition results will be overwritten.',
+    alertConvertingImage: '<i class="material-icons">autorenew</i> Converting HEIC image...',
+    alertHEICError: '<i class="material-icons">error</i> Failed to convert HEIC image. Please use JPG or PNG format.'
   },
 
   de: {
@@ -67,7 +69,9 @@ const translations = {
     alertExcelDownloaded: '<i class="material-icons">check_circle</i> Excel-Datei heruntergeladen: ',
     alertSaved: '<i class="material-icons">save</i> Daten im lokalen Speicher gespeichert',
     alertNoHistory:  '<i class="material-icons">error</i> Keine Verlaufsdaten im Speicher gefunden',
-    confirmRescan: 'Möchten Sie wirklich neu scannen? Erkennungsergebnisse werden überschrieben.'
+    confirmRescan: 'Möchten Sie wirklich neu scannen? Erkennungsergebnisse werden überschrieben.',
+    alertConvertingImage: '<i class="material-icons">autorenew</i> HEIC-Bild wird konvertiert...',
+    alertHEICError: '<i class="material-icons">error</i> HEIC-Bildkonvertierung fehlgeschlagen. Bitte verwenden Sie JPG oder PNG.'
   },
 
   nl: {
@@ -237,7 +241,9 @@ const translations = {
     alertExcelDownloaded: '<i class="material-icons">check_circle</i> Excel檔案已下載：',
     alertSaved:  '<i class="material-icons">save</i> 資料已儲存至 Local Storage',
     alertNoHistory:  '<i class="material-icons">error</i> 查無歷史紀錄',
-    confirmRescan: '確定要重新掃描嗎？辨識結果將被覆蓋。'
+    confirmRescan: '確定要重新掃描嗎？辨識結果將被覆蓋。',
+    alertConvertingImage: '<i class="material-icons">autorenew</i> 正在轉換 HEIC 圖片...',
+    alertHEICError: '<i class="material-icons">error</i> 轉換 HEIC 圖片失敗，請使用 JPG 或 PNG 格式。'
   }
 };
 
