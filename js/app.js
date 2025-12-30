@@ -684,6 +684,14 @@ function guessName(lines, jobTitleIndex = -1) {
       if (/[\u4e00-\u9fa5]/.test(line)) {
         if (line.length >= 2 && line.length <= 4) return line;
       }
+      // 日文（平假名/片假名）或含日本漢字的情況：允許長度小於等於 5
+      else if (/[\u3040-\u30ff]/.test(line)) {
+        if (line.length >= 2 && line.length <= 5) return line;
+      }
+      // 韓文（Hangul）：允許長度小於等於 5
+      else if (/[\uac00-\ud7af]/.test(line)) {
+        if (line.length >= 2 && line.length <= 5) return line;
+      }
       // 英文名字 排除全大寫小寫或全是連結符號的
       else {
         if (
