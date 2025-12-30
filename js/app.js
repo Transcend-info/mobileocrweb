@@ -300,18 +300,61 @@ function handleFileSelect(event) {
 
   currentImageFile = file;
 
-  const reader = new FileReader();
-  reader.onload = function (e) {
-    currentImage = e.target.result;
-    displayImage(currentImage);
-    showAlert("success", translations[currentLanguage].alertImageLoaded);
+  // Check if file is HEIC/HEIF format
+  const isHEIC = /\.(heic|heif)$/i.test(file.name) || 
+                 file.type === 'image/heic' || 
+                 file.type === 'image/heif';
 
-    // Automatically start OCR after image is loaded
-    setTimeout(() => {
-      performOCR();
-    }, 500);
-  };
-  reader.readAsDataURL(file);
+  if (isHEIC) {
+    // Show loading indicator
+    showAlert("info", translations[currentLanguage].alertConvertingImage || "Converting HEIC image...");
+    
+    // Convert HEIC to JPEG
+    heic2any({
+      blob: file,
+      toType: "image/jpeg",
+      quality: 0.9
+    })
+    .then(function(convertedBlob) {
+      // Create a new File object from the converted blob
+      currentImageFile = new File([convertedBlob], file.name.replace(/\.heic$/i, '.jpg'), {
+        type: 'image/jpeg'
+      });
+      
+      // Read the converted file
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        currentImage = e.target.result;
+        displayImage(currentImage);
+        showAlert("success", translations[currentLanguage].alertImageLoaded);
+
+        // Automatically start OCR after image is loaded
+        setTimeout(() => {
+          performOCR();
+        }, 500);
+      };
+      reader.readAsDataURL(convertedBlob);
+    })
+    .catch(function(error) {
+      console.error("HEIC conversion error:", error);
+      showAlert("error", translations[currentLanguage].alertHEICError || "Failed to convert HEIC image. Please use JPG or PNG format.");
+      currentImageFile = null;
+    });
+  } else {
+    // Handle regular image formats
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      currentImage = e.target.result;
+      displayImage(currentImage);
+      showAlert("success", translations[currentLanguage].alertImageLoaded);
+
+      // Automatically start OCR after image is loaded
+      setTimeout(() => {
+        performOCR();
+      }, 500);
+    };
+    reader.readAsDataURL(file);
+  }
 }
 
 function displayImage(imageSrc) {
@@ -1027,10 +1070,10 @@ function showAlert(type, message) {
   alertError.classList.remove("show");
 
   // Use innerHTML because message now contains HTML icons
-  if (type === "success") {
+  if (type === "success" || type === "info") {
     alertSuccess.innerHTML = message;
     alertSuccess.classList.add("show");
-    setTimeout(() => alertSuccess.classList.remove("show"), 2000);
+    setTimeout(() => alertSuccess.classList.remove("show"), type === "info" ? 3000 : 2000);
   } else {
     alertError.innerHTML = message;
     alertError.classList.add("show");
