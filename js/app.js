@@ -317,7 +317,7 @@ function handleFileSelect(event) {
     })
     .then(function(convertedBlob) {
       // Create a new File object from the converted blob
-      currentImageFile = new File([convertedBlob], file.name.replace(/\.heic$/i, '.jpg'), {
+      currentImageFile = new File([convertedBlob], file.name.replace(/\.(heic|heif)$/i, '.jpg'), {
         type: 'image/jpeg'
       });
       
