@@ -1,159 +1,242 @@
 <!DOCTYPE html>
 <html lang="zh-TW" xmlns="http://www.w3.org/1999/xhtml">
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="x-apple-disable-message-reformatting">
-  <title>Business Card Scanner</title>
-  
-  <!-- SheetJS CDN -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-  <!-- Material Design Icons -->
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  
-  <!-- Custom Styles -->
-  <link rel="stylesheet" href="css/style.css">
-</head>
-<body>
-  <div class="container">
-    <!-- Header -->
-    <div class="header">
-      <img src="https://www.transcend-info.com/images/ts_logo.png" alt="TranscendLogo">
-      <h1 id="headerTitle">Business Name Card Scanner</h1>
-    </div>
-    
-    <!-- Content -->
-    <div class="content">
-      <!-- Alert Messages -->
-      <div id="alertSuccess" class="alert alert-success"></div>
-      <div id="alertError" class="alert alert-error"></div>
-      <div id="loadingDiv" class="loading">
-        <p id="loadingText"><i class="material-icons">document_scanner</i> Scanning business card, please wait...</p>
-        <p id="progressText" style="margin-top: 5px; font-size: 12px;">Loading...</p>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="x-apple-disable-message-reformatting" />
+    <title>Business Card Scanner</title>
+
+    <!-- SheetJS CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <!-- Material Design Icons -->
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="css/style.css" />
+
+    <!-- Google tag (gtag.js) -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-7ECCXXKS0C"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+
+      gtag("config", "G-7ECCXXKS0C");
+    </script>
+  </head>
+  <body>
+    <div class="container">
+      <!-- Header -->
+      <div class="header">
+        <img
+          src="https://www.transcend-info.com/images/ts_logo.png"
+          alt="TranscendLogo"
+        />
+        <h1 id="headerTitle">Business Name Card Scanner</h1>
       </div>
-      
-      <!-- Preview Box -->
-      <div class="preview-box" id="previewBox" onclick="triggerFileInput(event)">
-        <div class="preview-placeholder">
-          <i class="material-icons">add_a_photo</i>
-          <p id="previewText">Click to upload a business card</p>
-        </div>
-      </div>
-      
-      <!-- Action Buttons -->
-      <div class="button-group">
-        <button class="btn btn-primary" onclick="openCamera()">
-          <span id="btnCamera"><i class="material-icons">photo_camera</i> Camera</span>
-        </button>
-      </div>
-      
-      <input type="file" id="fileInput" accept="image/*" onchange="handleFileSelect(event)">
-      <input type="file" id="cameraInput" accept="image/*" capture="environment" onchange="handleFileSelect(event)">
-      
-      <!-- Form Section -->
-      <div class="form-section">
-        <div class="form-title" id="formTitle"><i class="material-icons">assignment</i> Scan Results</div>
-        
-        <div class="form-group">
-          <label class="form-label" id="labelName"><i class="material-icons">person</i> Name</label>
-          <input type="text" class="form-input" id="nameInput">
-        </div>
-        
-        <div class="form-group">
-          <label class="form-label" id="labelJobTitle"><i class="material-icons">work</i> Job Title</label>
-          <input type="text" class="form-input" id="jobTitleInput">
-        </div>
-        
-        <div class="form-group">
-          <label class="form-label" id="labelDepartment"><i class="material-icons">domain</i> Department</label>
-          <input type="text" class="form-input" id="departmentInput">
-        </div>
-        
-        <div class="form-group">
-          <label class="form-label" id="labelPhone"><i class="material-icons">phone</i> Tel</label>
-          <input type="text" class="form-input" id="phoneInput">
+
+      <!-- Content -->
+      <div class="content">
+        <!-- Alert Messages -->
+        <div id="alertSuccess" class="alert alert-success"></div>
+        <div id="alertError" class="alert alert-error"></div>
+        <div id="loadingDiv" class="loading">
+          <p id="loadingText">
+            <i class="material-icons">document_scanner</i> Scanning business
+            card, please wait...
+          </p>
+          <p id="progressText" style="margin-top: 5px; font-size: 12px">
+            Loading...
+          </p>
         </div>
 
-        <div class="form-group">
-          <label class="form-label" id="labelMobile"><i class="material-icons">smartphone</i> Mobile</label>
-          <input type="text" class="form-input" id="mobileInput">
-        </div>
-        
-        <div class="form-group">
-          <label class="form-label" id="labelFax"><i class="material-icons">print</i> Fax</label>
-          <input type="text" class="form-input" id="faxInput">
-        </div>
-        
-        <div class="form-group">
-          <label class="form-label" id="labelEmail"><i class="material-icons">email</i> Email</label>
-          <input type="email" class="form-input" id="emailInput">
-        </div>
-        
-        <div class="form-group">
-          <label class="form-label" id="labelCompany"><i class="material-icons">apartment</i> Company Name</label>
-          <input type="text" class="form-input" id="companyInput">
-        </div>
-        
-        <div class="form-group">
-          <label class="form-label" id="labelAddress"><i class="material-icons">place</i> Company Address</label>
-          <input type="text" class="form-input" id="addressInput">
-        </div>
-        
-        <div class="form-group">
-          <label class="form-label" id="labelWebsite"><i class="material-icons">language</i> Company Website</label>
-          <input type="url" class="form-input" id="websiteInput">
+        <!-- Preview Box -->
+        <div
+          class="preview-box"
+          id="previewBox"
+          onclick="triggerFileInput(event)"
+        >
+          <div class="preview-placeholder">
+            <i class="material-icons">add_a_photo</i>
+            <p id="previewText">Click to upload a business card</p>
+          </div>
         </div>
 
-        <!-- ADDED NOTE FIELD HERE -->
-        <div class="form-group">
-          <label class="form-label" id="labelNote"><i class="material-icons">note</i> Note</label>
-          <textarea class="form-input" id="noteInput" rows="2"></textarea>
-        </div>
-        
-        <div class="form-group" id="taxIdField" style="display: none;">
-          <label class="form-label" id="labelTaxId"><i class="material-icons">confirmation_number</i> 統一編號 </label>
-          <input type="text" class="form-input" id="taxIdInput">
-        </div>
-        
         <!-- Action Buttons -->
-        <button class="btn btn-primary btn-xl" onclick="saveCard()" style="margin-bottom: 30px;">
-          <span id="btnSave"><i class="material-icons">save</i> Save</span>
-        </button>
-        
-        <button class="btn btn-secondary btn-large" onclick="rescan()" style="margin-bottom: 30px;">
-          <span id="btnRescan"><i class="material-icons">refresh</i> Rescan</span>
-        </button>
-        
-        <button class="btn btn-success btn-large" onclick="exportHistoryToExcel()">
-          <span id="btnExport"><i class="material-icons">file_download</i> Export All</span>
-        </button>
+        <div class="button-group">
+          <button class="btn btn-primary" onclick="openCamera()">
+            <span id="btnCamera"
+              ><i class="material-icons">photo_camera</i> Camera</span
+            >
+          </button>
+        </div>
+
+        <input
+          type="file"
+          id="fileInput"
+          accept="image/*"
+          onchange="handleFileSelect(event)"
+        />
+        <input
+          type="file"
+          id="cameraInput"
+          accept="image/*"
+          capture="environment"
+          onchange="handleFileSelect(event)"
+        />
+
+        <!-- Form Section -->
+        <div class="form-section">
+          <div class="form-title" id="formTitle">
+            <i class="material-icons">assignment</i> Scan Results
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" id="labelName"
+              ><i class="material-icons">person</i> Name</label
+            >
+            <input type="text" class="form-input" id="nameInput" />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" id="labelJobTitle"
+              ><i class="material-icons">work</i> Job Title</label
+            >
+            <input type="text" class="form-input" id="jobTitleInput" />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" id="labelDepartment"
+              ><i class="material-icons">domain</i> Department</label
+            >
+            <input type="text" class="form-input" id="departmentInput" />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" id="labelPhone"
+              ><i class="material-icons">phone</i> Tel</label
+            >
+            <input type="text" class="form-input" id="phoneInput" />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" id="labelMobile"
+              ><i class="material-icons">smartphone</i> Mobile</label
+            >
+            <input type="text" class="form-input" id="mobileInput" />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" id="labelFax"
+              ><i class="material-icons">print</i> Fax</label
+            >
+            <input type="text" class="form-input" id="faxInput" />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" id="labelEmail"
+              ><i class="material-icons">email</i> Email</label
+            >
+            <input type="email" class="form-input" id="emailInput" />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" id="labelCompany"
+              ><i class="material-icons">apartment</i> Company Name</label
+            >
+            <input type="text" class="form-input" id="companyInput" />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" id="labelAddress"
+              ><i class="material-icons">place</i> Company Address</label
+            >
+            <input type="text" class="form-input" id="addressInput" />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" id="labelWebsite"
+              ><i class="material-icons">language</i> Company Website</label
+            >
+            <input type="url" class="form-input" id="websiteInput" />
+          </div>
+
+          <!-- ADDED NOTE FIELD HERE -->
+          <div class="form-group">
+            <label class="form-label" id="labelNote"
+              ><i class="material-icons">note</i> Note</label
+            >
+            <textarea class="form-input" id="noteInput" rows="2"></textarea>
+          </div>
+
+          <div class="form-group" id="taxIdField" style="display: none">
+            <label class="form-label" id="labelTaxId"
+              ><i class="material-icons">confirmation_number</i> 統一編號
+            </label>
+            <input type="text" class="form-input" id="taxIdInput" />
+          </div>
+
+          <!-- Action Buttons -->
+          <button
+            class="btn btn-primary btn-xl"
+            onclick="saveCard()"
+            style="margin-bottom: 30px"
+          >
+            <span id="btnSave"><i class="material-icons">save</i> Save</span>
+          </button>
+
+          <button
+            class="btn btn-secondary btn-large"
+            onclick="rescan()"
+            style="margin-bottom: 30px"
+          >
+            <span id="btnRescan"
+              ><i class="material-icons">refresh</i> Rescan</span
+            >
+          </button>
+
+          <button
+            class="btn btn-success btn-large"
+            onclick="exportHistoryToExcel()"
+          >
+            <span id="btnExport"
+              ><i class="material-icons">file_download</i> Export All</span
+            >
+          </button>
+        </div>
+
+        <!-- Language Selector -->
+        <div class="language-selector">
+          <select id="languageSelect" onchange="changeLanguage()">
+            <option value="en">English</option>
+            <option value="de">Deutsch</option>
+            <option value="nl">Nederlands</option>
+            <option value="jp">日本語</option>
+            <option value="kr">한국어</option>
+            <option value="sc">简体中文</option>
+            <option value="tc">繁體中文</option>
+          </select>
+        </div>
       </div>
 
-      <!-- Language Selector -->
-      <div class="language-selector">
-        <select id="languageSelect" onchange="changeLanguage()">
-          <option value="en">English</option>
-          <option value="de">Deutsch</option>
-          <option value="nl">Nederlands</option>
-          <option value="jp">日本語</option>
-          <option value="kr">한국어</option>
-          <option value="sc">简体中文</option>
-          <option value="tc">繁體中文</option>
-        </select>
+      <!-- Footer -->
+      <div class="footer">
+        <p>Copyright © Transcend Information, Inc. All Rights Reserved.</p>
       </div>
-
     </div>
-    
-    <!-- Footer -->
-    <div class="footer">
-      <p>Copyright © Transcend Information, Inc. All Rights Reserved.</p>
-    </div>
-  </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.js"></script>
-  
-  <script src="js/translations.js"></script>
-  
-  <script src="js/app.js"></script>
-</body>
+    <script src="https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.js"></script>
+
+    <script src="js/translations.js"></script>
+
+    <script src="js/app.js"></script>
+  </body>
 </html>
