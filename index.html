@@ -206,9 +206,19 @@
           <button
             class="btn btn-success btn-large"
             onclick="exportHistoryToExcel()"
+            style="margin-bottom: 30px"
           >
             <span id="btnExport"
               ><i class="material-icons">file_download</i> Export All</span
+            >
+          </button>
+
+          <button
+            class="btn btn-primary btn-large"
+            onclick="syncToAWS()"
+          >
+            <span id="btnSync"
+              ><i class="material-icons">cloud_upload</i> Sync to Cloud</span
             >
           </button>
         </div>

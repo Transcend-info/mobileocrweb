@@ -259,6 +259,7 @@ function changeLanguage() {
   document.getElementById("labelTaxId").innerHTML = t.labelTaxId;
   document.getElementById("btnSave").innerHTML = t.btnSave;
   document.getElementById("btnRescan").innerHTML = t.btnRescan;
+  document.getElementById("btnSync").innerHTML = t.btnSync;
 
   // Update Export Button with Count
   updateExportButton();
@@ -1074,6 +1075,31 @@ function exportHistoryToExcel() {
     "success",
     translations[currentLanguage].alertExcelDownloaded + filename
   );
+}
+
+async function syncToAWS() {
+  console.log("Sync button clicked");
+  const history = JSON.parse(localStorage.getItem("businessCardHistory") || "[]");
+  if (history.length === 0) {
+     showAlert("error", translations[currentLanguage].alertNoHistory || "No history to sync");
+     return;
+  }
+  
+  // TODO: Implement actual AWS sync logic here
+  // Example:
+  // try {
+  //   const response = await fetch('YOUR_AWS_ENDPOINT', {
+  //     method: 'POST',
+  //     headers: { 'Content-Type': 'application/json' },
+  //     body: JSON.stringify(history)
+  //   });
+  //   if (response.ok) showAlert("success", "Sync successful!");
+  //   else throw new Error("Sync failed");
+  // } catch (e) {
+  //   showAlert("error", "Sync error: " + e.message);
+  // }
+  
+  showAlert("info", "Sync to AWS functionality will be implemented here.");
 }
 
 function showAlert(type, message) {
