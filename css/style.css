@@ -389,3 +389,343 @@ input[type="file"] {
     padding: 24px 16px;
   }
 }
+
+/* ============================================== */
+/* 初始化對話框樣式                               */
+/* ============================================== */
+
+.init-dialog {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.init-dialog-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height:  100%;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(8px);
+}
+
+.init-dialog-content {
+  position: relative;
+  background: white;
+  border-radius: 20px;
+  max-width: 500px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y:  auto;
+  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.4);
+  animation: slideUp 0.4s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform:  translateY(50px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* 對話框標題 */
+. init-dialog-header {
+  text-align: center;
+  padding: 35px 30px 25px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 20px 20px 0 0;
+  color: white;
+}
+
+. init-dialog-header img {
+  margin-bottom: 20px;
+  filter: brightness(0) invert(1);
+  opacity: 0.9;
+}
+
+.init-dialog-header h2 {
+  margin: 0 0 10px;
+  font-size: 26px;
+  font-weight:  700;
+}
+
+.init-dialog-header p {
+  margin: 0;
+  opacity: 0.9;
+  font-size: 15px;
+}
+
+/* 對話框內容 */
+.init-dialog-body {
+  padding:  30px;
+}
+
+/* 表單群組 */
+.form-group {
+  margin-bottom: 25px;
+}
+
+.form-group label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 10px;
+  font-size: 15px;
+}
+
+.form-group label . material-icons {
+  font-size: 20px;
+  color: #667eea;
+}
+
+.form-group label . required {
+  color: #e74c3c;
+  font-weight: bold;
+}
+
+/* 表單控制項 */
+.form-control {
+  width: 100%;
+  padding: 14px 16px;
+  border: 2px solid #e0e0e0;
+  border-radius: 10px;
+  font-size: 16px;
+  transition: all 0.3s;
+  box-sizing: border-box;
+  font-family: inherit;
+}
+
+.form-control:hover {
+  border-color: #c0c0c0;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+}
+
+.form-control: invalid: not(:placeholder-shown) {
+  border-color: #e74c3c;
+}
+
+/* Select 下拉選單樣式 */
+select. form-control {
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23333' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+  background-size: 12px;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+/* 提示文字 */
+.form-hint {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 8px;
+  color: #666;
+  font-size: 13px;
+}
+
+. form-hint .material-icons {
+  font-size: 16px;
+}
+
+/* 錯誤訊息 */
+.error-message {
+  margin-top: 10px;
+  padding: 10px 14px;
+  background: #fee;
+  color: #c33;
+  border-left: 4px solid #e74c3c;
+  border-radius: 6px;
+  font-size:  14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.error-message:: before {
+  content: "⚠️";
+  font-size: 16px;
+}
+
+/* 預覽區域 */
+.preview-section {
+  margin-top: 30px;
+  padding: 25px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.preview-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 14px;
+  margin-bottom: 12px;
+  font-weight: 500;
+}
+
+.preview-label .material-icons {
+  font-size: 18px;
+}
+
+.preview-value {
+  color: white;
+  font-size: 28px;
+  font-weight:  bold;
+  letter-spacing: 2px;
+  font-family: 'Courier New', Consolas, monospace;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  word-break: break-word;
+}
+
+/* 對話框底部 */
+.init-dialog-footer {
+  padding: 20px 30px 30px;
+  background: #f8f9fa;
+  border-radius: 0 0 20px 20px;
+}
+
+/* 按鈕樣式 */
+.btn-large {
+  width: 100%;
+  padding:  16px;
+  font-size:  17px;
+  font-weight:  600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-family: inherit;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.btn-primary:hover: not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+}
+
+.btn-primary:active: not(:disabled) {
+  transform: translateY(0);
+}
+
+.btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+. btn-primary . material-icons {
+  font-size: 22px;
+}
+
+/* 響應式設計 */
+@media (max-width: 768px) {
+  .init-dialog {
+    padding: 10px;
+  }
+
+  .init-dialog-content {
+    max-height: 95vh;
+    border-radius: 16px;
+  }
+
+  . init-dialog-header {
+    padding: 25px 20px 20px;
+    border-radius: 16px 16px 0 0;
+  }
+
+  .init-dialog-header h2 {
+    font-size: 22px;
+  }
+
+  . init-dialog-body {
+    padding: 20px;
+  }
+
+  .preview-value {
+    font-size: 22px;
+    letter-spacing: 1px;
+  }
+
+  .init-dialog-footer {
+    padding: 15px 20px 20px;
+    border-radius: 0 0 16px 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .init-dialog-header h2 {
+    font-size: 20px;
+  }
+
+  .preview-value {
+    font-size: 20px;
+  }
+
+  .form-control {
+    font-size: 16px; /* 防止 iOS 自動縮放 */
+  }
+}
+
+/* 平滑捲動 */
+. init-dialog-content {
+  scroll-behavior: smooth;
+}
+
+/* 自訂捲軸樣式 */
+. init-dialog-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.init-dialog-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.init-dialog-content::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+}
+
+.init-dialog-content::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.3);
+}

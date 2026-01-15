@@ -243,6 +243,12 @@ function changeLanguage() {
   // Use innerHTML instead of textContent to render icons
   document.getElementById("headerTitle").textContent = t.title;
   document.getElementById("btnCamera").innerHTML = t.btnCamera;
+  
+  // Update Init Dialog if function exists
+  if (typeof updateInitDialogTranslations === 'function') {
+    updateInitDialogTranslations();
+  }
+
   document.getElementById("loadingText").innerHTML = t.loadingText;
   document.getElementById("formTitle").innerHTML = t.formTitle;
   document.getElementById("labelName").innerHTML = t.labelName;
@@ -1123,8 +1129,12 @@ function showAlert(type, message) {
 
 // Initialize button count on load
 window.onload = function () {
-  fetchConfig();
+  // Initialize Dialog
+  if (typeof initDialogEventListeners === 'function') initDialogEventListeners();
+  if (typeof checkAndShowInitDialog === 'function') checkAndShowInitDialog();
 
+  fetchConfig();
+  
   const savedLang = localStorage.getItem("preferredLanguage");
   if (savedLang && translations[savedLang]) {
     document.getElementById("languageSelect").value = savedLang;

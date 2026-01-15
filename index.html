@@ -33,6 +33,50 @@
     </script>
   </head>
   <body>
+
+    <div id="initDialog" class="init-dialog" style="display: none;">
+    <div class="init-dialog-overlay"></div>
+    <div class="init-dialog-content">     
+
+      <div class="init-dialog-body">
+        <div class="form-group">
+          <select id="officeSelect" class="form-control" required>
+            <option value="initOptionSelect">-- Select Your Office --</option>
+            <option value="USA"> USA Team</option>
+            <option value="GM"> DE Team</option>
+            <option value="NL"> NL Team</option>
+            <option value="UK"> UK Team</option>
+            <option value="JP"> JP Team</option>
+            <option value="KR"> KR Team</option>
+            <option value="TW"> TW Team</option>
+            <option value="CN"> CN Team</option>
+            <option value="HK"> HK Team</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <input  
+            type="text" 
+            id="userNameInput" 
+            class="form-control" 
+            placeholder="Enter Your Name (2-32 characters)"
+            minlength="2"
+            maxlength="32"
+            autocomplete="off"
+            required
+          >
+          <div id="nameError" class="error-message" style="display: none;"></div>
+        </div>        
+      </div>
+
+      <div class="init-dialog-footer">
+        <button id="saveUserInfoBtn" class="btn btn-primary btn-large" onclick="saveUserInfo()">
+          <i class="material-icons">save</i>
+          Save >
+        </button>
+      </div>      
+    </div>
+  </div>
+
     <div class="container">
       <!-- Header -->
       <div class="header">
@@ -246,7 +290,63 @@
     <script src="https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.js"></script>
 
     <script src="js/translations.js"></script>
+    <script src="js/initDialog.js"></script>
+    <script src="js/app.js"></script>   
 
-    <script src="js/app.js"></script>
+  <!-- Firebase SDK (v10 - Modular)  -->
+  <script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-analytics.js";
+  import { 
+    getFirestore,
+    collection,
+    addDoc,
+    getDocs,
+    getDoc,
+    doc,
+    query,
+    where,
+    orderBy,
+    limit,
+    serverTimestamp,
+    Timestamp
+  } from 'https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js';
+  import { 
+    getStorage,
+    ref as storageRef,
+    uploadString,
+    getDownloadURL
+  } from 'https://www.gstatic.com/firebasejs/12.8.0/firebase-storage.js';
+
+  // Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  const firebaseConfig = {
+    apiKey: "AIzaSyD2E-FnZGs5Jc2eghw9T_815FLeoHxAcIc",
+    authDomain: "gen-lang-client-0513493885.firebaseapp.com",
+    projectId: "gen-lang-client-0513493885",
+    storageBucket: "gen-lang-client-0513493885.firebasestorage.app",
+    messagingSenderId: "657748626710",
+    appId: "1:657748626710:web:81bf41ea24574a9ba89437",
+    //measurementId: "G-9L8X6K5T4X"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  const storage = getStorage(app);
+
+  window.firebaseApp = app;
+  window.firebaseDB = db;
+  window.firebaseStorage = storage;
+  window.firebaseModules = {
+      collection, doc, getDocs, getDoc, addDoc,
+      query, where, orderBy, limit,
+      serverTimestamp, Timestamp,
+      storageRef, uploadString, getDownloadURL
+    };
+    
+  console.log('Firebase ready');  
+</script>
   </body>
 </html>
