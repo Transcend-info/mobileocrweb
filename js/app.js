@@ -700,6 +700,8 @@ function saveToLocalStorage() {
     website: document.getElementById("websiteInput").value,
     note: document.getElementById("noteInput").value,
     taxId: document.getElementById("taxIdInput").value,
+    username: localStorage.getItem('userRealName') || "",
+    office: localStorage.getItem('userOffice') || "",
   };
 
   // Get existing history or initialize empty array
@@ -714,7 +716,6 @@ function saveToLocalStorage() {
   console.log("Saved to localStorage:", cardData);
 }
 
-// Renamed from uploadNew to saveCard
 function saveCard() {
   // Check if there is any data in the form to save
   const hasData = [
@@ -815,6 +816,8 @@ function exportHistoryToExcel() {
     stripHtml(t.labelWebsite),
     stripHtml(t.labelNote),
     stripHtml(t.labelTaxId),
+    "User Name",
+    "Office",
   ];
 
   // Map history data to array of arrays
@@ -831,6 +834,8 @@ function exportHistoryToExcel() {
     item.website,
     item.note,
     item.taxId,
+    item.username || "",
+    item.office || "",
   ]);
 
   // Create data (Headers + Rows)
@@ -853,6 +858,8 @@ function exportHistoryToExcel() {
     { wch: 30 }, // Website
     { wch: 30 }, // Note
     { wch: 15 }, // Tax ID
+    { wch: 15 }, // User Name
+    { wch: 10 }, // Office
   ];
 
   // Add worksheet to workbook
@@ -871,30 +878,6 @@ function exportHistoryToExcel() {
   );
 }
 
-async function syncToAWS() {
-  console.log("Sync button clicked");
-  const history = JSON.parse(localStorage.getItem("businessCardHistory") || "[]");
-  if (history.length === 0) {
-     showAlert("error", translations[currentLanguage].alertNoHistory || "No history to sync");
-     return;
-  }
-  
-  // TODO: Implement actual AWS sync logic here
-  // Example:
-  // try {
-  //   const response = await fetch('YOUR_AWS_ENDPOINT', {
-  //     method: 'POST',
-  //     headers: { 'Content-Type': 'application/json' },
-  //     body: JSON.stringify(history)
-  //   });
-  //   if (response.ok) showAlert("success", "Sync successful!");
-  //   else throw new Error("Sync failed");
-  // } catch (e) {
-  //   showAlert("error", "Sync error: " + e.message);
-  // }
-  
-  showAlert("info", "Sync to AWS functionality will be implemented here.");
-}
 
 function showAlert(type, message) {
   const alertSuccess = document.getElementById("alertSuccess");
