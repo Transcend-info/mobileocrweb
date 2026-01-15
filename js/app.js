@@ -731,6 +731,8 @@ function saveCard() {
     "websiteInput",
     "noteInput",
     "taxIdInput",
+    "userRealName",
+    "userOffice",
   ].some((id) => document.getElementById(id).value.trim() !== "");
 
   if (hasData) {
