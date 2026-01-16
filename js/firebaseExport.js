@@ -53,15 +53,14 @@ async function downloadFirebaseExcel() {
       }
 
       cards.push({
-        'Cloud ID': doc.id,
         'Name': data.name || '',
         'Job Title': data.jobTitle || '',
+        'Company Name': data.companyName || '',
         'Department': data.department || '',
         'Phone': data.phone || '',
         'Mobile': data.mobile || '',
         'Fax': data.fax || '',
         'Email':  data.email || '',
-        'Company Name': data.companyName || '',
         'Company Address': data.companyAddress || '',
         'Company Website': data.companyWebsite || '',
         'Tax ID': data.taxId || '',
@@ -78,22 +77,21 @@ async function downloadFirebaseExcel() {
     
     // 設定欄位寬度
     worksheet['!cols'] = [
-      { wch: 25 }, // Cloud ID
       { wch: 20 }, // Name
       { wch: 25 }, // Job Title
-      { wch: 20 }, // Department
-      { wch: 18 }, // Phone
-      { wch: 18 }, // Mobile
-      { wch: 18 }, // Fax
-      { wch: 30 }, // Email
       { wch: 30 }, // Company Name
+      { wch: 20 }, // Department
+      { wch: 15 }, // Phone
+      { wch: 15 }, // Mobile
+      { wch: 15 }, // Fax
+      { wch: 30 }, // Email
       { wch: 40 }, // Company Address
       { wch: 30 }, // Company Website
-      { wch: 15 }, // Tax ID
-      { wch: 30 }, // Note
+      { wch: 10 }, // Tax ID
+      { wch: 20 }, // Note
       { wch: 20 }, // Scanned By
-      { wch: 15 }, // Scanned By Office
-      { wch: 20 }, // Exhibition ID
+      { wch: 8 }, // Scanned By Office
+      { wch: 10 }, // Exhibition ID
       { wch: 20 }  // Scanned At
     ];
 
