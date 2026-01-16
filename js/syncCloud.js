@@ -1,11 +1,128 @@
+class syncCloud {
+  constructor() {
+    // 確保 Firebase 已初始化
+    if (!window.firebaseDB || !window.firebaseModules) {
+      console.warn('⏳ 等待 Firebase 初始化...');
+      this.initWhenReady();
+      return;
+    }
+    
+    this.db = window.firebaseDB;
+    this.modules = window.firebaseModules;
+    this.init();
+  }
 
-/**
- * 同步歷史資料到雲端
- * 類似 exportHistoryToExcel 的結構，但是上傳到 Firebase
- */
+  // 等待 Firebase 就緒後初始化
+  initWhenReady() {
+    const checkInterval = setInterval(() => {
+      if (window.firebaseDB && window.firebaseModules) {
+        clearInterval(checkInterval);
+        this.db = window.firebaseDB;
+        this.modules = window.firebaseModules;
+        this. init();
+      }
+    }, 100);
+  }
+
+  // 初始化
+  init() {
+    this.userName = this.getUserIdentity();
+    this.exhibitionId = this.getExhibitionId();
+    
+    console.log('✅ 雲端同步系統已啟動');
+    console.log('👤 使用者:', this.userName);
+    console.log('📍 展覽:', this.exhibitionId);
+    
+    // 定期檢查未同步數量
+    this.startAutoCheck();
+  }
+
+  // ============================================
+  // 取得使用者識別
+  // ============================================
+  getUserIdentity() {
+    const setupComplete = localStorage.getItem('userSetupComplete');
+    
+    const userIdentity = localStorage.getItem('userIdentity');
+    const office = localStorage.getItem('userOffice');
+    const realName = localStorage.getItem('userRealName');
+    
+    if (userIdentity) {
+      console.log('✅ 使用者識別:', userIdentity);
+      return userIdentity;
+    }
+    
+    console.warn('⚠️ 使用者資料不完整');
+    return 'PENDING-SETUP';
+  }
+
+  // 取得辦公室
+  getUserOffice() {
+    return localStorage.getItem('userOffice') || 'Unknown';
+  }
+
+  // 取得真實姓名
+  getUserRealName() {
+    return localStorage.getItem('userRealName') || 'Unknown';
+  }
+
+  // 檢查是否已完成設定
+  isSetupComplete() {
+    return localStorage.getItem('userSetupComplete') === 'true';
+  }
+
+  // 取得展覽 ID
+  getExhibitionId() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const urlExhibition = urlParams.get('exhibition');
+    const savedExhibition = localStorage.getItem('exhibitionId');
+    const defaultExhibition = 'computex-2026';
+    
+    const exhibitionId = urlExhibition || savedExhibition || defaultExhibition;
+    localStorage.setItem('exhibitionId', exhibitionId);
+    
+    return exhibitionId;
+  }
+
+  // 定期檢查
+  startAutoCheck() {
+    this.updateUnsyncedBadge();
+    setInterval(() => {
+        this.updateUnsyncedBadge();
+    }, 60000); // Check every 1 minute
+  }
+
+  // 更新未同步徽章
+  updateUnsyncedBadge() {
+    try {
+        const historyStr = localStorage.getItem('businessCardHistory');
+        if (!historyStr) return;
+        
+        const history = JSON.parse(historyStr);
+        if (!Array.isArray(history)) return;
+
+        const unsyncedCount = history.filter(c => !c.cloudId && !c.synced).length;
+        console.log('🔄 Pending Sync:', unsyncedCount);
+        
+        // Example: Update a UI badge if it exists
+        const badge = document.getElementById('syncBadge');
+        if (badge) {
+            badge.textContent = unsyncedCount > 0 ? unsyncedCount : '';
+            badge.style.display = unsyncedCount > 0 ? 'block' : 'none';
+        }
+    } catch(e) {
+        console.error('Badge update error:', e);
+    }
+  }
+}
+
+// Instantiate the helper
+window.syncToCloud = new syncCloud();
+
+
 async function syncHistoryToCloud() {
 
-  if (!window. firebaseDB || !window.firebaseModules) {
+  if (!window.firebaseDB || !window.firebaseModules) {
     alert('❌ Firebase 未初始化\n\n請確認網路連線正常。');
     return {
       success: false,
@@ -28,12 +145,12 @@ async function syncHistoryToCloud() {
     
     history = JSON.parse(historyStr);
     
-    if (! Array.isArray(history) || history.length === 0) {
+    if (!Array.isArray(history) || history.length === 0) {
       alert('✅ 沒有資料需要同步');
       return {
         success: true,
         total: 0,
-        message:  '沒有資料'
+        message: '沒有資料'
       };
     }
   } catch (error) {
@@ -67,7 +184,7 @@ async function syncHistoryToCloud() {
     };
   }
   
-  console.log(`📤 發現 ${unsyncedCards. length} 筆未同步資料`);
+  console.log(`📤 發現 ${unsyncedCards.length} 筆未同步資料`);
   
   // ============================================
   // 4. 確認對話框
@@ -80,7 +197,7 @@ async function syncHistoryToCloud() {
     `已同步: ${history.length - unsyncedCards.length} 張\n` +
     `總計: ${history.length} 張\n\n` +
     `使用者: ${userInfo.userName}\n` +
-    `辦公室: ${userInfo. getUserOffice()}\n` +
+    `辦公室: ${userInfo.getUserOffice()}\n` +
     `展覽:  ${userInfo.exhibitionId}\n\n` +
     `確定要開始同步嗎？`;
   
@@ -115,7 +232,7 @@ async function syncHistoryToCloud() {
     
     try {
       // 更新進度顯示
-      if (window. updateSyncProgress) {
+      if (window.updateSyncProgress) {
         updateSyncProgress(cardIndex, unsyncedCards.length);
       }
       
@@ -142,18 +259,17 @@ async function syncHistoryToCloud() {
         taxId: card.taxId || '',
         note: card.note || '',        
 
-        scannedBy: userInfo.userName,
+        scannedBy: userInfo.getUserRealName(),
         scannedByOffice: userInfo.getUserOffice(),
-        scannedByName:  userInfo.getUserRealName(),
         exhibitionId: userInfo.exhibitionId,
         
         // === 時間戳記 ===
         scannedAt: card.timestamp ?  
-          window.firebaseModules. Timestamp.fromMillis(card.timestamp) : 
+          window.firebaseModules.Timestamp.fromMillis(card.timestamp) : 
           window.firebaseModules.serverTimestamp(),
         
         // === 元資料 ===
-        localId: card.id || card.timestamp?. toString(),
+        localId: card.id || card.timestamp?.toString(),
         deviceInfo: navigator.userAgent,
         createdAt: window.firebaseModules.serverTimestamp(),
         syncedAt: window.firebaseModules.serverTimestamp(),
@@ -186,7 +302,7 @@ async function syncHistoryToCloud() {
       console.error(`  ❌ 失敗: `, error.message);
       
       failCount++;
-      failedCards. push({
+      failedCards.push({
         card: card,
         error: error.message
       });
@@ -221,7 +337,7 @@ async function syncHistoryToCloud() {
     message: `同步完成:  ${successCount} 成功, ${failCount} 失敗 (耗時 ${duration} 秒)`
   };
   
-  console. log('📊 同步結果:', result);
+  console.log('📊 同步結果:', result);
   
   // ============================================
   // 8. 隱藏 Loading 並顯示結果
