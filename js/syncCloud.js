@@ -262,11 +262,7 @@ async function syncHistoryToCloud() {
         scannedBy: userInfo.getUserRealName(),
         scannedByOffice: userInfo.getUserOffice(),
         exhibitionId: userInfo.exhibitionId,
-        
-        // === 時間戳記 ===
-        scannedAt: card.timestamp ?  
-          window.firebaseModules.Timestamp.fromMillis(card.timestamp) : 
-          window.firebaseModules.serverTimestamp(),        
+        scannedAt: window.firebaseModules.serverTimestamp(),        
 
       };     
 
