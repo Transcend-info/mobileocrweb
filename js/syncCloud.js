@@ -13,14 +13,6 @@ async function syncHistoryToCloud() {
     };
   }
   
-  // 檢查使用者是否已設定
-  if (!window.syncToCloud || !window.syncToCloud.isSetupComplete()) {
-    alert('⚠️ 請先完成使用者設定\n\n需要設定辦公室和姓名才能同步。');
-    return {
-      success: false,
-      error: 'USER_NOT_SETUP'
-    };
-  }
 
   let history = [];
   try {
