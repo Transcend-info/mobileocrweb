@@ -343,7 +343,7 @@ textarea.form-input {
   display: block;
 }
 
-. alert {
+.alert {
   display: none;
   padding: 12px 15px;
   border-radius: 6px;
@@ -351,7 +351,7 @@ textarea.form-input {
   font-size: 14px;
 }
 
-.alert . material-icons {
+.alert .material-icons {
   margin-right: 8px;
   font-size: 20px;
   vertical-align: text-bottom;
@@ -367,7 +367,7 @@ textarea.form-input {
   color:  #155724;
 }
 
-. alert-error {
+.alert-error {
   background-color: #f8d7da;
   border: 1px solid #f5c6cb;
   color: #721c24;
@@ -447,7 +447,7 @@ input[type="file"] {
 }
 
 /* 對話框標題 */
-. init-dialog-header {
+.init-dialog-header {
   text-align: center;
   padding: 35px 30px 25px;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -455,7 +455,7 @@ input[type="file"] {
   color: white;
 }
 
-. init-dialog-header img {
+.init-dialog-header img {
   margin-bottom: 20px;
   filter: brightness(0) invert(1);
   opacity: 0.9;
@@ -493,12 +493,12 @@ input[type="file"] {
   font-size: 15px;
 }
 
-.form-group label . material-icons {
+.form-group label .material-icons {
   font-size: 20px;
   color: #667eea;
 }
 
-.form-group label . required {
+.form-group label .required {
   color: #e74c3c;
   font-weight: bold;
 }
@@ -525,12 +525,12 @@ input[type="file"] {
   box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
 }
 
-.form-control: invalid: not(:placeholder-shown) {
+.form-control:invalid:not(:placeholder-shown) {
   border-color: #e74c3c;
 }
 
 /* Select 下拉選單樣式 */
-select. form-control {
+select.form-control {
   cursor: pointer;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23333' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
@@ -551,7 +551,7 @@ select. form-control {
   font-size: 13px;
 }
 
-. form-hint .material-icons {
+.form-hint .material-icons {
   font-size: 16px;
 }
 
@@ -569,7 +569,7 @@ select. form-control {
   gap: 8px;
 }
 
-.error-message:: before {
+.error-message::before {
   content: "⚠️";
   font-size: 16px;
 }
@@ -644,7 +644,7 @@ select. form-control {
   box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
 }
 
-.btn-primary:active: not(:disabled) {
+.btn-primary:active:not(:disabled) {
   transform: translateY(0);
 }
 
@@ -654,7 +654,7 @@ select. form-control {
   transform: none;
 }
 
-. btn-primary . material-icons {
+.btn-primary .material-icons {
   font-size: 22px;
 }
 
@@ -669,7 +669,7 @@ select. form-control {
     border-radius: 16px;
   }
 
-  . init-dialog-header {
+  .init-dialog-header {
     padding: 25px 20px 20px;
     border-radius: 16px 16px 0 0;
   }
@@ -678,7 +678,7 @@ select. form-control {
     font-size: 22px;
   }
 
-  . init-dialog-body {
+  .init-dialog-body {
     padding: 20px;
   }
 
@@ -708,12 +708,12 @@ select. form-control {
 }
 
 /* 平滑捲動 */
-. init-dialog-content {
+.init-dialog-content {
   scroll-behavior: smooth;
 }
 
 /* 自訂捲軸樣式 */
-. init-dialog-content::-webkit-scrollbar {
+.init-dialog-content::-webkit-scrollbar {
   width: 6px;
 }
 
