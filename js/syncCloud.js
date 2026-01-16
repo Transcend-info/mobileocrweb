@@ -96,14 +96,18 @@ class syncCloud {
   updateUnsyncedBadge() {
     try {
         const historyStr = localStorage.getItem('businessCardHistory');
-        if (!historyStr) return;
         
-        const history = JSON.parse(historyStr);
-        if (!Array.isArray(history)) return;
+        const history = JSON.parse(historyStr || "[]");
 
-        const unsyncedCount = history.filter(c => !c.cloudId && !c.synced).length;
+        const unsyncedCount = Array.isArray(history) ? history.filter(c => !c.cloudId && !c.synced).length : 0;
         console.log('🔄 Pending Sync:', unsyncedCount);
         
+        // Update the button text
+        const btnSync = document.getElementById('btnSync');
+        if (btnSync) {
+            btnSync.innerHTML = `<i class="material-icons">cloud_upload</i> Sync to Cloud (${unsyncedCount})`;
+        }
+
         // Example: Update a UI badge if it exists
         const badge = document.getElementById('syncBadge');
         if (badge) {

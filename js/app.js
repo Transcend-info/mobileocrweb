@@ -714,6 +714,11 @@ function saveToLocalStorage() {
   localStorage.setItem("businessCardHistory", JSON.stringify(history));
 
   console.log("Saved to localStorage:", cardData);
+  
+  // Update sync badge
+  if (window.syncToCloud) {
+    window.syncToCloud.updateUnsyncedBadge();
+  }
 }
 
 function saveCard() {

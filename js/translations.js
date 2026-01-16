@@ -3,7 +3,7 @@
  */
 const translations = {
   en: {
-    title: 'Transcend Business Name Card Scanner',
+    title: 'Transcend Business Card Scanner',
     previewText: 'Click to upload a business card',
     btnCamera: '<i class="material-icons">photo_camera</i> Camera',
     loadingText: '<i class="material-icons">document_scanner</i> Scanning business card, please wait...',
