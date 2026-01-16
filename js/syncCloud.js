@@ -245,17 +245,17 @@ async function syncHistoryToCloud() {
       
       // 準備上傳資料（與 exportHistoryToExcel 類似的資料結構）
       const uploadData = {
-        // === 基本資訊 ===
+
         name:  card.name || '',
-        company: card.company || '',
+        companyName: card.company || card.companyName || '',              // 🆕 改名
+        companyAddress: card.address || card.companyAddress || '',        // 🆕 改名
+        companyWebsite: card.website || card.companyWebsite || '', 
         jobTitle: card.jobTitle || '',
         department: card.department || '',
         phone: card.phone || '',
         mobile: card.mobile || '',
         fax: card.fax || '',
         email: card.email || '',
-        address: card.address || '',
-        website: card.website || '',
         taxId: card.taxId || '',
         note: card.note || '',        
 
@@ -266,18 +266,9 @@ async function syncHistoryToCloud() {
         // === 時間戳記 ===
         scannedAt: card.timestamp ?  
           window.firebaseModules.Timestamp.fromMillis(card.timestamp) : 
-          window.firebaseModules.serverTimestamp(),
-        
-        // === 元資料 ===
-        localId: card.id || card.timestamp?.toString(),
-        deviceInfo: navigator.userAgent,
-        createdAt: window.firebaseModules.serverTimestamp(),
-        syncedAt: window.firebaseModules.serverTimestamp(),
-        
-        // === 來源標記 ===
-        source: 'batch_sync',
-        batchSyncTime: Date.now()
-      };      
+          window.firebaseModules.serverTimestamp(),        
+
+      };     
 
       
       // 上傳到 Firestore
