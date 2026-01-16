@@ -24,7 +24,7 @@ async function syncHistoryToCloud() {
 
   let history = [];
   try {
-    const historyStr = localStorage.getItem('scanHistory');
+    const historyStr = localStorage.getItem('businessCardHistory');
     if (!historyStr) {
       alert('✅ 沒有資料需要同步');
       return {
@@ -206,7 +206,7 @@ async function syncHistoryToCloud() {
   // ============================================
   
   try {
-    localStorage.setItem('scanHistory', JSON.stringify(history));
+    localStorage.setItem('businessCardHistory', JSON.stringify(history));
     console.log('✅ 已更新本地同步狀態');
   } catch (error) {
     console.error('⚠️ 更新本地狀態失敗:', error);
