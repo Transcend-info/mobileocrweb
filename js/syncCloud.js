@@ -76,7 +76,7 @@ class syncCloud {
     const urlParams = new URLSearchParams(window.location.search);
     const urlExhibition = urlParams.get('exhibition');
     const savedExhibition = localStorage.getItem('exhibitionId');
-    const defaultExhibition = 'computex-2026';
+    const defaultExhibition = 'exhibition-2026';
     
     const exhibitionId = urlExhibition || savedExhibition || defaultExhibition;
     localStorage.setItem('exhibitionId', exhibitionId);
