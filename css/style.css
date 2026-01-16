@@ -729,3 +729,325 @@ select. form-control {
 .init-dialog-content::-webkit-scrollbar-thumb:hover {
   background: rgba(0, 0, 0, 0.3);
 }
+
+/* ============================================
+   圓形 Admin Icon - 藍色版本（右下角固定）
+   ============================================ */
+
+.admin-icon-wrapper {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  z-index: 1000;
+}
+
+.admin-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(52, 152, 219, 0.4);
+  transition: all 0.3s ease;
+  border: 3px solid white;
+  position: relative;
+}
+
+.admin-icon:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 30px rgba(52, 152, 219, 0.6);
+}
+
+.admin-icon:active {
+  transform: scale(0.95);
+}
+
+.admin-icon .material-icons {
+  font-size: 32px;
+  margin: 0;
+}
+
+
+/* ============================================
+   Admin Pop-up 視窗樣式
+   ============================================ */
+
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000;
+  animation: popupFadeIn 0.3s ease;
+}
+
+.popup-overlay.show {
+  display: flex;
+}
+
+.popup-box {
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  max-width: 420px;
+  width: 90%;
+  animation: popupSlideUp 0.3s ease;
+  overflow: hidden;
+}
+
+.popup-header {
+  background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+  color: white;
+  padding: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.popup-header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.popup-header h3 {
+  margin: 0;
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+.popup-header .material-icons {
+  font-size: 28px;
+  margin: 0;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.3s ease;
+}
+
+.close-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.close-btn .material-icons {
+  font-size: 20px;
+  margin: 0;
+}
+
+.popup-body {
+  padding: 30px;
+}
+
+.admin-form-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 10px;
+  font-size: 0.95rem;
+}
+
+.admin-form-label .material-icons {
+  font-size: 20px;
+  color: #3498db;
+  margin: 0;
+}
+
+.admin-form-select,
+.admin-form-input {
+  width: 100%;
+  padding: 14px 16px;
+  border: 2px solid #e0e0e0;
+  border-radius: 10px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  font-family: inherit;
+}
+
+.admin-form-select:focus,
+.admin-form-input:focus {
+  outline: none;
+  border-color: #3498db;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+}
+
+.admin-form-input {
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-weight: 600;
+  font-family: 'Courier New', monospace;
+}
+
+.admin-input-hint {
+  font-size: 0.8rem;
+  color: #95a5a6;
+  margin-top: 6px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.admin-input-hint .material-icons {
+  font-size: 14px;
+  margin: 0;
+}
+
+.popup-footer {
+  padding: 20px 30px;
+  background: #f8f9fa;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.btn-admin-verify {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 28px;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+  color: white;
+  box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+}
+
+.btn-admin-verify:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+}
+
+.btn-admin-verify:active {
+  transform: translateY(0);
+}
+
+.btn-admin-verify:disabled {
+  background: #bdc3c7;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.btn-admin-verify .material-icons {
+  font-size: 20px;
+  margin: 0;
+}
+
+.admin-error-message {
+  background: #ffe6e6;
+  border-left: 4px solid #e74c3c;
+  padding: 12px;
+  border-radius: 8px;
+  color: #c0392b;
+  font-size: 0.9rem;
+  display: none;
+  margin-top: 15px;
+  animation: adminShake 0.5s ease;
+}
+
+.admin-error-message.show {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.admin-error-message .material-icons {
+  font-size: 18px;
+  margin: 0;
+}
+
+.admin-success-message {
+  background: #d4edda;
+  border-left: 4px solid #27ae60;
+  padding: 12px;
+  border-radius: 8px;
+  color: #155724;
+  font-size: 0.9rem;
+  display: none;
+  margin-top: 15px;
+}
+
+.admin-success-message.show {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.admin-success-message .material-icons {
+  font-size: 18px;
+  margin: 0;
+}
+
+@keyframes popupFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes popupSlideUp {
+  from {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes adminShake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-10px); }
+  75% { transform: translateX(10px); }
+}
+
+/* 響應式設計 */
+@media (max-width: 768px) {
+  .admin-icon-wrapper {
+    bottom: 20px;
+    right: 20px;
+  }
+
+  .admin-icon {
+    width: 56px;
+    height: 56px;
+  }
+
+  .admin-icon .material-icons {
+    font-size: 28px;
+  }
+
+  .popup-box {
+    max-width: 95%;
+  }
+
+  .popup-body {
+    padding: 20px;
+  }
+
+  .popup-footer {
+    padding: 15px 20px;
+  }
+}

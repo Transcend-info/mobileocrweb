@@ -268,6 +268,104 @@
           </button>
         </div>
 
+        <!-- 🔵 圓形 Admin Icon - 右下角固定 -->
+<div class="admin-icon-wrapper">
+  <div class="admin-icon" onclick="openAdminPopup()" title="Admin Login">
+    <i class="material-icons">manage_accounts</i>
+  </div>
+</div>
+
+<!-- Admin Login Pop-up -->
+<div id="adminPopup" class="popup-overlay">
+  <div class="popup-box">
+    <div class="popup-header">
+      <div class="popup-header-left">
+        <i class="material-icons">manage_accounts</i>
+        <h3>Admin Login</h3>
+      </div>
+      <button class="close-btn" onclick="closeAdminPopup()">
+        <i class="material-icons">close</i>
+      </button>
+    </div>
+    
+    <div class="popup-body">
+      <div class="form-group">
+        <select id="adminNameSelect" class="admin-form-select">
+          <option value="">Please select ... </option>
+          <option value="terri">USA Terri</option>
+          <option value="mike">USA Mike</option>
+          <option value="andy">USA Andy</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <input 
+          type="text" 
+          id="adminEmployeeInput" 
+          class="admin-form-input" 
+          placeholder="ex. LA0123"
+          maxlength="6"
+          autocomplete="off"
+        />
+      </div>
+
+      <div id="adminErrorMsg" class="admin-error-message">
+        <i class="material-icons">error</i>
+        <span id="adminErrorText"></span>
+      </div>
+
+      <div id="adminSuccessMsg" class="admin-success-message">
+        <i class="material-icons">check_circle</i>
+        <span> Login Success ✓</span>
+      </div>
+    </div>
+    
+    <div class="popup-footer">
+      <button id="adminVerifyBtn" class="btn-admin-verify" onclick="verifyAdmin()">
+        <i class="material-icons">verified_user</i>
+        <span>Login</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+function openAdminPopup() {
+  const popup = document.getElementById('adminPopup');
+  if (popup) {
+    popup.classList.add('show');
+    setTimeout(() => {
+      const nameSelect = document.getElementById('adminNameSelect');
+      if (nameSelect) nameSelect.focus();
+    }, 300);
+  }
+}
+
+function closeAdminPopup() {
+  const popup = document.getElementById('adminPopup');
+  if (popup) {
+    popup.classList.remove('show');
+  }
+}
+
+function verifyAdmin() {
+  alert('Ongoing...');
+}
+
+// 點擊遮罩關閉
+document.addEventListener('DOMContentLoaded', function() {
+  const popup = document.getElementById('adminPopup');
+  if (popup) {
+    popup.addEventListener('click', function(e) {
+      if (e.target === this) {
+        closeAdminPopup();
+      }
+    });
+  }
+});
+</script>
+
+
         <!-- Language Selector -->
         <div class="language-selector">
           <select id="languageSelect" onchange="changeLanguage()">
@@ -308,6 +406,7 @@
     addDoc,
     getDocs,
     getDoc,
+    setDoc, 
     doc,
     query,
     where,
