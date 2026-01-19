@@ -491,7 +491,7 @@ function guessName(lines, jobTitleIndex = -1) {
       else {
         if (
           line.length >= 3 &&
-          line.length <= 20 &&
+          line.length <= 25 &&
           !/^[a-z]+$/.test(line) &&
           !/^[A-Z]+$/.test(line)
         ) {
@@ -666,7 +666,7 @@ function parseOCRResult(text) {
         let nextLineLower = nextLine.toLowerCase();
           
         const nextLineIsAddressField = 
-          keywords.address.some(k => nextLine. includes(k) || nextLineLower.startsWith(k.toLowerCase())) &&
+          keywords.address.some(k => nextLine. includes(k)) &&
           nextLine.length >= 5;
           
           if (nextLineIsAddressField) {

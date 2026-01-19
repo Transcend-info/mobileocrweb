@@ -68,6 +68,10 @@ address:  [
   "Suite",
   "Ste.",
   "Floor", "Fl.",
+  "Building", "Bldg.",
+  "Park",
+  "Tower",
+  "Center", "Centre",
   
   // 
   "Taiwan",
