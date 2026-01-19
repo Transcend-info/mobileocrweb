@@ -242,13 +242,13 @@
             onclick="exportHistoryToExcel()"
             style="margin-bottom: 30px; display: none"
           >
-            <span id="btnExport"
+            <span id="btnExportLocal"
               ><i class="material-icons">file_download</i> Export All</span
             >
           </button>
 
           <button
-            class="btn btn-info btn-large"
+            class="btn btn-secondary btn-large"
             onclick="syncHistoryToCloud()"
             style="margin-bottom: 30px"
           >
@@ -262,13 +262,13 @@
             onclick="downloadFirebaseExcel()"
             style="margin-bottom: 30px; display: none"
           >
-            <span id="btnExport"
+            <span id="btnExportCloud"
               ><i class="material-icons">cloud_download</i> Download Excel </span
             >
           </button>
         </div>
 
-        <!-- 🔵 圓形 Admin Icon - 右下角固定 -->
+        <!-- Admin Icon - 右下角固定 -->
 <div class="admin-icon-wrapper">
   <div class="admin-icon" onclick="openAdminPopup()" title="Admin Login">
     <i class="material-icons">manage_accounts</i>
@@ -300,12 +300,15 @@
           type="text" 
           id="adminEmployeeInput" 
           class="admin-form-input" 
-          placeholder="Please enter your TSID ex.LA0123"
+          placeholder="Please enter your TSID"
           maxlength="6"
           autocomplete="off"
         />
       </div>
-
+      <div id="input-hint" class="input-hint">
+            <i class="material-icons">info</i>
+             ex.LA0001
+       </div>
       <div id="adminErrorMsg" class="admin-error-message">
         <i class="material-icons">error</i>
         <span id="adminErrorText"></span>
@@ -318,7 +321,7 @@
     </div>
     
     <div class="popup-footer">
-      <button id="adminVerifyBtn" class="btn-admin-verify" onclick="verifyAdmin()">
+      <button id="adminVerifyBtn" class="btn-admin-verify" onclick="verifyAdminUsers()">
         <i class="material-icons">login</i>
         <span>Login </span>
       </button>
@@ -336,6 +339,7 @@ function openAdminPopup() {
       if (nameSelect) nameSelect.focus();
     }, 300);
   }
+  updateAdminNameSelect();
 }
 
 function closeAdminPopup() {
@@ -343,10 +347,6 @@ function closeAdminPopup() {
   if (popup) {
     popup.classList.remove('show');
   }
-}
-
-function verifyAdmin() {
-  updateAdminNameSelect();
 }
 
 // 點擊遮罩關閉

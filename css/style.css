@@ -262,6 +262,15 @@ body {
   background-color: #218838;
 }
 
+.btn-info {
+  background-color: #4285F4;
+  color: white;
+}
+
+.btn-info:hover {
+  background-color: #3367d6;
+}
+
 /* Button Sizes */
 .btn-large {
   width: 100%;

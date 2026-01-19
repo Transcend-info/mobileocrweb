@@ -1,9 +1,69 @@
 let adminUsersCache = null; // 快取 Admin 使用者資料
 let isAdminUnlocked = false;
 
-/**
- * 從 Firebase 載入 Admin 使用者清單
- */
+async function verifyAdminUsers(){
+    const nameSelect = document.getElementById('adminNameSelect');
+    const tsidInput = document.getElementById('adminEmployeeInput');
+    const inputHint = document.getElementById('input-hint');
+    const selectedAdminId = nameSelect.value;
+    const enteredTSID = tsidInput.value.trim().toUpperCase();      
+
+    if (!selectedAdminId) {   
+        inputHint.innerHTML = '❌ Please select an Admin name.';
+        //alert('❌ Please select an Admin name.');
+        return;
+    }
+    if (!enteredTSID) {
+        inputHint.textContent = '❌ Please enter the TSID. Format: 2 letters + 4 digits, e.g., LA0001';
+        //alert('❌ Please enter the TSID. Format: 2 letters + 4 digits, e.g., LA0001');
+        return;
+    }
+
+    // 從快取或重新載入 Admin 使用者清單
+    let adminUsers = adminUsersCache;       
+    if (!adminUsers) {
+        adminUsers = await loadAdminUsers();
+        if (!adminUsers) {
+            inputHint.innerHTML = '❌ Unable to load Admin users. Please try again later.';
+            return;
+        }   
+    }   
+    // 找到選取的 Admin 使用者
+    const selectedAdmin = adminUsers.find(admin => admin.id === selectedAdminId);   
+    if (!selectedAdmin) {
+        inputHint.innerHTML = '❌ Selected Admin not found.';
+        return;
+    }
+    // 驗證 TSID
+    if (selectedAdmin.TSID !== enteredTSID) {
+        inputHint.innerHTML = '❌ TSID does not match. Access denied.';
+        return;
+    }
+    // 成功驗證
+    isAdminUnlocked = true;
+    //alert(`✅ Welcome, ${selectedAdmin.name}! Admin access granted.`);
+    closeAdminPopup();
+    console.log(`🔓 Admin access granted to ${selectedAdmin.name} (ID: ${selectedAdmin.id})`)  ;  
+
+    // 清除輸入欄位
+    nameSelect.value = '';
+    tsidInput.value = '';   
+
+    // display download export button
+    const exportBtn = document.getElementById('btnExportCloud');  
+    if (exportBtn) {
+        exportBtn.style.display = 'inline-block';
+    } 
+
+    // ✅ 儲存登入狀態（重新整理頁面後仍有效）
+    sessionStorage.setItem('adminUnlocked', 'true');
+    sessionStorage.setItem('adminUnlockTime', Date.now().toString());
+    sessionStorage.setItem('adminName', selectedAdmin.name);
+    sessionStorage.setItem('adminOffice', selectedAdmin.office);
+    sessionStorage.setItem('adminTSID', selectedAdmin.TSID);
+
+}
+
 async function loadAdminUsers() {
   console.log('📥 從 Firebase 載入 Admin 使用者清單...');
   
