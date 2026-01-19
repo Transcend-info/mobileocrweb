@@ -108,7 +108,7 @@ class syncCloud {
             btnSync.innerHTML = `<i class="material-icons">cloud_upload</i> Sync to Cloud (${unsyncedCount})`;
         }
 
-        const btnSyncButton = document.getElementById('btnSyncCloud');
+        const btnSyncButton = document.getElementById('btnSyncButton');
           if (btnSyncButton) {
               if (unsyncedCount === 0) {
                   btnSyncButton.disabled = true;
