@@ -82,7 +82,7 @@ function updateExportButton() {
   );
   const count = history.length;
   const t = translations[currentLanguage];
-  document.getElementById("btnExport").innerHTML = `${t.btnExport} (${count})`;
+  document.getElementById("btnExportLocal").innerHTML = `${t.btnExportLocal} (${count})`;
 }
 
 function openCamera() {
