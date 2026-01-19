@@ -56,12 +56,12 @@ async function verifyAdminUsers(){
     } 
 
     // ✅ 儲存登入狀態（重新整理頁面後仍有效）
-    sessionStorage.setItem('adminUnlocked', 'true');
-    sessionStorage.setItem('adminUnlockTime', Date.now().toString());
-    sessionStorage.setItem('adminName', selectedAdmin.name);
-    sessionStorage.setItem('adminOffice', selectedAdmin.office);
-    sessionStorage.setItem('adminTSID', selectedAdmin.TSID);
-
+    localStorage.setItem('adminUnlocked', 'true');
+    localStorage.setItem('adminUnlockTime', Date.now().toString());
+    localStorage.setItem('adminName', selectedAdmin.name);
+    localStorage.setItem('adminOffice', selectedAdmin.office);
+    localStorage.setItem('adminTSID', selectedAdmin.TSID);
+    location.reload();
 }
 
 async function loadAdminUsers() {

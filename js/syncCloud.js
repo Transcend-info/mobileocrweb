@@ -29,9 +29,9 @@ class syncCloud {
     this.userName = this.getUserIdentity();
     this.exhibitionId = this.getExhibitionId();
     
-    console.log('✅ 雲端同步系統已啟動');
-    console.log('👤 使用者:', this.userName);
-    console.log('📍 展覽:', this.exhibitionId);
+    //console.log('✅ 雲端同步系統已啟動');
+    //console.log('👤 使用者:', this.userName);
+    //console.log('📍 展覽:', this.exhibitionId);
     
     // 定期檢查未同步數量
     this.startAutoCheck();
@@ -48,7 +48,7 @@ class syncCloud {
     const realName = localStorage.getItem('userRealName');
     
     if (userIdentity) {
-      console.log('✅ 使用者識別:', userIdentity);
+      //console.log('✅ 使用者識別:', userIdentity);
       return userIdentity;
     }
     
@@ -100,13 +100,26 @@ class syncCloud {
         const history = JSON.parse(historyStr || "[]");
 
         const unsyncedCount = Array.isArray(history) ? history.filter(c => !c.cloudId && !c.synced).length : 0;
-        console.log('🔄 Pending Sync:', unsyncedCount);
+        console.log('🔄 Pending Cloud Sync:', unsyncedCount);
         
         // Update the button text
         const btnSync = document.getElementById('btnSync');
         if (btnSync) {
             btnSync.innerHTML = `<i class="material-icons">cloud_upload</i> Sync to Cloud (${unsyncedCount})`;
         }
+
+        const btnSyncButton = document.getElementById('btnSyncCloud');
+          if (btnSyncButton) {
+              if (unsyncedCount === 0) {
+                  btnSyncButton.disabled = true;
+                  btnSyncButton.style.opacity = '0.5';
+                  btnSyncButton.style.cursor = 'not-allowed';
+              } else {
+                  btnSyncButton.disabled = false;
+                  btnSyncButton.style.opacity = '1';
+                  btnSyncButton.style.cursor = 'pointer';
+              }
+            }
 
         // Example: Update a UI badge if it exists
         const badge = document.getElementById('syncBadge');
