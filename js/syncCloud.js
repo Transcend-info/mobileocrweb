@@ -127,7 +127,7 @@ window.syncToCloud = new syncCloud();
 async function syncHistoryToCloud() {
 
   if (!window.firebaseDB || !window.firebaseModules) {
-    alert('❌ Firebase 未初始化\n\n請確認網路連線正常。');
+    alert('❌ Firebase not initialized\n\nPlease check network connection.');
     return {
       success: false,
       error: 'FIREBASE_NOT_INITIALIZED'
@@ -139,27 +139,27 @@ async function syncHistoryToCloud() {
   try {
     const historyStr = localStorage.getItem('businessCardHistory');
     if (!historyStr) {
-      alert('✅ 沒有資料需要同步');
+      alert('✅ No data to sync');
       return {
         success: true,
         total: 0,
-        message: '沒有資料'
+        message: 'No data'
       };
     }
     
     history = JSON.parse(historyStr);
     
     if (!Array.isArray(history) || history.length === 0) {
-      alert('✅ 沒有資料需要同步');
+      alert('✅ No data to sync');
       return {
         success: true,
         total: 0,
-        message: '沒有資料'
+        message: 'No data'
       };
     }
   } catch (error) {
-    console.error('❌ 讀取歷史資料失敗:', error);
-    alert('❌ 讀取本地資料失敗');
+    console.error('❌ Failed to read history data:', error);
+    alert('❌ Failed to read local data');
     return {
       success: false,
       error: 'READ_ERROR'
@@ -178,13 +178,13 @@ async function syncHistoryToCloud() {
   });
   
   if (unsyncedCards.length === 0) {
-    alert('✅ 所有資料都已同步！');
+    alert('✅ All data is already synced!');
     return {
       success: true,
       total: history.length,
       synced: history.length,
       unsynced: 0,
-      message: '所有資料都已同步'
+      message: 'All data is already synced'
     };
   }
   
@@ -195,24 +195,25 @@ async function syncHistoryToCloud() {
   // ============================================
   
   const userInfo = window.syncToCloud;
+  /*
   const confirmMessage = 
-    `📤 準備同步到 Firebase\n\n` +
-    `待同步:  ${unsyncedCards.length} 張名片\n` +
-    `已同步: ${history.length - unsyncedCards.length} 張\n` +
-    `總計: ${history.length} 張\n\n` +
-    `使用者: ${userInfo.userName}\n` +
-    `辦公室: ${userInfo.getUserOffice()}\n` +
-    `展覽:  ${userInfo.exhibitionId}\n\n` +
-    `確定要開始同步嗎？`;
+    `📤 Ready to sync to Firebase\n\n` +
+    `Pending: ${unsyncedCards.length} cards\n` +
+    `Synced: ${history.length - unsyncedCards.length} cards\n` +
+    `Total: ${history.length} cards\n\n` +
+    `User: ${userInfo.userName}\n` +
+    `Office: ${userInfo.getUserOffice()}\n` +
+    `Exhibition: ${userInfo.exhibitionId}\n\n` +
+    `Are you sure you want to start syncing?`;
   
   if (!confirm(confirmMessage)) {
-    console.log('❌ 使用者取消同步');
+    console.log('❌ User cancelled sync');
     return {
       success: false,
       cancelled: true,
-      message: '使用者取消'
+      message: 'User cancelled'
     };
-  }
+  }*/
   
   // ============================================
   // 5. 開始批次上傳
@@ -220,7 +221,7 @@ async function syncHistoryToCloud() {
   
   // 顯示 Loading
   if (window.showLoading) {
-    showLoading('正在同步到雲端...');
+    showLoading('Syncing to Cloud...');
   }
   
   let successCount = 0;
@@ -242,7 +243,7 @@ async function syncHistoryToCloud() {
       
       // 更新 Loading 文字
       if (window.showLoading) {
-        showLoading(`正在同步 ${cardIndex}/${unsyncedCards.length}... `);
+        showLoading(`Syncing ${cardIndex}/${unsyncedCards.length}... `);
       }
       
       console.log(`📤 [${cardIndex}/${unsyncedCards.length}] 上傳: `, card.name || card.company || card.email);
@@ -325,7 +326,7 @@ async function syncHistoryToCloud() {
     failCount,
     failedCards,
     duration,
-    message: `同步完成:  ${successCount} 成功, ${failCount} 失敗 (耗時 ${duration} 秒)`
+    message: `Sync complete: ${successCount} success, ${failCount} failed (Duration: ${duration}s)`
   };
   
   console.log('📊 同步結果:', result);
@@ -340,14 +341,14 @@ async function syncHistoryToCloud() {
   
   // 顯示結果對話框
   const resultMessage = 
-    `✅ 同步完成！\n\n` +
-    `成功: ${successCount} 張\n` +
-    `失敗: ${failCount} 張\n` +
-    `總計: ${unsyncedCards.length} 張\n` +
-    `耗時: ${duration} 秒\n\n` +
+    `✅ Sync Complete!\n\n` +
+    `Success: ${successCount} cards\n` +
+    `Failed: ${failCount} cards\n` +
+    `Total: ${unsyncedCards.length} cards\n` +
+    `Duration: ${duration}s\n\n` +
     (failCount > 0 ? 
-      `⚠️ 部分資料同步失敗，請檢查網路連線後重試。` : 
-      `🎉 所有資料都已成功同步到雲端！`);
+      `⚠️ Some data failed to sync. Please check network and try again.` : 
+      `🎉 All data successfully synced to Cloud!`);
   
   alert(resultMessage);
   

@@ -2,7 +2,7 @@
 async function downloadFirebaseExcel() {
   // 檢查 Firebase 是否初始化
   if (!window. firebaseDB || !window.firebaseModules) {
-    alert('❌ Firebase 未初始化\n\n請確認網路連線正常。');
+    alert('❌ Firebase not initialized\n\nPlease check network connection.');
     return;
   }
 
@@ -11,8 +11,8 @@ async function downloadFirebaseExcel() {
   const progressText = document.getElementById("progressText");
   
   loadingDiv. classList.add("show");
-  loadingText.innerHTML = '<i class="material-icons">cloud_download</i> 正在從雲端下載資料...';
-  progressText.textContent = '請稍候...';
+  loadingText.innerHTML = '<i class="material-icons">cloud_download</i> Downloading data from Cloud...';
+  progressText.textContent = 'Please wait...';
 
   try {
     console.log('📥 開始從 Firebase 下載 exhibition_cards.. .');
@@ -33,13 +33,13 @@ async function downloadFirebaseExcel() {
 
     // 檢查是否有資料
     if (querySnapshot.empty) {
-      alert('📭 目前雲端沒有任何資料');
+      alert('📭 No data in Cloud currently');
       loadingDiv.classList.remove("show");
       return;
     }
 
     console.log(`✅ 取得 ${querySnapshot.size} 筆資料`);
-    progressText.textContent = `已取得 ${querySnapshot.size} 筆資料，正在產生 Excel... `;
+    progressText.textContent = `Fetched ${querySnapshot.size} records, generating Excel... `;
 
     // 轉換為陣列
     const cards = [];
@@ -107,12 +107,12 @@ async function downloadFirebaseExcel() {
     // 顯示成功訊息
     showAlert(
       "success",
-      `✅ 已下載 ${cards.length} 筆資料\n檔案名稱: ${fileName}`
+      `✅ Downloaded ${cards.length} records\nFilename: ${fileName}`
     );
 
   } catch (error) {
     console.error('❌ 下載失敗:', error);
-    alert(`❌ 下載失敗\n\n錯誤訊息: ${error.message}`);
+    alert(`❌ Download Failed\n\nError: ${error.message}`);
   } finally {
     // 隱藏 Loading
     loadingDiv.classList.remove("show");
