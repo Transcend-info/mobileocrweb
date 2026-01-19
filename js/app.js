@@ -660,25 +660,16 @@ function parseOCRResult(text) {
       )
     ) {
       address = line;
-
-       // 檢查下一行是否為地址延續
-        if (i + 1 < lines.length) {
+      
+      if (i + 1 < lines.length) { // 檢查下一行是否為地址延續
         let nextLine = lines[i + 1].trim();
         let nextLineLower = nextLine.toLowerCase();
           
-        const isNotOtherField = 
-          !keywords.phone.some(k => nextLine. includes(k) || nextLineLower.startsWith(k.toLowerCase())) &&
-          !keywords.mobile.some(k => nextLine. includes(k) || nextLineLower.startsWith(k.toLowerCase())) &&
-          !keywords.fax.some(k => nextLine.includes(k) || nextLineLower.startsWith(k.toLowerCase())) &&
-          !keywords.job.some(k => nextLine. includes(k)) &&
-          !keywords.dept.some(k => nextLine. includes(k)) &&
-          !keywords.company.some(k => nextLine.includes(k)) &&
-          !keywords.email.some(k => nextLine.includes(k) || nextLineLower.startsWith(k.toLowerCase())) &&
-          !keywords.website.some(k => nextLine.includes(k) || nextLineLower.startsWith(k.toLowerCase())) &&
-          !/\b\d{8}\b/.test(nextLine) && // 不是統編
+        const nextLineIsAddressField = 
+          keywords.address.some(k => nextLine. includes(k) || nextLineLower.startsWith(k.toLowerCase())) &&
           nextLine.length >= 5;
           
-          if (isNotOtherField) {
+          if (nextLineIsAddressField) {
             address += ' ' + nextLine;
             i++; // 跳過下一行
           }
