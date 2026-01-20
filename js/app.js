@@ -645,7 +645,7 @@ function parseOCRResult(text) {
       keywords.fax.some(k => line.includes(k) || lineLower.startsWith(k.toLowerCase())) ||
       keywords.email.some(k => line.includes(k) || lineLower.startsWith(k.toLowerCase())) ||
       keywords.dept.some(k => line.includes(k));
-    const isBrandFormat = /^[A-Z][a-z]+[A-Z]? [a-z]*$/.test(line) && 
+    const isBrandFormat = /^[A-Z][a-z]+[A-Z]?[a-z]*$/.test(line) && 
                       line.length >= 5 && 
                       line.length <= 20;
 
