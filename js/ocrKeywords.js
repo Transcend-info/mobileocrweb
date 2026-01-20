@@ -1,11 +1,10 @@
 // js/ocrKeywords.js
 const OCR_KEYWORDS = {
   mobile: [
-    "Mob",
+    "Mob", "mobile",
     "Cell",
     "Handy",
-    "M:",
-    "M.",
+    "M:", "M.", "M +",
     "行動",
     "手機",
     "機:",

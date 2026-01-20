@@ -639,13 +639,20 @@ function parseOCRResult(text) {
 
     const isAllCaps = /^[A-Z.,&-]+$/.test(line) && line.length > 3;
     const isAllLowerCase = /^[a-z.,&-]+$/.test(line) && line.length > 3;
+    const hasOtherKeywords =  
+      keywords.phone.some(k => line.includes(k) || lineLower.startsWith(k.toLowerCase())) ||
+      keywords.mobile. some(k => line.includes(k) || lineLower.startsWith(k.toLowerCase())) ||
+      keywords.fax.some(k => line.includes(k) || lineLower.startsWith(k.toLowerCase())) ||
+      keywords.email.some(k => line.includes(k) || lineLower.startsWith(k.toLowerCase())) ||
+      keywords.dept.some(k => line.includes(k));
+
     if (keywords.company.some((k) => line.includes(k))) {
       company = line;
       continue;
-    } else if (!company && isAllCaps) {
+    } else if (!company && isAllCaps && !hasOtherKeywords) {
       company = line;
       continue;
-    } else if (!company && isAllLowerCase) {
+    } else if (!company && isAllLowerCase && !hasOtherKeywords) {
       company = line;
       continue;
     }
