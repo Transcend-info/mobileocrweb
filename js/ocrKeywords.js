@@ -37,7 +37,7 @@ address:  [
   "Road", "Rd.",
   "St.",
   "Ln", "Ln.",
-  "Aly.",
+  /*"Aly.",*/
   "RUE",
   "Ave", "Ave.",
   "Blvd", "Blvd.",
@@ -126,9 +126,6 @@ address:  [
 
   // Canadian provinces abbreviations
   "AB", "BC", "MB", "NB", "NL", "NS", "NT", "NU", "ON", "PE", "QC", "SK", "YT",
-
-  // australian states abbreviations
-  "NSW", "VIC", "QLD", "SA", "WA", "TAS", "ACT", "NT",
 ],
   fax: ["Fax", "F:", "F.", "傳真", "真:"],
   email: ["@", "Email", "E-mail", "E:", "E.", "郵箱", "信箱", "電子郵件"],
