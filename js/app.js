@@ -656,17 +656,21 @@ function parseOCRResult(text) {
       !address &&
       line.length > 10 &&
       keywords.address.some(
-        (k) => line.includes(k) || lineLower.startsWith(k.toLowerCase())
-      )
-    ) {
+        (k) => line.includes(k) || lineLower.startsWith(k.toLowerCase()))
+      ) {
       address = line;
       
       if (i + 1 < lines.length) { // 檢查下一行是否為地址延續
         let nextLine = lines[i + 1].trim();
-        let nextLineLower = nextLine.toLowerCase();
-          
+
+        // 檢查是否包含美國州縮寫
+        const hasUSState = /\b(AL|AK|AZ|AR|CA|CO|CT|DE|FL|GA|HI|ID|IL|IN|IA|KS|KY|LA|ME|MD|MA|MI|MN|MS|MO|MT|NE|NV|NH|NJ|NM|NY|NC|ND|OH|OK|OR|PA|RI|SC|SD|TN|TX|UT|VT|VA|WA|WV|WI|WY|DC|PR|VI|GU|AS|)\b/. test(line);
+
+        // 檢查是否包含美國郵遞區號格式（5碼或9碼）
+        const hasUSZip = /\b\d{5}(-\d{4})?\b/.test(line);
+
         const nextLineIsAddressField = 
-          keywords.address.some(k => nextLine. includes(k)) &&
+          keywords.address.some(k => nextLine. includes(k)) || (hasUSState || hasUSZip) &&
           nextLine.length >= 5;
           
           if (nextLineIsAddressField) {
