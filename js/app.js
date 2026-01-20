@@ -566,36 +566,6 @@ function parseOCRResult(text) {
       taxId = taxIdMatch[0];
       continue;
     }
-    // Mobile
-    if (
-      keywords.mobile.some(
-        (k) => line.includes(k) || lineLower.startsWith(k.toLowerCase())
-      )
-    ) {
-      if (!mobile) {
-        const extracted = extractGlobalPhoneNumber(line);
-        if (extracted) {
-          mobile = extracted;
-          continue;
-        }
-      }
-    }
-
-    // Fax
-    if (
-      keywords.fax.some(
-        (k) => line.includes(k) || lineLower.startsWith(k.toLowerCase())
-      )
-    ) {
-      if (!fax) {
-        const extracted = extractGlobalPhoneNumber(line);
-        if (extracted) {
-          fax = extracted;
-          continue;
-        }
-      }
-    }
-
     // TEL
     if (
       keywords.phone.some(
@@ -610,6 +580,34 @@ function parseOCRResult(text) {
         }
       }
     }
+    // Mobile
+    if (
+      keywords.mobile.some(
+        (k) => line.includes(k) || lineLower.startsWith(k.toLowerCase())
+      )
+    ) {
+      if (!mobile) {
+        const extracted = extractGlobalPhoneNumber(line);
+        if (extracted) {
+          mobile = extracted;
+          continue;
+        }
+      }
+    }
+    // Fax
+    if (
+      keywords.fax.some(
+        (k) => line.includes(k) || lineLower.startsWith(k.toLowerCase())
+      )
+    ) {
+      if (!fax) {
+        const extracted = extractGlobalPhoneNumber(line);
+        if (extracted) {
+          fax = extracted;
+          continue;
+        }
+      }
+    }    
 
     // Website
     const websiteMatch = line.match(

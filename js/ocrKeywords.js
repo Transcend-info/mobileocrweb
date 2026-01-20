@@ -1,7 +1,6 @@
 // js/ocrKeywords.js
 const OCR_KEYWORDS = {
   mobile: [
-    "Mobile",
     "Mob",
     "Cell",
     "Handy",
@@ -209,6 +208,7 @@ address:  [
     "Center",
     "BU",
     "Unit",
+    "Service", "Services",
     "處",
     "中心","セ ン タ",
     "部門",
