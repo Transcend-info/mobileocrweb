@@ -266,12 +266,10 @@ address:  [
     "電子", "生技", "文化",
     "創意", "設計", "物流",
     "System", 
-    "Global",
     "Digital",
     "Consulting",
     "Solutions", "シ ス テ ム ソ リ ュ ー シ", "ン プ ロ ジ ェ ク ト",
     "Industry",
     "International", 
-    "Consulting",
   ],
 };
