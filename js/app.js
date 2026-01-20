@@ -682,7 +682,7 @@ function parseOCRResult(text) {
         // 檢查是否包含美國郵遞區號格式（5碼或9碼）
         const hasUSZip = /\b\d{5}(-\d{4})?\b/.test(line);
         const nextLineIsAddressField = 
-          keywords.address.some(k => nextLine. includes(k)) || (hasUSState || hasUSZip) &&
+          ( keywords.address.some(k => nextLine. includes(k)) || hasUSState || hasUSZip ) &&
           nextLine.length >= 5;
           
           if (nextLineIsAddressField) {
