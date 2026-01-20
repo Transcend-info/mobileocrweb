@@ -123,9 +123,6 @@ address:  [
   "Virgin Islands",
   "Guam",
   "American Samoa",
-
-  // Canadian provinces abbreviations
-  "AB", "BC", "MB", "NB", "NL", "NS", "NT", "NU", "ON", "PE", "QC", "SK", "YT",
 ],
   fax: ["Fax", "F:", "F.", "傳真", "真:"],
   email: ["@", "Email", "E-mail", "E:", "E.", "郵箱", "信箱", "電子郵件"],
