@@ -60,8 +60,7 @@ async function verifyAdminUsers(){
     localStorage.setItem('adminUnlockTime', Date.now().toString());
     localStorage.setItem('adminName', selectedAdmin.name);
     localStorage.setItem('adminOffice', selectedAdmin.office);
-    localStorage.setItem('adminTSID', selectedAdmin.TSID);
-    location.reload();
+    localStorage.setItem('adminTSID', selectedAdmin.TSID);    
 }
 
 async function loadAdminUsers() {
