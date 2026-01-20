@@ -649,6 +649,9 @@ function parseOCRResult(text) {
     if (keywords.company.some((k) => line.includes(k))) {
       company = line;
       continue;
+    } else if (!company && (keywords.industry.some((k) => line.includes(k)))) {
+      company = line;
+      continue;
     } else if (!company && isAllCaps && !hasOtherKeywords) {
       company = line;
       continue;
