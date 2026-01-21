@@ -139,6 +139,14 @@ window.syncToCloud = new syncCloud();
 
 async function syncHistoryToCloud() {
 
+  const btnSyncButton = document.getElementById('btnSyncButton');
+
+  if (btnSyncButton) {
+    btnSyncButton.disabled = true;
+    btnSyncButton.style.opacity = '0.5';
+    btnSyncButton.innerHTML = '<i class="material-icons">cloud_upload</i> Syncing...';
+  }
+
   if (!window.firebaseDB || !window.firebaseModules) {
     alert('❌ Firebase not initialized\n\nPlease check network connection.');
     return {
@@ -232,9 +240,9 @@ async function syncHistoryToCloud() {
   // 5. 開始批次上傳
   // ============================================
   
-  // 顯示 Loading
-  if (window.showLoading) {
-    showLoading('Syncing to Cloud...');
+  const loadingDiv = document.getElementById("loadingDiv");
+  if (loadingDiv) {
+      loadingDiv.classList.add("show");
   }
   
   let successCount = 0;
@@ -348,9 +356,10 @@ async function syncHistoryToCloud() {
   // 8. 隱藏 Loading 並顯示結果
   // ============================================
   
-  if (window.hideLoading) {
-    hideLoading();
-  }
+  
+    if (loadingDiv) {
+      loadingDiv.classList.remove("show");
+    }
   
   // 顯示結果對話框
   const resultMessage = 
@@ -377,6 +386,12 @@ async function syncHistoryToCloud() {
   if (window.syncToCloud) {
     window.syncToCloud.updateUnsyncedBadge();
   }
+
+  if (btnSyncButton) {
+      btnSyncButton.disabled = false;
+      btnSyncButton.style.opacity = '1';
+      btnSyncButton.innerHTML = '<i class="material-icons">cloud_upload</i> Sync to Cloud';
+    }
   
   return result;
 }
