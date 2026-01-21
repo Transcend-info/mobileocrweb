@@ -29,16 +29,21 @@
       }
       gtag("js", new Date());
       gtag("config", "G-7ECCXXKS0C");
+      
+      document.addEventListener('DOMContentLoaded', function() {
+          const exhibitionId = localStorage.getItem('exhibitionId');
+          if (exhibitionId) {
+            document.getElementById('exhibitionTitle').textContent = "Tradeshow: " + exhibitionId;
+          }
+      });
     </script>
   </head>
   <body>
-
     <div id="initDialog" class="init-dialog" style="display: none;">
     <div class="init-dialog-overlay"></div>
-    <div class="init-dialog-content">     
-
+    <div class="init-dialog-content">  
       <div class="init-dialog-body">
-        <div class="form-group">
+        <div class="form-group">          
           <select id="officeSelect" class="form-control" required>
             <option value="initOptionSelect">-- Select Your Office --</option>
             <option value="USA"> USA Team</option>
@@ -52,6 +57,15 @@
             <option value="HK"> HK Team</option>
           </select>
         </div>
+         <div class="form-group">
+        <select id="tradeshowSelect" class="form-control" required disabled>
+            <option value="initOptionSelect">-- Select The Tradeshow --</option>
+            <option value="AIMEX2026"> AIMEX 2026</option>
+            <option value="EmbeddedWorld2026"> Embedded World 2026</option>
+            <option value="Intertraffic2026"> Intertraffic 2026</option>
+            <option value="Test2026"> TestEvent 2026</option>
+          </select>
+          </div>
         <div class="form-group">
           <input  
             type="text" 
@@ -62,9 +76,10 @@
             maxlength="32"
             autocomplete="off"
             required
+            disabled
           >
           <div id="nameError" class="error-message" style="display: none;"></div>
-        </div>        
+        </div>               
       </div>
 
       <div class="init-dialog-footer">
@@ -84,6 +99,7 @@
           alt="TranscendLogo"
         />
         <h1 id="headerTitle">Business Card Scanner</h1>
+        <h3 id="exhibitionTitle"></h3>
       </div>
 
       <!-- Content -->
@@ -93,8 +109,7 @@
         <div id="alertError" class="alert alert-error"></div>
         <div id="loadingDiv" class="loading">
           <p id="loadingText">
-            <i class="material-icons">document_scanner</i> Scanning business
-            card, please wait...
+            <i class="material-icons">document_scanner</i> Scanning , please wait...
           </p>
           <p id="progressText" style="margin-top: 5px; font-size: 12px">
             Loading...

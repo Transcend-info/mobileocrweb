@@ -5,11 +5,50 @@
 // ============================================
 function initDialogEventListeners() {
   const officeSelect = document.getElementById('officeSelect');
+  const tradeshowSelect = document.getElementById('tradeshowSelect');
   const userNameInput = document.getElementById('userNameInput');
   
   if (!officeSelect || !userNameInput) {
     console.error('找不到對話框元素');
     return;
+  }
+
+  // Initial State: Disable dependent fields
+  if (tradeshowSelect) tradeshowSelect.disabled = true;
+  if (userNameInput) userNameInput.disabled = true;
+
+  // 1. Office Select Change Event
+  officeSelect.addEventListener('change', function() {
+    if (this.value && this.value !== 'initOptionSelect') {
+      if (tradeshowSelect) {
+         tradeshowSelect.disabled = false;
+         // Optional: Focus and open dropdown could be tricky across browsers, 
+         // so just enabling it is safer.
+      }
+    } else {
+      if (tradeshowSelect) {
+        tradeshowSelect.disabled = true;
+        tradeshowSelect.value = 'initOptionSelect';
+      } 
+      if (userNameInput) {
+        userNameInput.disabled = true;
+        userNameInput.value = '';
+      }
+    }
+  });
+
+  // 2. Tradeshow Select Change Event
+  if (tradeshowSelect) {
+    tradeshowSelect.addEventListener('change', function() {
+       if (this.value && this.value !== 'initOptionSelect') {
+          if (userNameInput) userNameInput.disabled = false;
+       } else {
+          if (userNameInput) {
+            userNameInput.disabled = true;
+             userNameInput.value = '';
+          }
+       }
+    });
   }
   
   // 監聽 Enter 鍵
@@ -25,15 +64,22 @@ function initDialogEventListeners() {
 // ============================================
 // 驗證函數
 // ============================================
-function validateUserInput(office, userName) {
+function validateUserInput(office, tradeshow, userName) {
   const errors = [];
   
-  if (!office) {
+  if (!office || office === 'initOptionSelect') {
     errors.push({
       field: 'office',
       message: t('Please select your office')
     });
-  }  
+  }
+
+  if (!tradeshow || tradeshow === 'initOptionSelect') {
+    errors.push({
+      field: 'tradeshow',
+      message: 'Please select a tradeshow'
+    });
+  }
 
    if (!userName) {
     errors.push({
@@ -82,17 +128,20 @@ function hideError() {
 // ============================================
 function saveUserInfo() {
   const office = document.getElementById('officeSelect').value;
+  const tradeshow = document.getElementById('tradeshowSelect') ? document.getElementById('tradeshowSelect').value : '';
   const userName = document.getElementById('userNameInput').value.trim();
   const saveBtn = document.getElementById('saveUserInfoBtn');
 
   hideError();
 
-  const errors = validateUserInput(office, userName);
+  const errors = validateUserInput(office, tradeshow, userName);
   
   if (errors.length > 0) {
     showError(errors[0].message);
     if (errors[0].field === 'office') {
       document.getElementById('officeSelect').focus();
+    } else if (errors[0].field === 'tradeshow') {
+      if (document.getElementById('tradeshowSelect')) document.getElementById('tradeshowSelect').focus();
     } else {
       document.getElementById('userNameInput').focus();
     }
@@ -109,6 +158,7 @@ function saveUserInfo() {
   // 儲存到 localStorage
   try {
     localStorage.setItem('userOffice', office);
+    localStorage.setItem('exhibitionId', tradeshow); 
     localStorage.setItem('userRealName', userName);
     localStorage.setItem('userIdentity', userIdentity);
     localStorage.setItem('userSetupComplete', 'true');
@@ -179,3 +229,92 @@ function checkAndShowInitDialog() {
   }
 }
 
+async function loadTradeshows() {
+  console.log('📥 從 Firebase 載入 Tradeshows清單...');
+  
+  if (!window.firebaseDB || ! window.firebaseModules) {
+    console.error('❌ Firebase 未初始化');
+    return null;
+  }
+  
+  try {
+    const tradeshowCollection = window.firebaseModules. collection(
+      window.firebaseDB,
+      'tradeshow2026'  // Collection name
+    );
+    
+    // Query all tradeshows
+    const q = window.firebaseModules.query(
+      tradeshowCollection,
+      window.firebaseModules()
+    );
+    
+    const querySnapshot = await window.firebaseModules.getDocs(q);
+    
+    if (querySnapshot.empty) {
+      console.warn('⚠️ No tradeshows in Firebase tradeshow2026 collection');
+      return null;
+    }
+    
+    // Convert to array format [{ id, tradeshow, office }]
+    const tradeshows = [];
+    querySnapshot.forEach((doc) => {
+      const data = doc.data();
+      tradeshows.push({
+        id: doc.id,           
+        tradeshow: data.tradeshow,      
+        office: data.office   
+      });
+    });
+    
+    // Sort by name
+    tradeshows.sort((a, b) => a.tradeshow.localeCompare(b.tradeshow));
+    
+    console.log(`✅ Successfully loaded ${tradeshows.length} Tradeshows`);
+    console.table(tradeshows);
+    
+    // Cache data
+    tradeshowsCache = tradeshows;
+    
+    return tradeshows;
+    
+  } catch (error) {
+    console.error('❌ Failed to load Tradeshows:', error);
+    return null;
+  }
+}
+
+async function updateTradeshowSelect() {
+  const tradeshowSelect = document.getElementById('tradeshowSelect');
+  if (!tradeshowSelect) {
+    console.error('❌ tradeshowSelect element not found');
+    return;
+  }
+
+  tradeshowSelect.innerHTML = '<option value="">Loading...</option>';
+  tradeshowSelect.disabled = true;
+  
+  const tradeshows = await loadTradeshows();
+  
+  if (!tradeshows || tradeshows.length === 0) {
+    tradeshowSelect.innerHTML = '<option value="">No available tradeshows</option>';
+    tradeshowSelect.disabled = true;
+    return;
+  }
+  
+  // Clear and rebuild options
+  tradeshowSelect.innerHTML = '<option value="">Please select...</option>';
+  
+  // Dynamically add each admin
+  tradeshows.forEach(tradeshow => {
+    const option = document.createElement('option');
+    option.value = tradeshow.id;  // Document ID as value
+    option.textContent = tradeshow.tradeshow;  // Display name
+    option.dataset.tsid = tradeshow.TSID;  // Store TSID in data attribute
+    option.dataset.office = tradeshow.office;  // Store Office
+    tradeshowSelect.appendChild(option);
+  });
+  
+  tradeshowSelect.disabled = false;
+  console.log('✅ Tradeshow dropdown updated');
+}
