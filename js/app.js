@@ -936,6 +936,14 @@ function showAlert(type, message) {
   }
 }
 
+function resetApp() {
+    if (confirm("All data and user settings will be removed, continue?")) {
+      localStorage.clear();
+      alert("Application data has been reset.");
+      location.reload();
+    }
+}
+
 // Initialize button count on load
 window.onload = function () {
   // Initialize Dialog

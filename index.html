@@ -47,7 +47,7 @@
           <select id="officeSelect" class="form-control" required>
             <option value="initOptionSelect">-- Select Your Office --</option>
             <option value="USA"> USA Team</option>
-            <option value="GM"> DE Team</option>
+            <option value="GM"> GM Team</option>
             <option value="NL"> NL Team</option>
             <option value="UK"> UK Team</option>
             <option value="JP"> JP Team</option>
@@ -99,7 +99,7 @@
           alt="TranscendLogo"
         />
         <h1 id="headerTitle">Business Card Scanner</h1>
-        <h3 id="exhibitionTitle"></h3>
+        <h1 id="exhibitionTitle"></h1>
       </div>
 
       <!-- Content -->
@@ -282,9 +282,18 @@
               ><i class="material-icons">cloud_download</i> Download Excel </span
             >
           </button>
+          
+          <button
+            id="btnReset"
+            class="btn btn-danger btn-large"
+            onclick="resetApp()"
+            style="margin-bottom: 30px"
+          >
+            <span><i class="material-icons">settings_backup_restore</i> Reset App</span>
+          </button>
         </div>
 
-        <!-- Admin Icon - 右下角固定 -->
+<!-- Admin Icon - 右下角固定 -->
 <div class="admin-icon-wrapper">
   <div class="admin-icon" onclick="openAdminPopup()" title="Admin Login">
     <i class="material-icons">manage_accounts</i>
@@ -365,7 +374,6 @@ function closeAdminPopup() {
   }
 }
 
-// 點擊遮罩關閉
 document.addEventListener('DOMContentLoaded', function() {
   const popup = document.getElementById('adminPopup');
   if (popup) {
@@ -377,8 +385,6 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 </script>
-
-
         <!-- Language Selector -->
         <div class="language-selector">
           <select id="languageSelect" onchange="changeLanguage()">
@@ -460,8 +466,7 @@ document.addEventListener('DOMContentLoaded', function() {
       query, where, orderBy, limit,
       serverTimestamp, Timestamp,
       storageRef, uploadString, getDownloadURL
-    };
-    
+    };    
   console.log('Firebase ready');  
 </script>
   </body>

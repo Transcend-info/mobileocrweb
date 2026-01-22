@@ -9,7 +9,7 @@
 }
 
 table, td, div, h1, h2, p, button, input, textarea, select {
-  font-family: "Microsoft JhengHei", Arial, sans-serif;
+  font-family: "Microsoft JhengHei", "PingFang TC", "Heiti TC", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
 body {
@@ -47,7 +47,7 @@ body {
 
 /* ========== Header ========== */
 .header {
-  padding: 20px;
+  padding: 16px;
   text-align: center;
   background-color: #ffffff;
   border-bottom: 2px solid #f0f0f0;
@@ -69,7 +69,7 @@ body {
 
 /* ========== Content ========== */
 .content {
-  padding: 20px;
+  padding: 18px;
 }
 
 /* ========== Footer ========== */
@@ -104,7 +104,7 @@ body {
   color: #0066cc;
   cursor: pointer;
   min-width: 150px;
-  font-family: "Microsoft JhengHei", Arial, sans-serif;
+  font-family: "Microsoft JhengHei", "PingFang TC", "Heiti TC", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
 .language-selector select:hover {
@@ -269,6 +269,15 @@ body {
 
 .btn-info:hover {
   background-color: #3367d6;
+}
+
+.btn-danger {
+  background-color: #dc3545;
+  color: white;
+}
+
+.btn-danger:hover {
+  background-color: #c82333;
 }
 
 /* Button Sizes */
