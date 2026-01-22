@@ -349,10 +349,25 @@ function drawOCROverlay(result) {
           // Set hover text
           box.setAttribute("data-text", line.content);
 
+           // click to copy functionality
+          box.addEventListener("click", async function() {
+            const text = this.getAttribute("data-text");
+            try {
+              await navigator.clipboard.writeText(text);
+              // Show success alert
+              showAlert("success", "Text copied to clipboard!");
+            } catch (err) {        
+              console.error("copy error", err);
+              showAlert("error", "Copy failed, please select the text manually.");
+            }
+          });
+
+          box.style.cursor = "pointer";
           overlayLayer.appendChild(box);
         });
       }
-    });
+    });  
+
   }
 }
 
