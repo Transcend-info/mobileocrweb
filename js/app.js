@@ -315,7 +315,6 @@ function drawOCROverlay(result) {
     const naturalHeight = img.naturalHeight;
     const displayWidth = img.width;
     const displayHeight = img.height;
-
     const scaleX = displayWidth / naturalWidth;
     const scaleY = displayHeight / naturalHeight;
 
@@ -355,7 +354,7 @@ function drawOCROverlay(result) {
             try {
               await navigator.clipboard.writeText(text);
               // Show success alert
-              showAlert("success", "Text copied to clipboard!");
+              showAlert("success", text + "\nText copied to clipboard!");
             } catch (err) {        
               console.error("copy error", err);
               showAlert("error", "Copy failed, please select the text manually.");
