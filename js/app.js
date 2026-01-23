@@ -573,13 +573,7 @@ function parseOCRResult(text) {
   for (let i = 0; i < lines.length; i++) {
     let line = lines[i].trim();
     let lineLower = line.toLowerCase();
-
-    // Tax ID - TW only
-    const taxIdMatch = line.match(/\b\d{8}\b/);
-    if (taxIdMatch && !taxId) {
-      taxId = taxIdMatch[0];
-      continue;
-    }
+    
     // TEL
     if (
       keywords.phone.some(
@@ -705,6 +699,13 @@ function parseOCRResult(text) {
           }
         }
 
+      continue;
+    }
+
+    // Tax ID - TW only
+    const taxIdMatch = line.match(/\b\d{8}\b/);
+    if (taxIdMatch && !taxId) {
+      taxId = taxIdMatch[0];
       continue;
     }
   }
