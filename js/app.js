@@ -349,7 +349,8 @@ function drawOCROverlay(result) {
           box.setAttribute("data-text", line.content);
 
            // click to copy functionality
-          box.addEventListener("click", async function() {
+          box.addEventListener("click", async function(event) {
+            event.stopPropagation(); // ✅ Prevent event from bubbling up
             const text = this.getAttribute("data-text");
             try {
               await navigator.clipboard.writeText(text);
