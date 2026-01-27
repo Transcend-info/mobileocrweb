@@ -54,6 +54,7 @@ function changeLanguage() {
   document.getElementById("btnSave").innerHTML = t.btnSave;
   document.getElementById("btnRescan").innerHTML = t.btnRescan;
   document.getElementById("btnSync").innerHTML = t.btnSync;
+  document.getElementById("btnReset").innerHTML = t.btnReset;
 
   // Update Export Button with Count
   updateExportButton();
