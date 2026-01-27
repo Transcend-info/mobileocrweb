@@ -92,7 +92,17 @@ function openCamera() {
 // Prevent triggering file input when clicking on OCR boxes
 function triggerFileInput(event) {
   if (event.target.classList.contains("ocr-box")) return;
-  document.getElementById("fileInput").click();
+  
+  const fileInput = document.getElementById("fileInput");
+  
+  // 針對 iOS 裝置嘗試移除 capture 屬性，確保顯示「照片圖庫」選項
+  // (iOS 網頁標準限制：通常無法完全跳過選單直接開相簿，但這樣設定是標準作法)
+  const isIOS = /iPhone|iPad/i.test(navigator.userAgent);
+  if (isIOS) {
+    fileInput.removeAttribute("capture");
+  }
+  
+  fileInput.click();
 }
 
 function handleFileSelect(event) {
