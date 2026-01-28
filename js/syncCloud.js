@@ -102,7 +102,7 @@ class syncCloud {
         const unsyncedCount = Array.isArray(history) ? history.filter(c => !c.cloudId && !c.synced).length : 0;
         console.log('🔄 Pending Cloud Sync:', unsyncedCount);
         
-        // Update the button text
+        // Update the btnSync text
         const btnSync = document.getElementById('btnSync');
         const t = translations[currentLanguage];
         if (btnSync) {
@@ -122,12 +122,6 @@ class syncCloud {
               }
             }
 
-        // Example: Update a UI badge if it exists
-        const badge = document.getElementById('syncBadge');
-        if (badge) {
-            badge.textContent = unsyncedCount > 0 ? unsyncedCount : '';
-            badge.style.display = unsyncedCount > 0 ? 'block' : 'none';
-        }
     } catch(e) {
         console.error('Badge update error:', e);
     }
@@ -136,7 +130,6 @@ class syncCloud {
 
 // Instantiate the helper
 window.syncToCloud = new syncCloud();
-
 
 async function syncHistoryToCloud() {
 
@@ -154,8 +147,7 @@ async function syncHistoryToCloud() {
       success: false,
       error: 'FIREBASE_NOT_INITIALIZED'
     };
-  }
-  
+  }  
 
   let history = [];
   try {
@@ -292,14 +284,12 @@ async function syncHistoryToCloud() {
         scannedAt: window.firebaseModules.serverTimestamp(),        
 
       };     
-
       
       // 上傳到 Firestore
       const docRef = await window.firebaseModules.addDoc(
         window.firebaseModules.collection(window.firebaseDB, 'exhibition_cards'),
         uploadData
-      );
-      
+      );      
       console.log(`  ✅ 成功，雲端 ID: ${docRef.id}`);
       
       // 標記為已同步

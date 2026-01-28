@@ -805,7 +805,8 @@ function saveCard() {
     clearAll();
 
     // Update the export button count
-    updateExportButton();
+    //updateExportButton();
+    updateUnsyncedBadge();
 
   } else {
     showAlert("error", translations[currentLanguage].alertFillField);
@@ -987,7 +988,8 @@ window.onload = function () {
     document.getElementById("languageSelect").value = savedLang;
     changeLanguage();
   } else {
-    updateExportButton();
+    //updateExportButton();
+    updateUnsyncedBadge();
   }
 };
 
