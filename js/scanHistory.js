@@ -1,6 +1,5 @@
 // ========== History Popup Functions ==========
 
-
 function viewHistory() {
   renderHistoryPopup();
   document.getElementById('historyPopup').classList.add('show');
@@ -90,11 +89,11 @@ function updateHistoryPopupTranslations() {
   const t = translations[currentLanguage];
   if (!t) return;
 
-  document.getElementById('popupTitle').textContent = t.historyTitle || '掃描歷史';
-  document.getElementById('statLabelTotal').textContent = t.statTotal || '總數';
-  document.getElementById('statLabelSynced').textContent = t.statSynced || '已同步';
-  document.getElementById('statLabelUnsynced').textContent = t.statUnsynced || '未同步';
-  document.getElementById('recentTitle').textContent = t.recentHistory || '最近記錄';
+  document.getElementById('popupTitle').textContent = t.historyTitle || 'Scan History';
+  document.getElementById('statLabelTotal').textContent = t.statTotal || 'Total';
+  document.getElementById('statLabelSynced').textContent = t.statSynced || 'Synced';
+  document.getElementById('statLabelUnsynced').textContent = t.statUnsynced || 'Unsynced';
+  document.getElementById('recentTitle').textContent = t.recentHistory || 'Recent History';
 }
 
 // 點擊遮罩關閉彈窗

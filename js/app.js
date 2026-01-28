@@ -39,6 +39,7 @@ function changeLanguage() {
 
   document.getElementById("loadingText").innerHTML = t.loadingText;
   document.getElementById("formTitle").innerHTML = t.formTitle;
+  document.getElementById("previewText").innerHTML = t.previewText;
   document.getElementById("labelName").innerHTML = t.labelName;
   document.getElementById("labelJobTitle").innerHTML = t.labelJobTitle;
   document.getElementById("labelDepartment").innerHTML = t.labelDepartment;
