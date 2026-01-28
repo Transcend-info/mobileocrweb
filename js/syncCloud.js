@@ -104,8 +104,9 @@ class syncCloud {
         
         // Update the button text
         const btnSync = document.getElementById('btnSync');
+        const t = translations[currentLanguage];
         if (btnSync) {
-            btnSync.innerHTML = `<i class="material-icons">cloud_upload</i> Sync to Cloud (${unsyncedCount})`;
+            btnSync.innerHTML = `${t.btnSync}  (${unsyncedCount})`;
         }
 
         const btnSyncButton = document.getElementById('btnSyncButton');

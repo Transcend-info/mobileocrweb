@@ -26,6 +26,7 @@ const translations = {
     btnExport: '<i class="material-icons">file_download</i> Export All',
     btnSync: '<i class="material-icons">cloud_upload</i> Sync to Cloud',
     btnReset: '<i class="material-icons">settings_backup_restore</i> Reset App',
+    btnHistory: '<i class="material-icons">history</i> Scan History',
     alertImageLoaded: '<i class="material-icons">check_circle</i> Image loaded',
     alertUploadFirst: '<i class="material-icons">error</i> Please upload an image first',
     alertScanComplete:  '<i class="material-icons">check_circle</i> Scan completed!  Please check and correct the data',
@@ -37,7 +38,14 @@ const translations = {
     alertNoHistory: '<i class="material-icons">error</i> No history data found in storage',
     confirmRescan: 'Are you sure you want to rescan?  Recognition results will be overwritten.',
     alertConvertingImage: '<i class="material-icons">autorenew</i> Converting HEIC image...',
-    alertHEICError: '<i class="material-icons">error</i> Failed to convert HEIC image. Please use JPG or PNG format.'
+    alertHEICError: '<i class="material-icons">error</i> Failed to convert HEIC image. Please use JPG or PNG format.',
+    popupTitle: 'Scan History',
+    syncStatusSynced: 'Synced',
+    syncStatusUnsynced: 'Unsynced',
+    statLabelTotal: 'Total',
+    statLabelSynced: 'Synced',
+    statLabelUnsynced: 'Unsynced',
+    recentTitle: 'Recent Scans'
   },
 
   de: {
@@ -64,6 +72,7 @@ const translations = {
     btnExport:  '<i class="material-icons">file_download</i> Alle exportieren',
     btnSync: '<i class="material-icons">cloud_upload</i> In Cloud Sync',
     btnReset: '<i class="material-icons">settings_backup_restore</i> App zurücksetzen',
+    btnHistory: '<i class="material-icons">history</i> Scan-Verlauf',
     alertImageLoaded: '<i class="material-icons">check_circle</i> Bild geladen.',
     alertUploadFirst: '<i class="material-icons">error</i> Bitte laden Sie zuerst ein Bild hoch',
     alertScanComplete: '<i class="material-icons">check_circle</i> Scan abgeschlossen! Bitte überprüfen und korrigieren Sie die Daten',
@@ -76,6 +85,13 @@ const translations = {
     confirmRescan: 'Möchten Sie wirklich neu scannen? Erkennungsergebnisse werden überschrieben.',
     alertConvertingImage: '<i class="material-icons">autorenew</i> HEIC-Bild wird konvertiert...',
     alertHEICError: '<i class="material-icons">error</i> HEIC-Bildkonvertierung fehlgeschlagen. Bitte verwenden Sie JPG oder PNG.',
+    historyTitle: 'Scan-Verlauf',
+    syncStatusSynced: 'Synchronisiert',
+    syncStatusUnsynced: 'Nicht synchronisiert',
+    statTotal: 'Gesamt',
+    statSynced: 'Synchronisiert',
+    statUnsynced: 'Nicht synchronisiert',
+    recentHistory: 'Letzte Scans',
     initPreviewPlaceholder: 'Bitte Einstellungen oben vervollständigen',
     initErrorOffice: 'Bitte wählen Sie Ihr Büro',
     initErrorNameShort: 'Name muss mindestens 2 Zeichen lang sein',
@@ -84,7 +100,7 @@ const translations = {
     initBtnSuccess: '<i class="material-icons">check_circle</i> Erfolgreich gespeichert!',
     initWelcome: 'Sie können jetzt Visitenkarten scannen!',
     initErrorSave: 'Speichern fehlgeschlagen, bitte versuchen Sie es erneut',
-    initBtnSave: '<i class="material-icons">save</i> Speichern & Starten'
+    initBtnSave: '<i class="material-icons">save</i> Speichern & Starten',
   },
 
   nl: {
@@ -111,6 +127,7 @@ const translations = {
     btnExport: '<i class="material-icons">file_download</i> Alles exporteren',
     btnSync: '<i class="material-icons">cloud_upload</i> Sync naar Cloud',
     btnReset: '<i class="material-icons">settings_backup_restore</i> App resetten',
+    btnHistory: '<i class="material-icons">history</i> Scangeschiedenis',
     alertImageLoaded: '<i class="material-icons">check_circle</i> Afbeelding geladen.',
     initPreviewPlaceholder: 'Voltooi eerst de instellingen hierboven',
     initErrorOffice: 'Selecteer uw kantoor',
@@ -129,7 +146,14 @@ const translations = {
     alertExcelDownloaded: '<i class="material-icons">check_circle</i> Excel-bestand gedownload: ',
     alertSaved: '<i class="material-icons">save</i> Gegevens opgeslagen in lokale opslag',
     alertNoHistory: '<i class="material-icons">error</i> Geen geschiedenisgegevens gevonden',
-    confirmRescan: 'Weet u zeker dat u opnieuw wilt scannen? Herkenningsresultaten worden overschreven.'
+    confirmRescan: 'Weet u zeker dat u opnieuw wilt scannen? Herkenningsresultaten worden overschreven.',
+    historyTitle: 'Scangeschiedenis',
+    syncStatusSynced: 'Gesynchroniseerd',
+    syncStatusUnsynced: 'Niet gesynchroniseerd',
+    statTotal: 'Totaal',
+    statSynced: 'Gesynchroniseerd',
+    statUnsynced: 'Niet gesynchroniseerd',
+    recentHistory: 'Recente scans'
   },
 
   jp: {
@@ -156,6 +180,7 @@ const translations = {
     btnExport: '<i class="material-icons">file_download</i> 全てエクスポート',
     btnSync: '<i class="material-icons">cloud_upload</i> クラウド同期',
     btnReset: '<i class="material-icons">settings_backup_restore</i> アプリをリセット',
+    btnHistory: '<i class="material-icons">history</i> スキャン履歴',
     alertImageLoaded: '<i class="material-icons">check_circle</i> 画像が読み込まれました。',
     alertUploadFirst:  '<i class="material-icons">error</i> 最初に画像をアップロードしてください',
     alertScanComplete: '<i class="material-icons">check_circle</i> スキャン完了！データを確認して修正してください',
@@ -182,7 +207,14 @@ const translations = {
     initBtnSuccess: '<i class="material-icons">check_circle</i> 保存しました！',
     initWelcome: '名刺のスキャンを開始できます！',
     initErrorSave: '保存に失敗しました。再試行してください',
-    initBtnSave: '<i class="material-icons">save</i> 保存して開始'
+    initBtnSave: '<i class="material-icons">save</i> 保存して開始',
+    historyTitle: 'スキャン履歴',
+    syncStatusSynced: '同期済み',
+    syncStatusUnsynced: '未同期',
+    statTotal: '合計',
+    statSynced: '同期済み',
+    statUnsynced: '未同期',
+    recentHistory: '最近のスキャン'
   },
 
   kr: {
@@ -209,6 +241,7 @@ const translations = {
     btnExport: '<i class="material-icons">file_download</i> 전체 내보내기',
     btnSync: '<i class="material-icons">cloud_upload</i> 클라우드 동기화',
     btnReset: '<i class="material-icons">settings_backup_restore</i> 앱 초기화',
+    btnHistory: '<i class="material-icons">history</i> 스캔 기록',
     alertImageLoaded: '<i class="material-icons">check_circle</i> 이미지가 로드되었습니다.',
     alertUploadFirst: '<i class="material-icons">error</i> 먼저 이미지를 업로드하세요',
     alertScanComplete: '<i class="material-icons">check_circle</i> 스캔 완료! 데이터를 확인하고 수정하세요',
@@ -235,7 +268,14 @@ const translations = {
     initBtnSuccess: '<i class="material-icons">check_circle</i> 저장 성공!',
     initWelcome: '이제 명함 스캔을 시작할 수 있습니다!',
     initErrorSave: '저장 실패, 다시 시도해주세요',
-    initBtnSave: '<i class="material-icons">save</i> 저장 및 시작'
+    initBtnSave: '<i class="material-icons">save</i> 저장 및 시작',
+    historyTitle: '스캔 기록',
+    syncStatusSynced: '동기화됨',
+    syncStatusUnsynced: '동기화 안 됨',
+    statTotal: '전체',
+    statSynced: '동기화됨',
+    statUnsynced: '동기화 안 됨',
+    recentHistory: '최근 스캔'
   },
 
   sc: {
@@ -262,6 +302,7 @@ const translations = {
     btnExport: '<i class="material-icons">file_download</i> 导出所有',
     btnSync: '<i class="material-icons">cloud_upload</i> 同步云端',
     btnReset: '<i class="material-icons">settings_backup_restore</i> 重置应用',
+    btnHistory: '<i class="material-icons">history</i> 扫描历史',
     alertImageLoaded:  '<i class="material-icons">check_circle</i> 图片已加载',
     alertUploadFirst: '<i class="material-icons">error</i> 请先上传图片',
     alertScanComplete: '<i class="material-icons">check_circle</i> 识别完成！请检查并修正数据',
@@ -290,7 +331,14 @@ const translations = {
     initBtnSuccess: '<i class="material-icons">check_circle</i> 保存成功！',
     initWelcome: '现在可以开始扫描名片了！',
     initErrorSave: '保存失败，请重试',
-    initBtnSave: '<i class="material-icons">save</i> 保存并开始使用'
+    initBtnSave: '<i class="material-icons">save</i> 保存并开始使用',
+    historyTitle: '扫描历史',
+    syncStatusSynced: '已同步',
+    syncStatusUnsynced: '未同步',
+    statTotal: '总数',
+    statSynced: '已同步',
+    statUnsynced: '未同步',
+    recentHistory: '最近记录'
   },
 
   tc: {
@@ -317,6 +365,7 @@ const translations = {
     btnExport: '<i class="material-icons">file_download</i> 匯出所有',
     btnSync: '<i class="material-icons">cloud_upload</i> 同步雲端',
     btnReset: '<i class="material-icons">settings_backup_restore</i> 重置應用程式',
+    btnHistory: '<i class="material-icons">history</i> 掃描歷史',
     alertImageLoaded: '<i class="material-icons">check_circle</i> 圖片已載入',
     alertUploadFirst: '<i class="material-icons">error</i> 請先上傳圖片',
     alertScanComplete: '<i class="material-icons">check_circle</i> 辨識完成！請檢查並修正資料',
@@ -345,7 +394,14 @@ const translations = {
     initBtnSuccess: '<i class="material-icons">check_circle</i> 儲存成功！',
     initWelcome: '現在可以開始掃描名片了！',
     initErrorSave: '儲存失敗，請重試',
-    initBtnSave: '<i class="material-icons">save</i> 儲存並開始使用'
+    initBtnSave: '<i class="material-icons">save</i> 儲存並開始使用',
+    historyTitle: '掃描歷史',
+    syncStatusSynced: '已同步',
+    syncStatusUnsynced: '未同步',
+    statTotal: '總數',
+    statSynced: '已同步',
+    statUnsynced: '未同步',
+    recentHistory: '最近記錄'
   }
 };
 

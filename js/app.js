@@ -54,9 +54,11 @@ function changeLanguage() {
   document.getElementById("btnSave").innerHTML = t.btnSave;
   document.getElementById("btnSync").innerHTML = t.btnSync;
   document.getElementById("btnReset").innerHTML = t.btnReset;
+  document.getElementById("btnExportLocal").innerHTML = t.btnExportLocal;
+  document.getElementById("btnHistory").innerHTML = t.btnHistory;
 
   // Update Export Button with Count
-  updateExportButton();
+  //updateExportButton();
 
   // Show/hide Tax ID field based on language
   const taxIdField = document.getElementById("taxIdField");
@@ -801,8 +803,10 @@ function saveCard() {
     saveToLocalStorage();
     showAlert("success", translations[currentLanguage].alertSaved);
     clearAll();
+
     // Update the export button count
     updateExportButton();
+
   } else {
     showAlert("error", translations[currentLanguage].alertFillField);
   }
@@ -986,3 +990,5 @@ window.onload = function () {
     updateExportButton();
   }
 };
+
+

@@ -271,8 +271,7 @@
             onclick="syncHistoryToCloud()"
             style="margin-bottom: 30px"
           >
-            <span id="btnSync"
-              ><i class="material-icons">cloud_upload</i> Sync to Cloud</span
+            <span id="btnSync"><i class="material-icons">cloud_upload</i> Sync to Cloud</span
             >
           </button>
 
@@ -286,18 +285,72 @@
               ><i class="material-icons">cloud_download</i> Download Excel </span
             >
           </button>
-          
-          <button
-            id="btnReset"
-            class="btn btn-danger btn-large"
-            onclick="resetApp()"
-            style="margin-bottom: 30px"
-          >
-            <span><i class="material-icons">settings_backup_restore</i> Reset App</span>
-          </button>
+          <!-- Wrap buttons in a container for side-by-side layout -->
+          <div style="display: flex; gap: 10px; margin-bottom: 30px;">
+            <button
+              id="btnReset"
+              class="btn btn-danger btn-large"
+              onclick="resetApp()"
+              style="flex: 1;"
+            >
+              <span><i class="material-icons">settings_backup_restore</i> Reset App</span>
+            </button>
+            
+            <button
+              id="btnHistory"
+              class="btn btn-primary btn-large"
+              onclick="viewHistory()"
+              style="flex: 1;"
+            >
+              <span id="btnHistory"><i class="material-icons">history</i> History</span>
+            </button>
+          </div>
         </div>
 
-<!-- Admin Icon - 右下角固定 -->
+ <!-- History Popup -->
+<div id="historyPopup" class="popup-overlay">
+  <div class="popup-box">
+    <!-- Header -->
+    <div class="popup-header">
+      <div class="popup-header-left">
+        <i class="material-icons">history</i>
+        <h3 id="popupTitle">Scan History</h3>
+      </div>
+      <button class="close-btn" onclick="closeHistoryPopup()">
+        <i class="material-icons">close</i>
+      </button>
+    </div>
+
+    <!-- Body -->
+    <div class="popup-body">
+      <!-- Statistics - Colorful three columns -->
+      <div class="history-stats">
+        <div class="stat-item total">
+          <div class="stat-number" id="totalCards">0</div>
+          <div class="stat-label" id="statLabelTotal">Total</div>
+        </div>
+        <div class="stat-item synced">
+          <div class="stat-number" id="syncedCards">0</div>
+          <div class="stat-label" id="statLabelSynced">Synced</div>
+        </div>
+        <div class="stat-item unsynced">
+          <div class="stat-number" id="unsyncedCards">0</div>
+          <div class="stat-label" id="statLabelUnsynced">Unsynced</div>
+        </div>
+      </div>
+
+      <!-- Recent History -->
+      <div class="recent-history">
+        <div class="recent-history-title" id="recentTitle">Recent History</div>
+        <div class="history-list" id="historyList">
+          <!-- Dynamically generated -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Admin Icon - Fixed at bottom right -->
 <div class="admin-icon-wrapper">
   <div class="admin-icon" onclick="openAdminPopup()" title="Admin Login">
     <i class="material-icons">manage_accounts</i>
@@ -416,6 +469,7 @@ document.addEventListener('DOMContentLoaded', function() {
     <script src="js/syncCloud.js"></script>   
     <script src="js/firebaseExport.js"></script>
     <script src="js/adminVerification.js"></script>
+    <script src="js/scanHistory.js"></script>
     <script src="js/translations.js"></script>
     <script src="js/ocrKeywords.js"></script>
 
