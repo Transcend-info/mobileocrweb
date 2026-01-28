@@ -59,6 +59,7 @@ function changeLanguage() {
 
   // Update Export Button with Count
   //updateExportButton();
+  updateUnsyncedBadge();
 
   // Show/hide Tax ID field based on language
   const taxIdField = document.getElementById("taxIdField");
