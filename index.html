@@ -64,7 +64,6 @@
             <option value="RSAC2026"> RSAC 2026</option>
             <option value="ISCWest2026"> ISC West 2026</option>
             <option value="GlobalIndustrieParis2026"> Global Industrie Paris 2026</option>
-            <option value="CIEX2026"> CIEX 2026</option>
             <option value="Test2026"> TestEvent 2026</option>
           </select>
           </div>
@@ -302,7 +301,7 @@
               onclick="viewHistory()"
               style="flex: 1;"
             >
-              <span id="btnHistory"><i class="material-icons">history</i> History</span>
+              <span><i class="material-icons">history</i> History</span>
             </button>
           </div>
         </div>
@@ -440,6 +439,20 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
   }
+  
+  // Escape key handling for both popups
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' || e.keyCode === 27) {
+      const adminPopup = document.getElementById('adminPopup');
+      const historyPopup = document.getElementById('historyPopup');
+      
+      if (adminPopup && adminPopup.classList.contains('show')) {
+        closeAdminPopup();
+      } else if (historyPopup && historyPopup.classList.contains('show')) {
+        closeHistoryPopup();
+      }
+    }
+  });
 });
 </script>
         <!-- Language Selector -->
