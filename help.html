@@ -175,16 +175,16 @@
 
     /* Footer */
     .footer {
-      background: #f8f9fa;
-      padding: 20px 20px;
+      padding: 20px;
       text-align: center;
-      color: #666;
       font-size: 14px;
-      border-top: 1px solid #e0e0e0;
+      line-height: 20px;
+      background-color: #404040;
+      color: #cccccc;
     }
 
     .footer p {
-      margin: 5px 0;
+      margin: 0;
     }
 
     /* Print Styles */
@@ -254,10 +254,29 @@
     <!-- Content -->
     <div class="content">
 
-      <!-- Page 1: Initial Setup & Login -->
+      <!-- Page 1: Add Web to iOS/Android Devices -->
       <section class="section">
         <h2 class="section-title">
           <span class="section-number">1</span>
+          Add Web to iOS/Android Devices
+        </h2>
+        <div class="section-content">
+          <p><strong>For iOS:</strong></p>
+          <p>Go Safari > Visit the Business Card Scanner web > Click <strong>...</strong> > Share > Add to Home screen > Add > Find the APP icon at Home</p>
+          <img src="helpimage/iOS_1.PNG"  alt="Setup iOS Screenshot1" style="width:50%; max-width:200px; margin: 15px 0; border: 1px solid #ccc; border-radius: 5px;">
+          <img src="helpimage/iOS_2.PNG"  alt="Setup iOS Screenshot2" style="width:50%; max-width:200px; margin: 15px 0; border: 1px solid #ccc; border-radius: 5px;">
+          <img src="helpimage/iOS_3.PNG"  alt="Setup iOS Screenshot3" style="width:50%; max-width:200px; margin: 15px 0; border: 1px solid #ccc; border-radius: 5px;">
+          <p><strong>For Android:</strong></p>
+          <p>Go Chrome > Visit the Business Card Scanner web > Click <strong>...</strong> > Add to Home screen > Install > Find the APP icon at Home</p>
+          <img src="helpimage/Android_1.PNG"  alt="Setup Android Screenshot1" style="width:50%; max-width:200px; margin: 15px 0; border: 1px solid #ccc; border-radius: 5px;">
+          <img src="helpimage/Android_2.PNG"  alt="Setup Android Screenshot2" style="width:50%; max-width:200px; margin: 15px 0; border: 1px solid #ccc; border-radius: 5px;">
+        </div>
+      </section>
+
+      <!-- Page 2: Initial Setup & Login -->
+      <section class="section">
+        <h2 class="section-title">
+          <span class="section-number">2</span>
           Initial Setup & Login
         </h2>
         <div class="section-content">
@@ -271,16 +290,16 @@
               <strong>Enter Username:</strong> Input your name in the designated field (e.g., Jack).
             </li>
             <li>
-              <strong>Save Settings:</strong> After confirming the information is correct, click the purple <span class="btn-ref btn-purple">"Save >"</span> button to enter the scanning interface.
+              <strong>Save Settings:</strong> After confirming the information is correct, click the <span class="btn-ref btn-purple">"Save >"</span> button to enter the scanning interface.
             </li>
           </ol>
         </div>
       </section>
 
-      <!-- Page 2: Business Card Scanning & Recognition -->
+      <!-- Page 3: Business Card Scanning & Recognition -->
       <section class="section">
         <h2 class="section-title">
-          <span class="section-number">2</span>
+          <span class="section-number">3</span>
           Business Card Scanning & Recognition
         </h2>
         <div class="section-content">
@@ -288,13 +307,16 @@
           <img src="helpimage/step2.PNG"  alt="Business Card Scanning Screenshot" style="width:100%; max-width:400px; margin: 15px 0; border: 1px solid #ccc; border-radius: 5px;">
           <ol>
             <li>
-              <strong>Activate Camera:</strong> Click the purple <span class="btn-ref btn-purple">"Camera"</span> button at the bottom to take a photo of the business card.
+              <strong>Activate Camera:</strong> Click the <span class="btn-ref btn-purple">"Camera"</span> button at the bottom to take a photo of the business card.
             </li>
             <li>
               <strong>Automatic Recognition:</strong> The system will automatically recognize text on the business card (such as name, company, phone, etc.), and the recognized text will be highlighted in blue blocks on the image.
             </li>
             <li>
               <strong>Copy Information:</strong> You can click on the blue blocks. When the system displays "Text copied to clipboard!", it means the text has been successfully extracted and you can paste it into the corresponding field.
+            </li>
+              <li>
+              <strong>Fill in Notes:</strong> In the <strong>Note</strong> field, you can manually input additional information about the contact or key discussion points.
             </li>
           </ol>
 
@@ -305,24 +327,27 @@
         </div>
       </section>
 
-      <!-- Page 3: Data Saving & Notes -->
+      <!-- Page 4: Data Saving & Notes -->
       <section class="section">
         <h2 class="section-title">
-          <span class="section-number">3</span>
-          Data Saving & Notes
+          <span class="section-number">4</span>
+          Data Saving
         </h2>
         <div class="section-content">
           <p>For each scanned business card, you can record details:</p>
           <img src="helpimage/step3.PNG"  alt="Data Saving Screenshot" style="width:100%; max-width:400px; margin: 15px 0; border: 1px solid #ccc; border-radius: 5px;">
           <ol>
             <li>
-              <strong>Fill in Notes:</strong> In the <strong>Note</strong> field, you can manually input additional information about the contact or key discussion points.
+              <strong>Save Single Entry:</strong> Click the <span class="btn-ref btn-purple">"Save"</span> button to temporarily store the currently scanned business card and notes on your device.
             </li>
             <li>
-              <strong>Save Single Entry:</strong> Click the purple <span class="btn-ref btn-purple">"Save"</span> button to temporarily store the currently scanned business card and notes on your device.
+              <strong>Sync to Cloud:</strong> Click the <span class="btn-ref btn-gray">"Sync to Cloud (n)"</span> button to upload all locally saved business cards to the cloud. The number in parentheses shows how many cards are pending synchronization.
             </li>
             <li>
-              <strong>Reset App:</strong> If you need to clear all data and settings during use, click the red <span class="btn-ref btn-red">"Reset App"</span> button to clear all saved business card data and restore to initial state.
+              <strong>Reset App:</strong> If you need to clear all data and settings during use, click the <span class="btn-ref btn-red">"Reset App"</span> button to clear all saved business card data and restore to initial state.
+            </li>
+            <li>
+              <strong>History:</strong> Click the <span class="btn-ref btn-purple">"History"</span> button to view all previously saved business cards and their details.
             </li>
           </ol>
 
@@ -333,10 +358,10 @@
         </div>
       </section>
 
-      <!-- Page 4: Cloud Data Synchronization -->
+      <!-- Page 5: Cloud Data Synchronization -->
       <section class="section">
         <h2 class="section-title">
-          <span class="section-number">4</span>
+          <span class="section-number">5</span>
           Cloud Data Synchronization
         </h2>
         <div class="section-content">
@@ -361,10 +386,10 @@
         </div>
       </section>
 
-      <!-- Page 5: Export Data to Excel (Admin) -->
+      <!-- Page 6: Export Data to Excel (Admin) -->
       <section class="section">
         <h2 class="section-title">
-          <span class="section-number">5</span>
+          <span class="section-number">6</span>
           Export Data to Excel (Admin)
         </h2>
         <div class="section-content">
@@ -375,11 +400,8 @@
               <strong>Admin Login:</strong> admin mode access is required, select a specific administrator account and enter the <strong>TSID</strong> (e.g., LA0001) to log in.
             </li>
             <li>
-              <strong>Download Excel:</strong> In the admin interface, click the green <span class="btn-ref btn-green">"Download Excel"</span> button.
-            </li>
-            <li>
-              <strong>Confirm Download:</strong> The system will ask whether you want to download the business card data file (e.g., 202601261056_exhibition_cards.xlsx), please click <strong>"Download"</strong>.
-            </li>            
+              <strong>Download Excel:</strong> In the admin interface, click the green <span class="btn-ref btn-green">"Download Excel"</span> button. The system will export an Excel file. (e.g., 202601261056_exhibition_cards.xlsx)
+            </li>                        
             <li>
               <strong>View & Share File:</strong>
               <ul>
